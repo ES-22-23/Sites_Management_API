@@ -31,7 +31,7 @@ class API_controller {
     }
 
     @DeleteMapping("/deleteOwner")
-    void deleteEmployee(@RequestBody String username) {
+    void deleteOwner(@RequestBody String username) {
         repository.deleteByUsername(username);
     }
 }
