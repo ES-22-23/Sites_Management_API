@@ -26,12 +26,12 @@ class API_controller {
 
 
     @PostMapping("/newOwner")
-    Employee createOwner(@RequestBody Owner newOwner) {
+    Owner createOwner(@RequestBody Owner newOwner) {
         return repository.save(newOwner);
     }
 
     @PostMapping("/updateOwner")
-    Employee updateOwner(@RequestBody Owner newOwner) {
+    Owner updateOwner(@RequestBody Owner newOwner) {
         return repository.save(newOwner);
     }
 
