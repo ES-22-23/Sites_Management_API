@@ -25,12 +25,14 @@ class API_controller {
     }
 
 
-
-
-    // end::get-aggregate-root[]
-
     @PostMapping("/newOwner")
     Employee newEmployee(@RequestBody Owner newOwner) {
         return repository.save(newOwner);
     }
+
+    @PostMapping("/updateOwner")
+    Employee newEmployee(@RequestBody Owner newOwner) {
+        return repository.save(newOwner);
+    }
+
 }
