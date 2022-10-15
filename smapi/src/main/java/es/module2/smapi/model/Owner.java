@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-class Owner {
+public class Owner {
 
   private @Id @GeneratedValue Long id;
   private String username;
