@@ -33,5 +33,8 @@ class SMAPI_controller {
     Owner updateOwner(@RequestBody Owner newOwner) {
         return repository.save(newOwner);
     }
-
+    @DeleteMapping("/deleteOwner")
+    void deleteOwner(@RequestBody String username) {
+        repository.deleteByUsername(username);
+    }
 }
