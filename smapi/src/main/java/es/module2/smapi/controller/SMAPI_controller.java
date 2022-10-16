@@ -21,12 +21,18 @@ class SMAPI_controller {
 
     @Autowired
     private OwnerRepository repository;
+    
+    
 
     @PostMapping("/newOwner")
-    Owner CreateOwner(@RequestBody Owner newOwner) {
+    Owner createOwner(@RequestBody Owner newOwner) {
         return repository.save(newOwner);
     }
 
+    @PostMapping("/updateOwner")
+    Owner updateOwner(@RequestBody Owner newOwner) {
+        return repository.save(newOwner);
+    }
     @DeleteMapping("/deleteOwner")
     void deleteOwner(@RequestBody String username) {
         repository.deleteByUsername(username);
