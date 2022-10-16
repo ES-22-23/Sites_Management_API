@@ -1,8 +1,8 @@
 package es.module2.smapi.controller;
 
+import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.model.Owner;
 
-
-import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,26 +11,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+
 
 @RestController
-class API_controller {
+class SMAPI_controller {
 
     @Autowired
-    private final OwnerRepository repository;
+    private OwnerRepository repository;
 
 
 
-    API_controller(OwnerRepository repository) {
-        this.repository = repository;
-    }
-
-
-
-
-    // end::get-aggregate-root[]
 
     @PostMapping("/newOwner")
-    Employee newEmployee(@RequestBody Owner newOwner) {
+    Owner CreateOwner(@RequestBody Owner newOwner) {
         return repository.save(newOwner);
     }
 }
