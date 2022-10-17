@@ -6,28 +6,30 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name="OWNER")
 public class Owner {
 
-  private @Id String username;
+  private @Id @GeneratedValue Long id;
+  private String username;
   private String password;
   private String name;
 
-  public Owner(String username,String password,String name) {
+  Owner(String username,String password,String name) {
     this.username=username;
     this.password=password;
     this.name=name;
   }
 
 
-  public Owner() {
 
+  public Long getId() {
+    return this.id;
   }
 
-
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getUsername() {
     return this.username;
@@ -53,13 +55,8 @@ public class Owner {
     this.name = name;
   }
 
-
-
-  
-
-
   @Override
-  public boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (o == this)
             return true;
         if (!(o instanceof Owner)) {
@@ -71,12 +68,13 @@ public class Owner {
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, password, name);
+    return Objects.hash(id, username, password, name);
   }
 
   @Override
   public String toString() {
     return "{" +
+      " id='" + getId() + "'" +
       ", username='" + getUsername() + "'" +
       ", password='" + getPassword() + "'" +
       ", name='" + getName() + "'" +
