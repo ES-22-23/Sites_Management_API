@@ -2,8 +2,10 @@ package es.module2.smapi.service;
 
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
+import es.module2.smapi.repository.CameraRepository;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
+import es.module2.smapi.model.Camera;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class SMAPIService {
 
     @Autowired
     private PropertyRepository propRepository;
+
+    @Autowired
+    private CameraRepository camRepository;
     
     
     // CRUD Func Owner
@@ -54,6 +59,24 @@ public class SMAPIService {
     }
     public void deleteProperty(long id) {
         propRepository.deleteById(id);
+    }
+
+
+    // CRUD Func Camera
+
+    public Camera createCamera(Camera newCamera) {
+        return camRepository.save(newCamera);
+    }
+
+    public Camera getCamera(long id) {
+        return camRepository.findById(id);
+    }
+
+    public Camera updateCamera(Camera newCamera) {
+        return camRepository.save(newCamera);
+    }
+    public void deleteCamera(long id) {
+        camRepository.deleteById(id);
     }
 
 

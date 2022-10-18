@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Set;
 
 
 import javax.persistence.*;
@@ -46,6 +47,11 @@ public class Property implements Serializable{
 
 
 
+  @Column(name = "cameras")
+  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
+          cascade = CascadeType.ALL)
+  private Set<Camera> cameras;
+
   public Property(String address,String name,Owner owner) {
     this.address=address;
     this.name=name;
@@ -53,6 +59,14 @@ public class Property implements Serializable{
   }
 
 
+
+  public Set<Camera> getCameras() {
+    return this.cameras;
+  }
+
+  public void setCameras(Set<Camera> cameras) {
+    this.cameras = cameras;
+  }
 
 
   public long getId() {

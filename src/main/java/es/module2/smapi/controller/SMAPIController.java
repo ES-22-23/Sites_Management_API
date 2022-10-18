@@ -1,15 +1,14 @@
 package es.module2.smapi.controller;
 
-import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
+import es.module2.smapi.model.Camera;
 import es.module2.smapi.service.SMAPIService;
 
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,5 +67,27 @@ class SMAPIController {
     @DeleteMapping("/deleteProperty")
     void deleteProperty(@RequestParam long id) {
         service.deleteProperty(id);
+    }
+
+        // Camera endpoints
+
+    @PostMapping("/newCamera")
+    Camera createCamera(@RequestBody Camera newCamera) {
+        return service.createCamera(newCamera);
+    }
+
+    @GetMapping("/getCamera")
+    Camera getCamera(@RequestParam  long id) {
+        return service.getCamera(id);
+    }
+
+    @PostMapping("/updateCamera")
+    Camera updateCamera(@RequestBody Camera newCamera) {
+        return service.updateCamera(newCamera);
+    }
+
+    @DeleteMapping("/deleteCamera")
+    void deleteCamera(@RequestParam long id) {
+        service.deleteCamera(id);
     }
 }
