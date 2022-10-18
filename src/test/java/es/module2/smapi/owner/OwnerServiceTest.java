@@ -15,11 +15,9 @@ import org.junit.jupiter.api.AfterEach;
 
 import org.springframework.http.MediaType;
 import es.module2.smapi.model.Owner;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.model.Camera;
 import es.module2.smapi.service.SMAPIService;
 import es.module2.smapi.SmapiApplication;
-import es.module2.smapi.repository.CameraRepository;
+import es.module2.smapi.repository.OwnerRepository;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import java.util.List;
@@ -37,11 +35,11 @@ import static org.hamcrest.CoreMatchers.is;
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-class CameraServiceTest {
+class OwnerServiceTest {
 
 
     @Autowired
-    private CameraRepository repository;
+    private OwnerRepository repository;
     
     @Autowired
     private SMAPIService service;
@@ -56,62 +54,62 @@ class CameraServiceTest {
 
 
     @Test
-     void whenValidInputThenCreateCamera() throws IOException, Exception {
-        Camera cam1 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+     void whenValidInputThenCreateOwner() throws IOException, Exception {
+        Owner alex = new Owner( "alex@deti.com","1234","alex");
 
-        service.createCamera(cam1);
+        service.createOwner(alex);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam1.getId());
+        List<Owner> found = repository.findAll();
+        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
         repository.deleteAll();
     }
 
 
     @Test
-    void whenValidInputThenUpdateCamera() throws IOException, Exception {
-        Camera cam2 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+    void whenValidInputThenUpdateOwner() throws IOException, Exception {
+        Owner alex = new Owner( "alex@deti.com","1234","alex");
 
 
-        repository.save(cam2);
+        repository.save(alex);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam2.getId());
+        List<Owner> found = repository.findAll();
+        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
 
-        cam2.setId(5);
-        service.updateCamera(cam2);
-        List<Camera> found2 = repository.findAll();
-        assertThat(found2).extracting(Camera::getId).containsOnly(cam2.getId());
+        alex.setName("bob");
+        service.updateOwner(alex);
+        List<Owner> found2 = repository.findAll();
+        assertThat(found2).extracting(Owner::getName).containsOnly(alex.getName());
         repository.deleteAll();
     }
 
 
     @Test
-    void whenValidInputThenDeleteCamera() throws IOException, Exception {
-        Camera cam3 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+    void whenValidInputThenDeleteOwner() throws IOException, Exception {
+        Owner alex = new Owner( "alex@deti.com","1234","alex");
 
 
-        repository.save(cam3);
+        repository.save(alex);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam3.getId());
+        List<Owner> found = repository.findAll();
+        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
 
-        service.deleteCamera(cam3.getId());
-        List<Camera> found2 = repository.findAll();
+        service.deleteOwner(alex.getUsername());
+        List<Owner> found2 = repository.findAll();
         assertThat(found2 == null);
         repository.deleteAll();
     }
 
     @Test
-     void whenValidInputThenGetCamera() throws IOException, Exception {
-        Camera cam3 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+     void whenValidInputThenGetOwner() throws IOException, Exception {
+        Owner alex = new Owner( "alex@deti.com","1234","alex");
 
-        repository.save(cam3);
+        repository.save(alex);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam3.getId());
+        List<Owner> found = repository.findAll();
+        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
 
 
-        Camera found2= service.getCamera(cam3.getId());
+        Owner found2= service.getOwner(alex.getUsername());
 
         assertThat(found.equals(found2));
         repository.deleteAll();
