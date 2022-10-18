@@ -16,10 +16,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.springframework.http.MediaType;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
-import es.module2.smapi.model.Camera;
 import es.module2.smapi.service.SMAPIService;
 import es.module2.smapi.SmapiApplication;
-import es.module2.smapi.repository.CameraRepository;
+import es.module2.smapi.repository.PropertyRepository;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import java.util.List;
@@ -37,11 +36,11 @@ import static org.hamcrest.CoreMatchers.is;
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-class CameraServiceTest {
+class PropertyServiceTest {
 
 
     @Autowired
-    private CameraRepository repository;
+    private PropertyRepository repository;
     
     @Autowired
     private SMAPIService service;
@@ -56,62 +55,62 @@ class CameraServiceTest {
 
 
     @Test
-     void whenValidInputThenCreateCamera() throws IOException, Exception {
-        Camera cam1 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+     void whenValidInputThenCreateProperty() throws IOException, Exception {
+        Property prop1 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 
-        service.createCamera(cam1);
+        service.createProperty(prop1);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam1.getId());
+        List<Property> found = repository.findAll();
+        assertThat(found).extracting(Property::getId).containsOnly(prop1.getId());
         repository.deleteAll();
     }
 
 
     @Test
-    void whenValidInputThenUpdateCamera() throws IOException, Exception {
-        Property prop = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
-        Camera cam2 = new Camera(prop);
+    void whenValidInputThenUpdateProperty() throws IOException, Exception {
+        Property prop2 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 
-        repository.save(cam2);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam2.getId());
-        prop.setAddress("Address2");
-        cam2.setProperty(prop);
-        service.updateCamera(cam2);
-        List<Camera> found2 = repository.findAll();
-        assertThat(found2).extracting(Camera::getProperty).containsOnly(prop);
+        repository.save(prop2);
+
+        List<Property> found = repository.findAll();
+        assertThat(found).extracting(Property::getId).containsOnly(prop2.getId());
+
+        prop2.setAddress("address2");
+        service.updateProperty(prop2);
+        List<Property> found2 = repository.findAll();
+        assertThat(found2).extracting(Property::getAddress).containsOnly(prop2.getAddress());
         repository.deleteAll();
     }
 
 
     @Test
-    void whenValidInputThenDeleteCamera() throws IOException, Exception {
-        Camera cam3 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+    void whenValidInputThenDeleteProperty() throws IOException, Exception {
+        Property prop3 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 
 
-        repository.save(cam3);
+        repository.save(prop3);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam3.getId());
+        List<Property> found = repository.findAll();
+        assertThat(found).extracting(Property::getId).containsOnly(prop3.getId());
 
-        service.updateCamera(cam3);
-        List<Camera> found2 = repository.findAll();
+        service.updateProperty(prop3);
+        List<Property> found2 = repository.findAll();
         assertThat(found2 == null);
         repository.deleteAll();
     }
 
     @Test
-     void whenValidInputThenGetCamera() throws IOException, Exception {
-        Camera cam3 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+     void whenValidInputThenGetProperty() throws IOException, Exception {
+        Property prop4 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 
-        repository.save(cam3);
+        repository.save(prop4);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam3.getId());
+        List<Property> found = repository.findAll();
+        assertThat(found).extracting(Property::getId).containsOnly(prop4.getId());
 
 
-        Camera found2= service.getCamera(cam3.getId());
+        Property found2= service.getProperty(prop4.getAddress());
 
         assertThat(found.equals(found2));
         repository.deleteAll();
