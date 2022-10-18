@@ -52,7 +52,7 @@ class ControllerTest {
 
 
     @Test
-     void whenValidInput_thenCreateOwner() throws IOException, Exception {
+     void whenValidInputThenCreateOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
         mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
 
@@ -63,7 +63,7 @@ class ControllerTest {
 
 
     @Test
-    void whenValidInput_thenUpdateOwner() throws IOException, Exception {
+    void whenValidInputThenUpdateOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
         repository.save(bob);
 
@@ -79,7 +79,7 @@ class ControllerTest {
 
 
     @Test
-    void whenValidInput_thenDeleteOwner() throws IOException, Exception {
+    void whenValidInputThenDeleteOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
 
         repository.save(bob);
@@ -94,7 +94,7 @@ class ControllerTest {
     }
 
     @Test
-     void whenFindAlexByUsername_ThenReturnAlexOwner() throws IOException, Exception {
+     void whenFindAlexByUsernameThenReturnAlexOwner() throws IOException, Exception {
         Owner alex = new Owner( "alex@deti.com", "1234", "alex");
         repository.save(alex);
 
