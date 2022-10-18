@@ -95,7 +95,7 @@ class CameraServiceTest {
         List<Camera> found = repository.findAll();
         assertThat(found).extracting(Camera::getId).containsOnly(cam3.getId());
 
-        service.updateCamera(cam3);
+        service.deleteCamera(cam3.getId());
         List<Camera> found2 = repository.findAll();
         assertThat(found2 == null);
         repository.deleteAll();

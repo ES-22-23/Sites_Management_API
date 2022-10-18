@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @DataJpaTest
-class RepositoryTests {
+class OwnerRepositoryTests {
 
 
 

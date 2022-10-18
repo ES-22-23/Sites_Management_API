@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 // @SpringBootTest
-class ControllerTest {
+class OwnerControllerIT {
 
 
     @Autowired

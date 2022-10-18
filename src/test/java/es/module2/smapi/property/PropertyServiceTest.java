@@ -83,7 +83,7 @@ class PropertyServiceTest {
         List<Property> found = repository.findAll();
         assertThat(found).extracting(Property::getId).containsOnly(prop3.getId());
 
-        service.updateProperty(prop3);
+        service.deleteProperty(prop3.getId());
         List<Property> found2 = repository.findAll();
         assertThat(found2 == null);
         repository.deleteAll();
