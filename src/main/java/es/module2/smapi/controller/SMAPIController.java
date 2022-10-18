@@ -3,6 +3,7 @@ package es.module2.smapi.controller;
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
+import es.module2.smapi.service.SMAPIService;
 
 
 import org.springframework.web.bind.annotation.DeleteMapping;

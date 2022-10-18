@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity

@@ -1,24 +1,18 @@
-package es.module2.smapi.controller;
+package es.module2.smapi.service;
 
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
+import org.springframework.stereotype.Service;
 
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-//import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 
 
-@RestController
-class SMAPIService {
+@Service
+public class SMAPIService {
 
     @Autowired
     private OwnerRepository ownerRepository;
@@ -27,35 +21,38 @@ class SMAPIService {
     private PropertyRepository propRepository;
     
     
+    // CRUD Func Owner
 
-    Owner createOwner(Owner newOwner) {
+    public Owner createOwner(Owner newOwner) {
         return ownerRepository.save(newOwner);
     }
 
-    Owner getOwner(String username) {
+    public Owner getOwner(String username) {
         return ownerRepository.findByUsername(username);
     }
 
-    Owner updateOwner(Owner newOwner) {
+    public Owner updateOwner(Owner newOwner) {
         return ownerRepository.save(newOwner);
     }
-    void deleteOwner(String username) {
+    public void deleteOwner(String username) {
         ownerRepository.deleteByUsername(username);
     }
 
 
-    Property createProperty(Property newProperty) {
+    // CRUD Func Properties
+
+    public Property createProperty(Property newProperty) {
         return propRepository.save(newProperty);
     }
 
-    Property getProperty(String address) {
+    public Property getProperty(String address) {
         return propRepository.findByAddress(address);
     }
 
-    Property updateProperty(Property newProperty) {
+    public Property updateProperty(Property newProperty) {
         return propRepository.save(newProperty);
     }
-    void deleteProperty(long id) {
+    public void deleteProperty(long id) {
         propRepository.deleteById(id);
     }
 
