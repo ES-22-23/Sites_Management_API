@@ -65,7 +65,7 @@ class ControllerTest {
     @Test
     void whenValidInput_thenUpdateOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
-        mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
+        repository.save(bob);
 
         List<Owner> found = repository.findAll();
         assertThat(found).extracting(Owner::getName).containsOnly("bob");
@@ -82,7 +82,7 @@ class ControllerTest {
     void whenValidInput_thenDeleteOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
 
-        mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
+        repository.save(bob);
 
         List<Owner> found = repository.findAll();
         assertThat(found).extracting(Owner::getName).containsOnly("bob");
@@ -96,7 +96,7 @@ class ControllerTest {
     @Test
      void whenFindAlexByUsername_ThenReturnAlexOwner() throws IOException, Exception {
         Owner alex = new Owner( "alex@deti.com", "1234", "alex");
-        mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(alex)));
+        repository.save(alex);
 
         List<Owner> found = repository.findAll();
         assertThat(found).extracting(Owner::getName).containsOnly("alex");
