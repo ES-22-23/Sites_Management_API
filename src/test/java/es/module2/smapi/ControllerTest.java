@@ -19,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -90,6 +90,23 @@ class ControllerTest {
         mvc.perform(post("/deleteOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
         List<Owner> found2 = repository.findAll();
         assertThat(found2 != null);
+        repository.deleteAll();
+    }
+
+    @Test
+     void whenFindAlexByUsername_ThenReturnAlexOwner() throws IOException, Exception {
+        Owner alex = new Owner( "alex@deti.com", "1234", "alex");
+        mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(alex)));
+
+        List<Owner> found = repository.findAll();
+        assertThat(found).extracting(Owner::getName).containsOnly("alex");
+
+
+         mvc.perform(get("/getOwner?username={username}",alex.getUsername()).contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", is("alex")));
         repository.deleteAll();
     }
 	
