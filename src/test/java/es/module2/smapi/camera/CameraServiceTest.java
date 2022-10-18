@@ -69,18 +69,18 @@ class CameraServiceTest {
 
     @Test
     void whenValidInputThenUpdateCamera() throws IOException, Exception {
-        Camera cam2 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
-
+        Property prop = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
+        Camera cam2 = new Camera(prop);
 
         repository.save(cam2);
 
         List<Camera> found = repository.findAll();
         assertThat(found).extracting(Camera::getId).containsOnly(cam2.getId());
-
-        cam2.setId(5);
+        prop.setAddress("Address2");
+        cam2.setProperty(prop);
         service.updateCamera(cam2);
         List<Camera> found2 = repository.findAll();
-        assertThat(found2).extracting(Camera::getId).containsOnly(cam2.getId());
+        assertThat(found2).extracting(Camera::getProperty).containsOnly(prop);
         repository.deleteAll();
     }
 
