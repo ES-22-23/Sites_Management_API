@@ -1,4 +1,4 @@
-package es.module2.smapi;
+package es.module2.smapi.owner;
 
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -26,7 +26,7 @@ class RepositoryTests {
 
 
 	@Test
-	void whenFindAlexByName_thenReturnAlexOwner() {
+	void whenFindAlexByNameThenReturnAlexOwner() {
         Owner alex = new Owner( "alex@deti.com","1234","alex");
         entityManager.persistAndFlush(alex); //ensure data is persisted at this point
 
@@ -37,7 +37,7 @@ class RepositoryTests {
 
 
 	@Test
-	void whenFindBobByUsername_thenReturnAlexOwner() {
+	void whenFindBobByUsernameThenReturnAlexOwner() {
         Owner bob = new Owner( "bob@deti.com","1234","bob");
         entityManager.persistAndFlush(bob); //ensure data is persisted at this point
 
@@ -46,5 +46,20 @@ class RepositoryTests {
         assertThat( found ).isEqualTo(bob);
 	}
 	
+
+
+    @Test
+	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
+        Owner alex =  new Owner( "alex@deti.com","1234","alex");
+        entityManager.persistAndFlush(alex); //ensure data is persisted at this point
+
+        // test the query method of interest
+        Owner found = ownerRepository.findByName(alex.getName());
+        assertThat( found ).isEqualTo(alex);
+
+        ownerRepository.deleteByUsername(alex.getUsername());
+        List<Owner> found2 = ownerRepository.findAll();
+        assertThat(found2.isEmpty()).isTrue();
+	}
 
 }

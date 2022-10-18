@@ -1,4 +1,4 @@
-package es.module2.smapi;
+package es.module2.smapi.owner;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,14 +13,11 @@ import org.springframework.http.MediaType;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.SmapiApplication;
 import es.module2.smapi.repository.OwnerRepository;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -89,7 +86,7 @@ class ControllerTest {
 
         mvc.perform(post("/deleteOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
         List<Owner> found2 = repository.findAll();
-        assertThat(found2 != null);
+        assertThat(found2 == null);
         repository.deleteAll();
     }
 

@@ -12,5 +12,4 @@ public class SmapiApplication {
 		SpringApplication.run(SmapiApplication.class, args);
 	}
 
-
 }

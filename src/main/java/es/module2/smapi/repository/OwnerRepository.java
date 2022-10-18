@@ -8,5 +8,6 @@ import java.util.List;
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
     Owner findByName(String name);
     Owner findByUsername(String username);
-    long deleteByUsername(String username);
+    //Owner findByProperty(Property prop);
+    void deleteByUsername(String username);
 }
