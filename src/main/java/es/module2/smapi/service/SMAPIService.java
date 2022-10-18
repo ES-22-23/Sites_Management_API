@@ -16,24 +16,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @RestController
-class SMAPIController {
+class SMAPIService {
 
     @Autowired
-    private SMAPIService service;
+    private OwnerRepository ownerRepository;
+
+    @Autowired
+    private PropertyRepository propRepository;
     
     
 
-    @PostMapping("/newOwner")
-    Owner createOwner(@RequestBody Owner newOwner) {
-        return service.createOwner(newOwner);
+    Owner createOwner(Owner newOwner) {
+        return ownerRepository.save(newOwner);
     }
 
-    @PostMapping("/updateOwner")
-    Owner updateOwner(@RequestBody Owner newOwner) {
-        return service.updateOwner(newOwner);
+    Owner updateOwner(Owner newOwner) {
+        return ownerRepository.save(newOwner);
     }
-    @DeleteMapping("/deleteOwner")
-    void deleteOwner(@RequestBody String username) {
-        service.deleteOwner(username);
+    void deleteOwner(String username) {
+        ownerRepository.deleteByUsername(username);
     }
+
+
+
 }

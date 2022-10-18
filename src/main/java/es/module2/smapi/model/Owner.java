@@ -1,6 +1,8 @@
 package es.module2.smapi.model;
 
+package com.attacomsian.jpa.one2many.domains;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -8,13 +10,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import java.io.Serializable;
+import java.util.Set;
+
 @Entity
 @Table(name="OWNER")
-public class Owner {
+public class Owner implements Serializable{
 
+
+  @Column(name = "username")
   private @Id String username;
+
+  @Column(name = "password")
   private String password;
+  
+  @Column(name = "name")
   private String name;
+
+  @OneToMany(mappedBy = "property", fetch = FetchType.LAZY,
+          cascade = CascadeType.ALL)
+  private Set<Property> properties;
 
   public Owner(String username,String password,String name) {
     this.username=username;
