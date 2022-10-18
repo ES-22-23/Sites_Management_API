@@ -3,11 +3,11 @@ import es.module2.smapi.model.Owner;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-
+import org.springframework.transaction.annotation.Transactional;
 
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
     Owner findByName(String name);
     Owner findByUsername(String username);
-    //Owner findByProperty(Property prop);
-    void deleteByUsername(String username);
+    @Transactional 
+    long deleteByUsername(String username);
 }

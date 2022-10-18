@@ -39,6 +39,7 @@ public class SMAPIService {
     public Owner updateOwner(Owner newOwner) {
         return ownerRepository.save(newOwner);
     }
+
     public void deleteOwner(String username) {
         ownerRepository.deleteByUsername(username);
     }
