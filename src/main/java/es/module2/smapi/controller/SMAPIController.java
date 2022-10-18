@@ -3,6 +3,7 @@ package es.module2.smapi.controller;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.model.Camera;
+import es.module2.smapi.model.Alarm;
 import es.module2.smapi.service.SMAPIService;
 
 
@@ -89,5 +90,27 @@ class SMAPIController {
     @DeleteMapping("/deleteCamera")
     void deleteCamera(@RequestParam long id) {
         service.deleteCamera(id);
+    }
+
+    // Alarm endpoints
+
+    @PostMapping("/newAlarm")
+    Alarm createAlarm(@RequestBody Alarm newAlarm) {
+        return service.createAlarm(newAlarm);
+    }
+
+    @GetMapping("/getAlarm")
+    Alarm getAlarm(@RequestParam  long id) {
+        return service.getAlarm(id);
+    }
+
+    @PostMapping("/updateAlarm")
+    Alarm updateAlarm(@RequestBody Alarm newAlarm) {
+        return service.updateAlarm(newAlarm);
+    }
+
+    @DeleteMapping("/deleteAlarm")
+    void deleteAlarm(@RequestParam long id) {
+        service.deleteAlarm(id);
     }
 }
