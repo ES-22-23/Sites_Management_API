@@ -19,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,7 +52,7 @@ class ControllerTest {
 
 
     @Test
-     void whenValidInput_thenCreateOwner() throws IOException, Exception {
+     void whenValidInputThenCreateOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
         mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
 
@@ -63,9 +63,9 @@ class ControllerTest {
 
 
     @Test
-    void whenValidInput_thenUpdateOwner() throws IOException, Exception {
+    void whenValidInputThenUpdateOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
-        mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
+        repository.save(bob);
 
         List<Owner> found = repository.findAll();
         assertThat(found).extracting(Owner::getName).containsOnly("bob");
@@ -79,10 +79,10 @@ class ControllerTest {
 
 
     @Test
-    void whenValidInput_thenDeleteOwner() throws IOException, Exception {
+    void whenValidInputThenDeleteOwner() throws IOException, Exception {
         Owner bob = new Owner( "bob@deti.com", "1234", "bob");
 
-        mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
+        repository.save(bob);
 
         List<Owner> found = repository.findAll();
         assertThat(found).extracting(Owner::getName).containsOnly("bob");
@@ -90,6 +90,23 @@ class ControllerTest {
         mvc.perform(post("/deleteOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
         List<Owner> found2 = repository.findAll();
         assertThat(found2 != null);
+        repository.deleteAll();
+    }
+
+    @Test
+     void whenFindAlexByUsernameThenReturnAlexOwner() throws IOException, Exception {
+        Owner alex = new Owner( "alex@deti.com", "1234", "alex");
+        repository.save(alex);
+
+        List<Owner> found = repository.findAll();
+        assertThat(found).extracting(Owner::getName).containsOnly("alex");
+
+
+         mvc.perform(get("/getOwner?username={username}",alex.getUsername()).contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", is("alex")));
         repository.deleteAll();
     }
 	
