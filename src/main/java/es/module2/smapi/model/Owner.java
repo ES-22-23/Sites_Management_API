@@ -1,6 +1,8 @@
 package es.module2.smapi.model;
 
-package com.attacomsian.jpa.one2many.domains;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,20 +16,26 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="OWNER")
 public class Owner implements Serializable{
 
 
-  @Column(name = "username")
-  private @Id String username;
 
-  @Column(name = "password")
+    @Id
+   @Column(name = "username", nullable = false)
+  private String username;
+
+  @Column(name = "password",nullable = false)
   private String password;
   
-  @Column(name = "name")
+  @Column(name = "name",nullable = false)
   private String name;
 
-  @OneToMany(mappedBy = "property", fetch = FetchType.LAZY,
+  @Column(name = "properties")
+  @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
   private Set<Property> properties;
 
@@ -37,9 +45,12 @@ public class Owner implements Serializable{
     this.name=name;
   }
 
+  public Set<Property> getProperties() {
+    return this.properties;
+  }
 
-  public Owner() {
-
+  public void setProperties(Set<Property> properties) {
+    this.properties = properties;
   }
 
 

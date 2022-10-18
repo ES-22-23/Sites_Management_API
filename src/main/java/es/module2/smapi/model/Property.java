@@ -3,37 +3,50 @@ package es.module2.smapi.model;
 
 import java.util.Objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-package com.attacomsian.jpa.one2many.domains;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name="PROPERTY")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="property")
 public class Property implements Serializable{
+
+
   @Id 
-  @GeneratedValue(strategy = GenerationType.IDENTITY) 
-  @Column(name = "property_id")
+  @GeneratedValue(strategy = GenerationType.AUTO) 
+  @Column(name = "property_id", nullable = false)
   private long id;
 
-  @Column(name = "name")
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "address")
+
+  @Column(name = "address", nullable = false)
   private String address;
 
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "username", nullable = false)
+  @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+  @JoinColumn(name = "username", referencedColumnName = "username")
+  @JsonIgnoreProperties("properties")
+  //@JsonIgnore
   private Owner owner;
 
 
-  public Property() {
-  }
+
   public Property(String address,String name,Owner owner) {
     this.address=address;
     this.name=name;
@@ -88,7 +101,7 @@ public class Property implements Serializable{
         }
         Property property = (Property) o;
         // return id == property.id && Objects.equals(name, property.name) && Objects.equals(address, property.address) && Objects.equals(owner, property.owner);
-        return id == property.id
+        return id == property.id;
   }
 
   @Override

@@ -1,7 +1,9 @@
 package es.module2.smapi.controller;
 
 import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.repository.PropertyRepository;
 import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
 
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,11 +32,31 @@ class SMAPIService {
         return ownerRepository.save(newOwner);
     }
 
+    Owner getOwner(String username) {
+        return ownerRepository.findByUsername(username);
+    }
+
     Owner updateOwner(Owner newOwner) {
         return ownerRepository.save(newOwner);
     }
     void deleteOwner(String username) {
         ownerRepository.deleteByUsername(username);
+    }
+
+
+    Property createProperty(Property newProperty) {
+        return propRepository.save(newProperty);
+    }
+
+    Property getProperty(String address) {
+        return propRepository.findByAddress(address);
+    }
+
+    Property updateProperty(Property newProperty) {
+        return propRepository.save(newProperty);
+    }
+    void deleteProperty(long id) {
+        propRepository.deleteById(id);
     }
 
 

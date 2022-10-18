@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public interface PropertyRepository extends JpaRepository<Property, Long> {
-    Owner findByName(String name);
-    Owner findByAddress(String address);
-    long deleteById(long id);
+    Property findByName(String name);
+    Property findByAddress(String address);
+    void deleteById(long id);
 }

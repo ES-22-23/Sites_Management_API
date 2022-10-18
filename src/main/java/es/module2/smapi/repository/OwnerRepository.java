@@ -9,5 +9,5 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     Owner findByName(String name);
     Owner findByUsername(String username);
     //Owner findByProperty(Property prop);
-    long deleteByUsername(String username);
+    void deleteByUsername(String username);
 }
