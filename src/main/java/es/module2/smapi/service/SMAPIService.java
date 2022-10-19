@@ -3,8 +3,10 @@ package es.module2.smapi.service;
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
 import es.module2.smapi.repository.CameraRepository;
+import es.module2.smapi.repository.AlarmRepository;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
+import es.module2.smapi.model.Alarm;
 import es.module2.smapi.model.Camera;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,10 @@ public class SMAPIService {
 
     @Autowired
     private CameraRepository camRepository;
+
+
+    @Autowired
+    private AlarmRepository alRepository;
     
     
     // CRUD Func Owner
@@ -80,6 +86,24 @@ public class SMAPIService {
         camRepository.deleteById(id);
     }
 
+
+
+    // CRUD Func Alarm
+
+    public Alarm createAlarm(Alarm newAlarm) {
+        return alRepository.save(newAlarm);
+    }
+
+    public Alarm getAlarm(long id) {
+        return alRepository.findById(id);
+    }
+
+    public Alarm updateAlarm(Alarm newAlarm) {
+        return alRepository.save(newAlarm);
+    }
+    public void deleteAlarm(long id) {
+        alRepository.deleteById(id);
+    }
 
 
 }

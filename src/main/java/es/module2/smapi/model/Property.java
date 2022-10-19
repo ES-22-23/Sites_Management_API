@@ -52,12 +52,25 @@ public class Property implements Serializable{
           cascade = CascadeType.ALL)
   private Set<Camera> cameras;
 
+  @Column(name = "alarms")
+  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
+          cascade = CascadeType.ALL)
+  private Set<Camera> alarms;
+
   public Property(String address,String name,Owner owner) {
     this.address=address;
     this.name=name;
     this.owner=owner;
   }
 
+
+  public Set<Camera> getAlarms() {
+    return this.alarms;
+  }
+
+  public void setAlarms(Set<Camera> alarms) {
+    this.alarms = alarms;
+  }
 
 
   public Set<Camera> getCameras() {
