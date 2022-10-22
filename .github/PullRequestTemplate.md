@@ -1,6 +1,6 @@
 ### Description 
 
-[Small Description of what the PR is adding]
+Small Description of what the PR is adding
 
 ### What changed
 
