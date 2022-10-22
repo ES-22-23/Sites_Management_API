@@ -3,8 +3,6 @@ package es.module2.smapi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
-
 @SpringBootApplication
 public class SmapiApplication {
 

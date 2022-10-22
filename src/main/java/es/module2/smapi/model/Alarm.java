@@ -1,6 +1,5 @@
 package es.module2.smapi.model;
 
-
 import java.util.Objects;
 
 import lombok.AllArgsConstructor;
