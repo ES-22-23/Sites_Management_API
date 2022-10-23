@@ -34,7 +34,7 @@ import static org.hamcrest.CoreMatchers.is;
 @AutoConfigureTestDatabase
 class ControllerTest {
 
-
+/* 
     @Autowired
     private MockMvc mvc;
 
@@ -116,6 +116,6 @@ class ControllerTest {
         repository.deleteAll();
     }
 	
-	
+	*/
 
  }
