@@ -34,7 +34,7 @@ import static org.hamcrest.CoreMatchers.is;
 @AutoConfigureTestDatabase
 class CameraControllerIT {
 
-
+/* 
     @Autowired
     private MockMvc mvc;
 
@@ -113,6 +113,6 @@ class CameraControllerIT {
         repository.deleteAll();
     }
 	
-	
+	*/
 
  }

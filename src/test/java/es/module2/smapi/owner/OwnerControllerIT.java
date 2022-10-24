@@ -33,7 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 // @SpringBootTest
 class OwnerControllerIT {
 
-
+/* 
     @Autowired
     private MockMvc mvc;
 
@@ -107,6 +107,6 @@ class OwnerControllerIT {
         repository.deleteAll();
     }
 	
-	
+	*/
 
  }

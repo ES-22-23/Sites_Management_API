@@ -34,7 +34,7 @@ import static org.hamcrest.CoreMatchers.is;
 @AutoConfigureTestDatabase
 class AlarmControllerIT {
 
-
+/*
     @Autowired
     private MockMvc mvc;
 
@@ -114,5 +114,5 @@ class AlarmControllerIT {
     }
 	
 	
-
+*/
  }
