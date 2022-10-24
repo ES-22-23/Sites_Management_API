@@ -1,34 +1,54 @@
 package es.module2.smapi.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
-public class Owner {
+import java.io.Serializable;
+import java.util.Set;
 
-  private @Id @GeneratedValue Long id;
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="OWNER")
+public class Owner implements Serializable{
+
+  @Id
+  @Column(name = "username", nullable = false)
   private String username;
+
+  @Column(name = "password",nullable = false)
   private String password;
+  
+  @Column(name = "name",nullable = false)
   private String name;
 
-  Owner(String username,String password,String name) {
+  @Column(name = "properties")
+  @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.EAGER,
+          cascade = CascadeType.ALL)
+  private Set<Property> properties;
+
+  public Owner(String username,String password,String name) {
+
     this.username=username;
     this.password=password;
     this.name=name;
   }
 
-
-
-  public Long getId() {
-    return this.id;
+  public Set<Property> getProperties() {
+    return this.properties;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setProperties(Set<Property> properties) {
+    this.properties = properties;
   }
 
   public String getUsername() {
@@ -68,13 +88,12 @@ public class Owner {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, password, name);
+    return Objects.hash(username, password, name);
   }
 
   @Override
   public String toString() {
     return "{" +
-      " id='" + getId() + "'" +
       ", username='" + getUsername() + "'" +
       ", password='" + getPassword() + "'" +
       ", name='" + getName() + "'" +
