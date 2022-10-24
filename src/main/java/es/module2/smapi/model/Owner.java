@@ -51,10 +51,6 @@ public class Owner implements Serializable{
     this.properties = properties;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getUsername() {
     return this.username;
   }
@@ -92,13 +88,12 @@ public class Owner implements Serializable{
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, password, name);
+    return Objects.hash(username, password, name);
   }
 
   @Override
   public String toString() {
     return "{" +
-      " id='" + getId() + "'" +
       ", username='" + getUsername() + "'" +
       ", password='" + getPassword() + "'" +
       ", name='" + getName() + "'" +
