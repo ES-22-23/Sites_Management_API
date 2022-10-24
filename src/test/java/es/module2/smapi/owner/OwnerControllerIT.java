@@ -1,6 +1,6 @@
 package es.module2.smapi.owner;
 
-import org.junit.jupiter.api.Test;
+/*import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-// @SpringBootTest
+// @SpringBootTest*/
 class OwnerControllerIT {
 
 /* 
