@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.PropertyRepository;
+import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.repository.Owner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,8 @@ public class PropertyService {
     @Autowired
     private PropertyRepository propRepository;
 
+    @Autowired
+    private OwnerRepository owRepository;
     
     
     // CRUD Func Owner
@@ -39,12 +43,21 @@ public class PropertyService {
         Property prop2 = new Property();
         prop2.convertDTOtoObject(propDTO);
 
+        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwnerUsername());
+
+        if (ow1.isEmpty()){
+            return null;
+        }
+
+        prop2.setOwner(ow1.get());
+        ow1.get().getProperties().add(prop2);
+
         return propRepository.saveAndFlush(prop2);
     }
 
-    public Property getProperty(String address) {
+    public Property getProperty(String name, String address) {
         log.info("Getting Property");
-        return propRepository.findByAddress(address);
+        return propRepository.findByNameAndAddress(name, address);
     }
 
     public Property updateProperty(PropertyDTO propDTO) {
@@ -52,8 +65,22 @@ public class PropertyService {
 
         Optional<Property> prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress());
 
-
         prop.convertDTOtoObject(propDTO);
+
+
+        Optional<Owner> oldOwner = owRepository.findByProperties(prop);
+        if (oldOwner.isPresent()){
+            oldOwner.get().getCameras().remove(prop);
+        }
+
+        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwnerUsername());
+
+        if (ow1.isEmpty()){
+            return null;
+        }
+
+        prop2.setOwner(ow1.get());
+        ow1.get().getProperties().add(prop2);
 
         return propRepository.saveAndFlush(prop);
     }

@@ -1,5 +1,6 @@
 package es.module2.smapi.repository;
 import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     Owner findByUsername(String username);
     @Transactional 
     long deleteByUsername(String username);
+    Optional<Owner> findByProperties(Property prop);
 }
