@@ -20,20 +20,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import es.module2.smapi.datamodel.OwnerDTO;
+
+
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="OWNER")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+@Getter
+@Setter
 public class Owner implements Serializable{
 
   @Id
   @Column(name = "username", nullable = false)
   private String username;
 
-  @Column(name = "password",nullable = false)
-  private String password;
+  // @Column(name = "password",nullable = false)
+  // private String password;
   
   @Column(name = "name",nullable = false)
   private String name;
@@ -44,44 +49,17 @@ public class Owner implements Serializable{
   @JsonIdentityReference(alwaysAsId = true)
   private Set<Property> properties;
 
-  public Owner(String username,String password,String name) {
+  public Owner(String username,String name) {
 
     this.username=username;
-    this.password=password;
     this.name=name;
   }
 
-  public Set<Property> getProperties() {
-    return this.properties;
-  }
-
-  public void setProperties(Set<Property> properties) {
-    this.properties = properties;
-  }
-
-  public String getUsername() {
-    return this.username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return this.password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void convertDTOtoObject(OwnerDTO dto){
+        this.setUsername(dto.getUsername());
+        this.setName(dto.getName());
+    }
+ 
 
   @Override
     public boolean equals(Object o) {
@@ -103,7 +81,6 @@ public class Owner implements Serializable{
   public String toString() {
     return "{" +
       ", username='" + getUsername() + "'" +
-      ", password='" + getPassword() + "'" +
       ", name='" + getName() + "'" +
       "}";
   }

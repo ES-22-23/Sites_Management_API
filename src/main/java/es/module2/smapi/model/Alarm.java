@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Getter;
+
+import es.module2.smapi.datamodel.AlarmDTO;
 
 @Entity
 @Data
@@ -29,6 +33,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name="alarm")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
 public class Alarm implements Serializable{
 
 
@@ -52,29 +58,11 @@ public class Alarm implements Serializable{
     this.privateId = private_id;
   }
 
-  public long getId() {
-    return this.id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public long getPrivateId() {
-    return this.privateId;
-  }
-
-  public void setPrivate_id(long privateId) {
-    this.privateId = privateId;
-  }
-
-  public Property getProperty() {
-    return this.property;
-  }
-
-  public void setProperty(Property property) {
-    this.property = property;
-  }
+    public void convertDTOtoObject(AlarmDTO dto){
+        this.setId(dto.getId());
+        this.setPrivateId(dto.getPrivateId());
+        this.setProperty(dto.getProperty());
+    }
  
 
   @Override

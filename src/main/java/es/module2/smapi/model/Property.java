@@ -26,12 +26,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import es.module2.smapi.datamodel.PropertyDTO;
+
+
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="property")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
 public class Property implements Serializable{
 
 
@@ -63,11 +68,18 @@ public class Property implements Serializable{
   @JsonIdentityReference(alwaysAsId = true)
   private Set<Camera> cameras;
 
+
+
   @Column(name = "alarms")
   @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
   private Set<Alarm> alarms;
+
+
+
+
+
 
   public Property(String address,String name,Owner owner) {
     this.address=address;
@@ -76,57 +88,12 @@ public class Property implements Serializable{
   }
 
 
-  public Set<Alarm> getAlarms() {
-    return this.alarms;
-  }
 
-  public void setAlarms(Set<Alarm> alarms) {
-    this.alarms = alarms;
-  }
-
-
-  public Set<Camera> getCameras() {
-    return this.cameras;
-  }
-
-  public void setCameras(Set<Camera> cameras) {
-    this.cameras = cameras;
-  }
-
-
-  public long getId() {
-    return this.id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public Owner getOwner() {
-    return this.owner;
-  }
-
-  public void setOwner(Owner owner) {
-    this.owner = owner;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getAddress() {
-    return this.address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-
+    public void convertDTOtoObject(PropertyDTO dto){
+        this.setAddress(dto.getAddress());
+        this.setName(dto.getName());
+        this.setOwner(dto.getOwner());
+    }
 
 
 

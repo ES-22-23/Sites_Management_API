@@ -1,23 +1,22 @@
 package es.module2.smapi.datamodel;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.Getter;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class AlarmDTO {
-
-    private long privateId;
+public class CameraDTO {
 
     @NonNull
-    private String propertyName;
+    private String username;
 
     @NonNull
     private String propertyAddress;

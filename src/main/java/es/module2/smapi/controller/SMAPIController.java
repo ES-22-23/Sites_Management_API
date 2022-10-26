@@ -10,21 +10,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.module2.smapi.datamodel.AlarmDTO;
 import es.module2.smapi.datamodel.CameraDTO;
+import es.module2.smapi.datamodel.OwnerDTO;
+import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.model.Alarm;
 import es.module2.smapi.model.Camera;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
-import es.module2.smapi.service.SMAPIService;
+import es.module2.smapi.service.OwnerService;
+import es.module2.smapi.service.PropertyService;
+import es.module2.smapi.service.CameraService;
+import es.module2.smapi.service.AlarmService;
 
 @RestController
 class SMAPIController {
 
     @Autowired
-    private SMAPIService service;
+    private OwnerService owService;
+
+    @Autowired
+    private PropertyService propService;
+
+    @Autowired
+    private CameraService camService;
+
+    @Autowired
+    private AlarmService alService;
     
     // Owner endpoints
     @PostMapping("/newOwner")
-    Owner createOwner(@RequestBody Owner newOwner) {
+    Owner createOwner(@RequestBody OwnerDTO newOwner) {
         return service.createOwner(newOwner);
     }
 
@@ -34,7 +48,7 @@ class SMAPIController {
     }
 
     @PostMapping("/updateOwner")
-    Owner updateOwner(@RequestBody Owner newOwner) {
+    Owner updateOwner(@RequestBody OwnerDTO newOwner) {
         return service.updateOwner(newOwner);
     }
     @DeleteMapping("/deleteOwner")
@@ -47,7 +61,7 @@ class SMAPIController {
     // Property endpoints
 
     @PostMapping("/newProperty")
-    Property createProperty(@RequestBody Property newProperty) {
+    Property createProperty(@RequestBody PropertyDTO newProperty) {
         return service.createProperty(newProperty);
     }
 
@@ -57,7 +71,7 @@ class SMAPIController {
     }
 
     @PostMapping("/updateProperty")
-    Property updateProperty(@RequestBody Property newProperty) {
+    Property updateProperty(@RequestBody PropertyDTO newProperty) {
         return service.updateProperty(newProperty);
     }
 
@@ -79,7 +93,7 @@ class SMAPIController {
     }
 
     @PostMapping("/updateCamera")
-    Camera updateCamera(@RequestBody Camera newCamera) {
+    Camera updateCamera(@RequestBody CameraDTO newCamera) {
         return service.updateCamera(newCamera);
     }
 
@@ -101,7 +115,7 @@ class SMAPIController {
     }
 
     @PostMapping("/updateAlarm")
-    Alarm updateAlarm(@RequestBody Alarm newAlarm) {
+    Alarm updateAlarm(@RequestBody AlarmDTO newAlarm) {
         return service.updateAlarm(newAlarm);
     }
 

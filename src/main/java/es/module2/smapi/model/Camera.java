@@ -23,6 +23,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Getter;
+
+import es.module2.smapi.datamodel.CameraDTO;
+
 
 @Entity
 @Data
@@ -30,6 +35,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name="camera")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
 public class Camera implements Serializable{
 
 
@@ -53,29 +60,12 @@ public class Camera implements Serializable{
     this.privateId=privateId;
   }
 
-  public long getId() {
-    return this.id;
-  }
 
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public long getPrivateId() {
-    return this.privateId;
-  }
-
-  public void setPrivateId(long privateId) {
-    this.privateId = privateId;
-  }
-
-  public Property getProperty() {
-    return this.property;
-  }
-
-  public void setProperty(Property property) {
-    this.property = property;
-  }
+    public void convertDTOtoObject(CameraDTO dto){
+        this.setId(dto.getId());
+        this.setPrivateId(dto.getPrivateId());
+        this.setProperty(dto.getProperty());
+    }
 
   @Override
     public boolean equals(Object o) {

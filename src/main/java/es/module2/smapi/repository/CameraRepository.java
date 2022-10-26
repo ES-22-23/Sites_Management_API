@@ -6,5 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CameraRepository extends JpaRepository<Camera, Long> {
     Camera findById(long id);
+    Alarm findByPrivateId(long id);
     void deleteById(long id);
+    
+    @Transactional 
+    void deleteByPrivateId(long id);
 }
