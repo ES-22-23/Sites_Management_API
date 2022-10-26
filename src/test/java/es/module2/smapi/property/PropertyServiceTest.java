@@ -11,7 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
-import es.module2.smapi.service.SMAPIService;
+import es.module2.smapi.service.PropertyService;
 import es.module2.smapi.SmapiApplication;
 import es.module2.smapi.repository.PropertyRepository;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,91 +21,128 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
-@AutoConfigureMockMvc
-@AutoConfigureTestDatabase
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
 class PropertyServiceTest {
 
 
-    @Autowired
+    @Mock(lenient = true)
     private PropertyRepository repository;
     
-    @Autowired
-    private SMAPIService service;
+    @InjectMocks
+    private PropertyService service;
 
-    Gson gson = new Gson();
 
-    @AfterEach
-    public void resetDb() {
-        repository.deleteAll();
+    Property prop1, prop2, prop3, prop4;
+    PropertyDTO propDTO1, propDTO2, propDTO3, propDTO4;
+
+    @BeforeEach
+    void setUp() throws JsonProcessingException{
+
+        RestAssuredMockMvc.mockMvc( mvc );
+
+        prop1 = buildAddressObject(1);
+        prop2 = buildAddressObject(2);
+        prop3 = buildAddressObject(3);
+        prop4 = buildAddressObject(4);
+
+        repository.saveAndFlush(prop1);
+        repository.saveAndFlush(prop2);
+        repository.saveAndFlush(prop3);
+
+        propDTO1 = buildAddressDTO(1);
+        propDTO2 = buildAddressDTO(2);
+        propDTO3 = buildAddressDTO(3);
+        propDTO4 = buildAddressDTO(4);
     }
-        
 
 
     @Test
      void whenValidInputThenCreateProperty() throws IOException, Exception {
-        Property prop1 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
+        // Property prop1 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 
-        service.createProperty(prop1);
+        // service.createProperty(prop1);
 
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop1.getId());
-        repository.deleteAll();
+        // List<Property> found = repository.findAll();
+        // assertThat(found).extracting(Property::getId).containsOnly(prop1.getId());
+        // repository.deleteAll();
+
+        Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop1);
+
+        Property result = service.createProperty(propDTO1);
+
+        assertEquals(prop1, result);
     }
 
 
     @Test
     void whenValidInputThenUpdateProperty() throws IOException, Exception {
-        Property prop2 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
+        // Property prop2 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 
 
-        repository.save(prop2);
+        // repository.save(prop2);
 
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop2.getId());
+        // List<Property> found = repository.findAll();
+        // assertThat(found).extracting(Property::getId).containsOnly(prop2.getId());
 
-        prop2.setAddress("address2");
-        service.updateProperty(prop2);
-        List<Property> found2 = repository.findAll();
-        assertThat(found2).extracting(Property::getAddress).containsOnly(prop2.getAddress());
-        repository.deleteAll();
+        // prop2.setAddress("address2");
+        // service.updateProperty(prop2);
+        // List<Property> found2 = repository.findAll();
+        // assertThat(found2).extracting(Property::getAddress).containsOnly(prop2.getAddress());
+        // repository.deleteAll();
+
+        Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop1);
+
+        Property result = service.updateProperty(propDTO1);
+
+        assertEquals(prop1, result);
     }
 
 
-    @Test
-    void whenValidInputThenDeleteProperty() throws IOException, Exception {
-        Property prop3 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
-
-
-        repository.save(prop3);
-
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop3.getId());
-
-        service.deleteProperty(prop3.getId());
-        List<Property> found2 = repository.findAll();
-        assertThat(found2 == null);
-        repository.deleteAll();
-    }
 
     @Test
      void whenValidInputThenGetProperty() throws IOException, Exception {
-        Property prop4 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
+        // Property prop4 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 
-        repository.save(prop4);
+        // repository.save(prop4);
 
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop4.getId());
+        // List<Property> found = repository.findAll();
+        // assertThat(found).extracting(Property::getId).containsOnly(prop4.getId());
 
 
-        Property found2= service.getProperty(prop4.getAddress());
+        Property found= service.getProperty(prop2.getAddress());
 
-        assertThat(found.equals(found2));
-        repository.deleteAll();
+        assertTrue(!found.isEmpty());
+        assertThat(found.equals(prop2));
     }
 	
 	
-	
+    Address buildAddressObject(long id){
+        Address address = new Address();
+        address.setLongitude(100 + id);
+        address.setLatitude(50 + id);
+        address.setStreet("Street " + id);
+        address.setPostalCode("3810-24" + id);
+        address.setCity("city " + id);
+        address.setCountry("Country " + id);
+        return address;
+    }
+
+    AddressDTO buildAddressDTO(long id){
+        AddressDTO address = new AddressDTO();
+        address.setLongitude(100 + id);
+        address.setLatitude(50 + id);
+        address.setStreet("Street " + id);
+        address.setPostalCode("3810-24" + id);
+        address.setCity("city " + id);
+        address.setCountry("Country " + id);
+        return address;
+    }
 
  }

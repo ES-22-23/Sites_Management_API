@@ -2,6 +2,7 @@ package es.module2.smapi.repository;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;

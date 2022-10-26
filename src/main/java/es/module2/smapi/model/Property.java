@@ -88,6 +88,54 @@ public class Property implements Serializable{
   }
 
 
+  public long getId() {
+    return this.id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getAddress() {
+    return this.address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public Owner getOwner() {
+    return this.owner;
+  }
+
+  public void setOwner(Owner owner) {
+    this.owner = owner;
+  }
+
+  public Set<Camera> getCameras() {
+    return this.cameras;
+  }
+
+  public void setCameras(Set<Camera> cameras) {
+    this.cameras = cameras;
+  }
+
+  public Set<Alarm> getAlarms() {
+    return this.alarms;
+  }
+
+  public void setAlarms(Set<Alarm> alarms) {
+    this.alarms = alarms;
+  }
+
 
     public void convertDTOtoObject(PropertyDTO dto){
         this.setAddress(dto.getAddress());

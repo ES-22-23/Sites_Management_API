@@ -15,6 +15,9 @@ import es.module2.smapi.model.Owner;
 import es.module2.smapi.service.OwnerService;
 import es.module2.smapi.datamodel.OwnerDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @RestController
 @RequestMapping("/owners")

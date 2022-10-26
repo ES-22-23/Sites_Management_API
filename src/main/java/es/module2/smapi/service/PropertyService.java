@@ -43,7 +43,7 @@ public class PropertyService {
         Property prop2 = new Property();
         prop2.convertDTOtoObject(propDTO);
 
-        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwnerUsername());
+        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwner.getUsername());
 
         if (ow1.isEmpty()){
             return null;
@@ -73,7 +73,7 @@ public class PropertyService {
             oldOwner.get().getCameras().remove(prop);
         }
 
-        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwnerUsername());
+        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwner().getUsername());
 
         if (ow1.isEmpty()){
             return null;

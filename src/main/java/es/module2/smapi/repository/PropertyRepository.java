@@ -16,8 +16,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     Property findByName(String name);
     Property findByAddress(String address);
     Optional<Property> findByNameAndAddress(String name, String address);
-    void deleteById(long id);
-
     @Transactional 
     void deleteByNameAndAddress(String name, String address);
     

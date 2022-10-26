@@ -53,7 +53,14 @@ public class OwnerService {
 
         Optional<Owner> owner = ownerRepository.findByUsername(ownerDTO.getUsername());
 
-        owner.convertDTOtoObject(ownerDTO);
+
+        if (owner.isPresent()){
+            // throw new AddressAlreadyExistsException("Address already exists: " + address);
+            return null;
+        }
+
+        Owner owner2 = new Owner();
+        owner2.convertDTOtoObject(ownerDTO);
 
         return ownerRepository.saveAndFlush(owner2);
     }

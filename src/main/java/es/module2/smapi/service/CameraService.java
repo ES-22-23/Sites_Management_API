@@ -45,7 +45,7 @@ public class CameraService {
         Camera cam2 = new Camera();
         cam2.convertDTOtoObject(camDTO);
 
-        Optional<Property> p1 = propRepository.findByNameAndAddress(cameraDTO.getPropertyName(), cameraDTO.getPropertyAddress());
+        Optional<Property> p1 = propRepository.findByNameAndAddress(cam2.getProperty().getName(), cam2.getProperty().getAddress());
 
         if (p1.isEmpty()){
             return null;
@@ -68,10 +68,7 @@ public class CameraService {
     public Camera updateCamera(CameraDTO camDTO) {
         log.info("Updating Camera");
         
-        Optional<Camera> cam = camRepository.findByPrivateId(camDTO.getPrivateId());
-
-        cam.convertDTOtoObject(camDTO);
-
+        Camera cam = camRepository.findByPrivateId(camDTO.getPrivateId());
 
                 // remove cam from old property
 
@@ -80,7 +77,7 @@ public class CameraService {
             oldProp.get().getCameras().remove(cam);
         }
 
-        Optional<Property> p1 = propRepository.findByNameAndAddress(cameraDTO.getPropertyName(), cameraDTO.getPropertyAddress());
+        Optional<Property> p1 = propRepository.findByNameAndAddress(cam.getProperty().getName(), cam.getProperty().getAddress());
 
         if (p1.isEmpty()){
             return null;

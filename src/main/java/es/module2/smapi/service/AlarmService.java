@@ -43,6 +43,15 @@ public class AlarmService {
         Alarm alarm2 = new Alarm();
         alarm2.convertDTOtoObject(alarmDTO);
 
+        Optional<Property> p1 = propRepository.findByNameAndAddress(alarm2.getPropertyName(), alarm2.getPropertyAddress());
+
+        if (p1.isEmpty()){
+            return null;
+        }
+
+        alarm2.setProperty(p1.get());
+        p1.get().getAlarms().add(alarm2);
+
         return alarmRepository.saveAndFlush(alarm2);
     }
 
@@ -54,14 +63,29 @@ public class AlarmService {
     public Alarm updateAlarm(AlarmDTO alarmDTO) {
         log.info("Updating Alarm");
         
-        Optional<Alarm> alarm = alarmRepository.findByPrivateId(alarmDTO.getPrivateId());
+        Alarm alarm = alarmRepository.findByPrivateId(alarmDTO.getPrivateId());
 
         alarm.convertDTOtoObject(alarmDTO);
+
+        Optional<Property> oldProp = propRepository.findByAlarms(alarm);
+        if (oldProp.isPresent()){
+            oldProp.get().getAlarms().remove(alarm);
+        }
+
+        Optional<Property> p1 = propRepository.findByNameAndAddress(alarm.getProperty().getName(), alarm.getProperty().getAddress());
+
+        if (p1.isEmpty()){
+            return null;
+        }
+
+        alarm.setProperty(p1.get());
+        p1.get().getAlarms().add(alarm);
+
 
         return alarmRepository.saveAndFlush(alarm);
     }
 
-    public void deleteAlarm(String private_id) {
+    public void deleteAlarm(long private_id) {
         log.info("Deleting Alarm");
         alarmRepository.deleteByPrivateId(private_id);
     }

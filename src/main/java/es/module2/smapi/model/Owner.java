@@ -55,6 +55,33 @@ public class Owner implements Serializable{
     this.name=name;
   }
 
+
+  public String getUsername() {
+    return this.username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Set<Property> getProperties() {
+    return this.properties;
+  }
+
+  public void setProperties(Set<Property> properties) {
+    this.properties = properties;
+  }
+
+
+
     public void convertDTOtoObject(OwnerDTO dto){
         this.setUsername(dto.getUsername());
         this.setName(dto.getName());

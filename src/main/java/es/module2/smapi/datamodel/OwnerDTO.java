@@ -20,4 +20,22 @@ public class CameraDTO {
 
     @NonNull
     private String propertyAddress;
+
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPropertyAddress() {
+        return this.propertyAddress;
+    }
+
+    public void setPropertyAddress(String propertyAddress) {
+        this.propertyAddress = propertyAddress;
+    }
+
 }

@@ -61,6 +61,32 @@ public class Camera implements Serializable{
   }
 
 
+
+  public long getId() {
+    return this.id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public long getPrivateId() {
+    return this.privateId;
+  }
+
+  public void setPrivateId(long privateId) {
+    this.privateId = privateId;
+  }
+
+  public Property getProperty() {
+    return this.property;
+  }
+
+  public void setProperty(Property property) {
+    this.property = property;
+  }
+
+
     public void convertDTOtoObject(CameraDTO dto){
         this.setId(dto.getId());
         this.setPrivateId(dto.getPrivateId());
