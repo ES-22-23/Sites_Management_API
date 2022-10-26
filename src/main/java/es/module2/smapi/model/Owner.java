@@ -1,24 +1,31 @@
 package es.module2.smapi.model;
 
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.Objects;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="OWNER")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 public class Owner implements Serializable{
 
   @Id
@@ -34,6 +41,7 @@ public class Owner implements Serializable{
   @Column(name = "properties")
   @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
+  @JsonIdentityReference(alwaysAsId = true)
   private Set<Property> properties;
 
   public Owner(String username,String password,String name) {

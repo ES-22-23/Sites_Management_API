@@ -1,16 +1,20 @@
 package es.module2.smapi.service;
 
-import es.module2.smapi.repository.OwnerRepository;
-import es.module2.smapi.repository.PropertyRepository;
-import es.module2.smapi.repository.CameraRepository;
-import es.module2.smapi.repository.AlarmRepository;
-import es.module2.smapi.model.Owner;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.model.Alarm;
-import es.module2.smapi.model.Camera;
-import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import es.module2.smapi.datamodel.AlarmDTO;
+import es.module2.smapi.datamodel.CameraDTO;
+import es.module2.smapi.model.Alarm;
+import es.module2.smapi.model.Camera;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
+import es.module2.smapi.repository.AlarmRepository;
+import es.module2.smapi.repository.CameraRepository;
+import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.repository.PropertyRepository;
 
 
 
@@ -71,8 +75,21 @@ public class SMAPIService {
 
     // CRUD Func Camera
 
-    public Camera createCamera(Camera newCamera) {
-        return camRepository.save(newCamera);
+    public Camera createCamera(CameraDTO cameraDTO) {
+
+        Camera newCamera = new Camera();
+
+        newCamera = camRepository.saveAndFlush(newCamera);
+
+        Optional<Property> p1 = propRepository.findByNameAndAddress(cameraDTO.getPropertyName(), cameraDTO.getPropertyAddress());
+
+        if (p1.isEmpty()){
+            return null;
+        }
+        newCamera.setProperty(p1.get());
+        p1.get().getCameras().add(newCamera);
+
+        return newCamera;
     }
 
     public Camera getCamera(long id) {
@@ -90,8 +107,20 @@ public class SMAPIService {
 
     // CRUD Func Alarm
 
-    public Alarm createAlarm(Alarm newAlarm) {
-        return alRepository.save(newAlarm);
+    public Alarm createAlarm(AlarmDTO alarmDTO) {
+        Alarm newAlarm = new Alarm();
+
+        newAlarm = alRepository.saveAndFlush(newAlarm);
+
+        Optional<Property> p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress());
+
+        if (p1.isEmpty()){
+            return null;
+        }
+        newAlarm.setProperty(p1.get());
+        p1.get().getAlarms().add(newAlarm);
+
+        return newAlarm;
     }
 
     public Alarm getAlarm(long id) {

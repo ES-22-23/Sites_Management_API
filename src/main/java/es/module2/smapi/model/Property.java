@@ -1,28 +1,37 @@
 package es.module2.smapi.model;
 
 
+import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Set;
-
-
-import javax.persistence.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="property")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Property implements Serializable{
 
 
@@ -42,6 +51,7 @@ public class Property implements Serializable{
   @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
   @JoinColumn(name = "username", referencedColumnName = "username")
   @JsonIgnoreProperties("properties")
+  @JsonIdentityReference(alwaysAsId = true)
   //@JsonIgnore
   private Owner owner;
 
@@ -50,12 +60,14 @@ public class Property implements Serializable{
   @Column(name = "cameras")
   @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
+  @JsonIdentityReference(alwaysAsId = true)
   private Set<Camera> cameras;
 
   @Column(name = "alarms")
   @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
-  private Set<Camera> alarms;
+  @JsonIdentityReference(alwaysAsId = true)
+  private Set<Alarm> alarms;
 
   public Property(String address,String name,Owner owner) {
     this.address=address;
@@ -64,11 +76,11 @@ public class Property implements Serializable{
   }
 
 
-  public Set<Camera> getAlarms() {
+  public Set<Alarm> getAlarms() {
     return this.alarms;
   }
 
-  public void setAlarms(Set<Camera> alarms) {
+  public void setAlarms(Set<Alarm> alarms) {
     this.alarms = alarms;
   }
 

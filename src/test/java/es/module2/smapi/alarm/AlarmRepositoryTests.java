@@ -27,7 +27,7 @@ class AlarmRepositoryTests {
 
 	@Test
 	void whenFindPropByAddressThenReturnProp() {
-        Alarm al1 = new Alarm(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Alarm al1 = new Alarm(1, new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
         entityManager.persistAndFlush(al1); //ensure data is persisted at this point
 
         // test the query method of interest
@@ -38,7 +38,7 @@ class AlarmRepositoryTests {
 
 	@Test
 	void whenFindPropByNameThenReturnProp() {
-        Alarm al2 = new Alarm(new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Alarm al2 = new Alarm(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
 
         entityManager.persistAndFlush(al2); //ensure data is persisted at this point
 
@@ -49,7 +49,7 @@ class AlarmRepositoryTests {
 
     @Test
 	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
-        Alarm al3 = new Alarm(new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Alarm al3 = new Alarm(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
         entityManager.persistAndFlush(al3); //ensure data is persisted at this point
 
         // test the query method of interest

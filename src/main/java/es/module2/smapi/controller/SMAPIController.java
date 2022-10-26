@@ -1,22 +1,20 @@
 package es.module2.smapi.controller;
 
-import es.module2.smapi.model.Owner;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.model.Camera;
-import es.module2.smapi.model.Alarm;
-import es.module2.smapi.service.SMAPIService;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 
-
-
+import es.module2.smapi.datamodel.AlarmDTO;
+import es.module2.smapi.datamodel.CameraDTO;
+import es.module2.smapi.model.Alarm;
+import es.module2.smapi.model.Camera;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
+import es.module2.smapi.service.SMAPIService;
 
 @RestController
 class SMAPIController {
@@ -24,8 +22,6 @@ class SMAPIController {
     @Autowired
     private SMAPIService service;
     
-    
-
     // Owner endpoints
     @PostMapping("/newOwner")
     Owner createOwner(@RequestBody Owner newOwner) {
@@ -73,7 +69,7 @@ class SMAPIController {
         // Camera endpoints
 
     @PostMapping("/newCamera")
-    Camera createCamera(@RequestBody Camera newCamera) {
+    Camera createCamera(@RequestBody CameraDTO newCamera) {
         return service.createCamera(newCamera);
     }
 
@@ -95,7 +91,7 @@ class SMAPIController {
     // Alarm endpoints
 
     @PostMapping("/newAlarm")
-    Alarm createAlarm(@RequestBody Alarm newAlarm) {
+    Alarm createAlarm(@RequestBody AlarmDTO newAlarm) {
         return service.createAlarm(newAlarm);
     }
 

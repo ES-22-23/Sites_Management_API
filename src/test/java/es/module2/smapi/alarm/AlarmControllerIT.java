@@ -1,6 +1,6 @@
 package es.module2.smapi.alarm;
 
-/*import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
@@ -27,14 +27,13 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.CoreMatchers.is;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
 @AutoConfigureMockMvc
-@AutoConfigureTestDatabase*/
+@AutoConfigureTestDatabase
 class AlarmControllerIT {
 
-/*
     @Autowired
     private MockMvc mvc;
 
@@ -50,18 +49,19 @@ class AlarmControllerIT {
         
 
 
-    @Test
+    /*@Test
      void whenValidInputThenCreateAlarm() throws IOException, Exception {
-        Alarm al1 = new Alarm(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Alarm al1 = new Alarm(1,new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
         mvc.perform(post("/newAlarm").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(al1)).characterEncoding("utf-8"));
 
         List<Alarm> found = repository.findAll();
-        assertThat(found).extracting(Alarm::getId).containsOnly(al1.getId());
+        assertEquals(1, found.size());
+        assertEquals(1, found.get(0).getPrivateId());
         repository.deleteAll();
-    }
+    }*/
 
 
-    @Test
+    /*@Test
     void whenValidInputThenUpdateAlarm() throws IOException, Exception {
         Alarm al2 = new Alarm(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
 
@@ -76,12 +76,12 @@ class AlarmControllerIT {
         List<Alarm> found2 = repository.findAll();
         assertThat(found2).extracting(Alarm::getId).containsOnly(al2.getId());
         repository.deleteAll();
-    }
+    }*/
 
 
     @Test
     void whenValidInputThenDeleteAlarm() throws IOException, Exception {
-        Alarm al3 = new Alarm(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Alarm al3 = new Alarm(1,new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
 
 
         repository.save(al3);
@@ -97,7 +97,7 @@ class AlarmControllerIT {
 
     @Test
      void whenValidInputThenGetAlarm() throws IOException, Exception {
-        Alarm al3 = new Alarm(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Alarm al3 = new Alarm(1,new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
 
         repository.save(al3);
 
@@ -105,7 +105,7 @@ class AlarmControllerIT {
         assertThat(found).extracting(Alarm::getId).containsOnly(al3.getId());
 
 
-         mvc.perform(get("/getAlarm?id="+al3.getId()).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/getAlarm?id="+al3.getId()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -113,6 +113,4 @@ class AlarmControllerIT {
         repository.deleteAll();
     }
 	
-	
-*/
  }

@@ -27,7 +27,7 @@ class CameraRepositoryTests {
 
 	@Test
 	void whenFindPropByAddressThenReturnProp() {
-        Camera cam1 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Camera cam1 = new Camera(1, new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
         entityManager.persistAndFlush(cam1); //ensure data is persisted at this point
 
         // test the query method of interest
@@ -38,7 +38,7 @@ class CameraRepositoryTests {
 
 	@Test
 	void whenFindPropByNameThenReturnProp() {
-        Camera cam2 = new Camera(new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Camera cam2 = new Camera(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
 
         entityManager.persistAndFlush(cam2); //ensure data is persisted at this point
 
@@ -49,7 +49,7 @@ class CameraRepositoryTests {
 
     @Test
 	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
-        Camera cam3 = new Camera(new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
+        Camera cam3 = new Camera(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
         entityManager.persistAndFlush(cam3); //ensure data is persisted at this point
 
         // test the query method of interest

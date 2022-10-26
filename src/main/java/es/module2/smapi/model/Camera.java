@@ -1,27 +1,35 @@
 package es.module2.smapi.model;
 
 
+import java.io.Serializable;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-
-import javax.persistence.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="camera")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Camera implements Serializable{
 
 
@@ -30,18 +38,20 @@ public class Camera implements Serializable{
   @Column(name = "camera_id", nullable = false)
   private long id;
 
-
+  @Column(name = "private_id",nullable = false)
+  private long privateId;
 
   @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
   @JoinColumn(name = "property_id", referencedColumnName = "property_id")
   @JsonIgnoreProperties("cameras")
+  @JsonIdentityReference(alwaysAsId = true)
   //@JsonIgnore
   private Property property;
 
-  public Camera(Property property) {
+  public Camera(long privateId, Property property) {
     this.property=property;
+    this.privateId=privateId;
   }
-
 
   public long getId() {
     return this.id;
@@ -49,6 +59,14 @@ public class Camera implements Serializable{
 
   public void setId(long id) {
     this.id = id;
+  }
+
+  public long getPrivateId() {
+    return this.privateId;
+  }
+
+  public void setPrivateId(long privateId) {
+    this.privateId = privateId;
   }
 
   public Property getProperty() {
@@ -59,9 +77,6 @@ public class Camera implements Serializable{
     this.property = property;
   }
 
-
-
-
   @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -70,21 +85,21 @@ public class Camera implements Serializable{
             return false;
         }
         Camera camera = (Camera) o;
-        return id == camera.id ;
+        return id == camera.id && privateId == camera.privateId && Objects.equals(property, camera.property);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, property);
+    return Objects.hash(id, privateId, property);
   }
-
 
   @Override
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
+      ", privateId='" + getPrivateId() + "'" +
+      ", property='" + getProperty() + "'" +
       "}";
   }
-
  
 }
