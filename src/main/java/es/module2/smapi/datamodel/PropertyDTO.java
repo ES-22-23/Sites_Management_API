@@ -22,7 +22,7 @@ public class PropertyDTO {
     private String address;
 
     @NonNull
-    private Owner owner;
+    private String ownerUsername;
 
 
     public String getName() {
@@ -41,12 +41,16 @@ public class PropertyDTO {
         this.address = address;
     }
 
-    public Owner getOwner() {
-        return this.owner;
+
+
+    public String getOwnerUsername() {
+        return this.ownerUsername;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
     }
+
+
 
 }

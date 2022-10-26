@@ -60,6 +60,8 @@ public class Camera implements Serializable{
     this.privateId=privateId;
   }
 
+ 
+
 
 
   public long getId() {
@@ -88,9 +90,7 @@ public class Camera implements Serializable{
 
 
     public void convertDTOtoObject(CameraDTO dto){
-        this.setId(dto.getId());
         this.setPrivateId(dto.getPrivateId());
-        this.setProperty(dto.getProperty());
     }
 
   @Override

@@ -3,20 +3,19 @@ package es.module2.smapi.datamodel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class CameraDTO {
+public class OwnerDTO {
 
     @NonNull
     private String username;
+
+    @NonNull
+    private String name;
 
     @NonNull
     private String propertyAddress;
@@ -36,6 +35,14 @@ public class CameraDTO {
 
     public void setPropertyAddress(String propertyAddress) {
         this.propertyAddress = propertyAddress;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

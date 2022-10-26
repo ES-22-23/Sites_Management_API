@@ -56,9 +56,9 @@ public class Alarm implements Serializable{
     this.privateId = private_id;
   }
 
+
     public void convertDTOtoObject(AlarmDTO dto){
         this.setPrivateId(dto.getPrivateId());
-        this.setProperty(dto.getPropertyName(),dto.getPropertyAddress());
     }
  
 

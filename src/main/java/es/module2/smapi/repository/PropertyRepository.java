@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
-    Property findByName(String name);
-    Property findByAddress(String address);
+    Optional<Property> findByName(String name);
+    Optional<Property> findByAddress(String address);
     Optional<Property> findByNameAndAddress(String name, String address);
     @Transactional 
     void deleteByNameAndAddress(String name, String address);

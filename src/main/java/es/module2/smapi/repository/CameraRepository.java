@@ -7,9 +7,8 @@ import java.util.Optional;
 
 
 public interface CameraRepository extends JpaRepository<Camera, Long> {
-    Camera findById(long id);
-    Alarm findByPrivateId(long id);
+    Optional<Camera> findByPrivateId(long id);
     
     @Transactional 
-    Optional<Alarm> deleteByPrivateId(long id);
+    Optional<Camera> deleteByPrivateId(long id);
 }

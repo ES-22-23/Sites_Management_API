@@ -29,8 +29,6 @@ import es.module2.smapi.datamodel.OwnerDTO;
 @NoArgsConstructor
 @Table(name="OWNER")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
-@Getter
-@Setter
 public class Owner implements Serializable{
 
   @Id
@@ -54,6 +52,8 @@ public class Owner implements Serializable{
     this.username=username;
     this.name=name;
   }
+
+
 
 
   public String getUsername() {
@@ -101,7 +101,7 @@ public class Owner implements Serializable{
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, password, name);
+    return Objects.hash(username, name);
   }
 
   @Override

@@ -1,5 +1,7 @@
 package es.module2.smapi.property;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +147,7 @@ class PropertyControllerIT {
         given().contentType(ContentType.JSON)
         .get("/deleteProperty?name="+prop2.getName()+"&address="+prop2.getAddress())
         .then().log().body().assertThat()
-        .status(HttpStatus.DELETE)
+        .status(HttpStatus.DELETE);
 
         assertThat(repository.findByNameAndAddress(prop2.getName(),prop2.getAddress())).isNull();
     }
@@ -161,7 +163,7 @@ class PropertyControllerIT {
         .body("[0].name", is(prop1.getName())).and()
         .body("[0].address", is(prop1.getAddress())).and()
         .body("[0].owner.name", is( prop1.getOwnerName())).and()
-        .body("[0].owner.name", is(prop1.getOwnerUsername())).and()
+        .body("[0].owner.name", is(prop1.getOwnerUsername())).and();
 
         // Property prop1 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
 

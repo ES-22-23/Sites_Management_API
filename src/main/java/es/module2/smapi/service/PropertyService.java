@@ -9,7 +9,7 @@ import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.PropertyRepository;
 import es.module2.smapi.repository.OwnerRepository;
-import es.module2.smapi.repository.Owner;
+import es.module2.smapi.model.Owner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class PropertyService {
         Property prop2 = new Property();
         prop2.convertDTOtoObject(propDTO);
 
-        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwner.getUsername());
+        Optional<Owner> ow1 = owRepository.findByUsername(propDTO.getOwnerUsername());
 
         if (ow1.isEmpty()){
             return null;
@@ -57,7 +57,13 @@ public class PropertyService {
 
     public Property getProperty(String name, String address) {
         log.info("Getting Property");
-        return propRepository.findByNameAndAddress(name, address);
+
+        Optional<Property> prop = propRepository.findByNameAndAddress(name, address);
+        if (prop.isPresent()){
+            return null;
+        }
+        return prop.get();
+
     }
 
     public Property updateProperty(PropertyDTO propDTO) {
@@ -65,15 +71,24 @@ public class PropertyService {
 
         Optional<Property> prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress());
 
-        prop.convertDTOtoObject(propDTO);
 
-
-        Optional<Owner> oldOwner = owRepository.findByProperties(prop);
-        if (oldOwner.isPresent()){
-            oldOwner.get().getCameras().remove(prop);
+        if (prop.isPresent()){
+            return null;
         }
 
-        Optional<Owner> ow1 = owRepository.findByUsername(prop.getOwner().getUsername());
+
+        Property prop2 = prop.get();
+
+
+        Optional<Owner> oldOwner = owRepository.findByProperties(prop2);
+        if (oldOwner.isPresent()){
+            oldOwner.get().getProperties().remove(prop);
+        }
+
+        prop2.convertDTOtoObject(propDTO);
+
+
+        Optional<Owner> ow1 = owRepository.findByUsername(propDTO.getOwnerUsername());
 
         if (ow1.isEmpty()){
             return null;
@@ -82,7 +97,7 @@ public class PropertyService {
         prop2.setOwner(ow1.get());
         ow1.get().getProperties().add(prop2);
 
-        return propRepository.saveAndFlush(prop);
+        return propRepository.saveAndFlush(prop2);
     }
     public void deleteProperty(String name, String address) {
         log.info("Deleting Property");

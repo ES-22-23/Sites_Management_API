@@ -45,7 +45,13 @@ public class OwnerService {
     public Owner getOwner(String username) {
         log.info("Getting Owner");
 
-        return ownerRepository.findByUsername(username);
+        Optional<Owner> owner = ownerRepository.findByUsername(username);
+
+        if (owner.isPresent()){
+            // throw new AddressAlreadyExistsException("Address already exists: " + address);
+            return null;
+        }
+        return owner.get();
     }
 
     public Owner updateOwner(OwnerDTO ownerDTO) {

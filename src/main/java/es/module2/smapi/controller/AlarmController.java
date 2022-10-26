@@ -32,22 +32,22 @@ class AlarmController {
 
     @PostMapping("/newAlarm")
     Alarm createAlarm(@RequestBody AlarmDTO newAlarm) {
-        return AlarmService.createAlarm(newAlarm);
+        return alService.createAlarm(newAlarm);
     }
 
     @GetMapping("/getAlarm")
     Alarm getAlarm(@RequestParam  long privateId) {
-        return AlarmService.getAlarm(privateId);
+        return alService.getAlarm(privateId);
     }
 
     @PostMapping("/updateAlarm")
     Alarm updateAlarm(@RequestBody AlarmDTO newAlarm) {
-        return AlarmService.updateAlarm(newAlarm);
+        return alService.updateAlarm(newAlarm);
     }
 
     @DeleteMapping("/deleteAlarm")
     void deleteAlarm(@RequestParam long privateId) {
-        AlarmService.deleteAlarm(privateId);
+        alService.deleteAlarm(privateId);
     }
 
         

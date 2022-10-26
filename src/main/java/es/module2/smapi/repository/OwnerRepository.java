@@ -8,8 +8,8 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
-    Owner findByName(String name);
-    Owner findByUsername(String username);
+    Optional<Owner> findByName(String name);
+    Optional<Owner> findByUsername(String username);
     @Transactional 
     long deleteByUsername(String username);
     Optional<Owner> findByProperties(Property prop);

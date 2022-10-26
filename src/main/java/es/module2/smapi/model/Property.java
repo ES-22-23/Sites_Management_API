@@ -35,8 +35,6 @@ import es.module2.smapi.datamodel.PropertyDTO;
 @NoArgsConstructor
 @Table(name="property")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@Getter
-@Setter
 public class Property implements Serializable{
 
 
@@ -140,7 +138,6 @@ public class Property implements Serializable{
     public void convertDTOtoObject(PropertyDTO dto){
         this.setAddress(dto.getAddress());
         this.setName(dto.getName());
-        this.setOwner(dto.getOwner());
     }
 
 

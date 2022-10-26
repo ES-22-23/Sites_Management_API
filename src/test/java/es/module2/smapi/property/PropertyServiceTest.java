@@ -1,5 +1,8 @@
 package es.module2.smapi.property;
 
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,26 +126,20 @@ class PropertyServiceTest {
     }
 	
 	
-    Address buildAddressObject(long id){
-        Address address = new Address();
-        address.setLongitude(100 + id);
-        address.setLatitude(50 + id);
-        address.setStreet("Street " + id);
-        address.setPostalCode("3810-24" + id);
-        address.setCity("city " + id);
-        address.setCountry("Country " + id);
-        return address;
+    Property buildPropertyObject(long id){
+        Property prop = new Property();
+        prop.setName("Name" + id);
+        prop.setAddress("address"  + id);
+        prop.setOwner(new Owner("username"+id,"name"+id));
+        return prop;
     }
 
-    AddressDTO buildAddressDTO(long id){
-        AddressDTO address = new AddressDTO();
-        address.setLongitude(100 + id);
-        address.setLatitude(50 + id);
-        address.setStreet("Street " + id);
-        address.setPostalCode("3810-24" + id);
-        address.setCity("city " + id);
-        address.setCountry("Country " + id);
-        return address;
+    PropertyDTO buildPropertyDTO(long id){
+        PropertyDTO prop = new PropertyDTO();
+        prop.setName("Name" + id);
+        prop.setAddress("address"  + id);
+        prop.setOwner(new Owner("username"+id,"name"+id));
+        return prop;
     }
 
  }

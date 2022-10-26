@@ -1,4 +1,4 @@
-// package es.module2.smapi.controller;
+ package es.module2.smapi.controller;
 
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +21,8 @@
 // import es.module2.smapi.service.CameraService;
 // import es.module2.smapi.service.AlarmService;
 
-// @RestController
-// class SMAPIController {
+ //@RestController
+ class SMAPIController {
 
 //     @Autowired
 //     private OwnerService owService;
@@ -123,4 +123,4 @@
 //     void deleteAlarm(@RequestParam long privateId) {
 //         AlarmService.deleteAlarm(privateId);
 //     }
-// }
+ }

@@ -7,8 +7,7 @@ import java.util.Optional;
 
 
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
-    Alarm findById(long id);
-    Alarm findByPrivateId(long id);
+    Optional<Alarm> findByPrivateId(long id);
     void deleteById(long id);
     @Transactional 
     Optional<Alarm> deleteByPrivateId(long id);

@@ -43,9 +43,9 @@ public class AlarmService {
         Alarm alarm2 = new Alarm();
         alarm2.convertDTOtoObject(alarmDTO);
 
-        Optional<Property> p1 = propRepository.findByNameAndAddress(alarm2.getPropertyName(), alarm2.getPropertyAddress());
+        Optional<Property> p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress());
 
-        if (p1.isEmpty()){
+        if (p1.isPresent()){
             return null;
         }
 
@@ -57,32 +57,46 @@ public class AlarmService {
 
     public Alarm getAlarm(long privateId) {
         log.info("Getting Alarm");
-        return alarmRepository.findByPrivateId(privateId);
+
+        Optional<Alarm> alarm = alarmRepository.findByPrivateId(privateId);
+        
+        if (alarm.isPresent()){
+            // throw new AddressAlreadyExistsException("Address already exists: " + address);
+            return null;
+        }
+
+        return alarm.get();
     }
 
     public Alarm updateAlarm(AlarmDTO alarmDTO) {
         log.info("Updating Alarm");
         
-        Alarm alarm = alarmRepository.findByPrivateId(alarmDTO.getPrivateId());
+        Optional<Alarm> alarm = alarmRepository.findByPrivateId(alarmDTO.getPrivateId());
 
-        alarm.convertDTOtoObject(alarmDTO);
 
-        Optional<Property> oldProp = propRepository.findByAlarms(alarm);
-        if (oldProp.isPresent()){
-            oldProp.get().getAlarms().remove(alarm);
+        if (alarm.isPresent()){
+            // throw new AddressAlreadyExistsException("Address already exists: " + address);
+            return null;
         }
+        Alarm alarm2 = alarm.get();
 
-        Optional<Property> p1 = propRepository.findByNameAndAddress(alarm.getProperty().getName(), alarm.getProperty().getAddress());
+        Optional<Property> oldProp = propRepository.findByAlarms(alarm2);
+        if (oldProp.isPresent()){
+            oldProp.get().getAlarms().remove(alarm2);
+        }
+        alarm2.convertDTOtoObject(alarmDTO);
+
+        Optional<Property> p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress());
 
         if (p1.isEmpty()){
             return null;
         }
 
-        alarm.setProperty(p1.get());
-        p1.get().getAlarms().add(alarm);
+        alarm2.setProperty(p1.get());
+        p1.get().getAlarms().add(alarm2);
 
 
-        return alarmRepository.saveAndFlush(alarm);
+        return alarmRepository.saveAndFlush(alarm2);
     }
 
     public void deleteAlarm(long private_id) {
