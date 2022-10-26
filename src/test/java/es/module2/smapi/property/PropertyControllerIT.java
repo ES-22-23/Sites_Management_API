@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.junit.jupiter.api.AfterEach;
 

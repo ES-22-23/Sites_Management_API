@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-import com.google.gson.Gson;
 
 import es.module2.smapi.SmapiApplication;
 import es.module2.smapi.datamodel.CameraDTO;
@@ -21,7 +20,6 @@ import es.module2.smapi.model.Camera;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.CameraRepository;
-import es.module2.smapi.service.SMAPIService;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
@@ -33,10 +31,7 @@ class CameraServiceTest {
     @Autowired
     private CameraRepository repository;
     
-    @Autowired
-    private SMAPIService service;
 
-    Gson gson = new Gson();
 
     @AfterEach
     public void resetDb() {

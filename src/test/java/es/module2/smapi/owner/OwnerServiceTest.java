@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
 
 import es.module2.smapi.model.Owner;
-import es.module2.smapi.service.SMAPIService;
 import es.module2.smapi.SmapiApplication;
 import es.module2.smapi.repository.OwnerRepository;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -30,10 +28,6 @@ class OwnerServiceTest {
     @Autowired
     private OwnerRepository repository;
     
-    @Autowired
-    private SMAPIService service;
-
-    Gson gson = new Gson();
 
     @AfterEach
     public void resetDb() {

@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
 
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
+import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.service.PropertyService;
 import es.module2.smapi.SmapiApplication;
 import es.module2.smapi.repository.PropertyRepository;
@@ -23,6 +23,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -104,7 +107,7 @@ class PropertyServiceTest {
 
         Property result = service.updateProperty(propDTO1);
 
-        assertEquals(prop1, result);
+        assertTrue(prop1.equals(result));
     }
 
 
@@ -119,9 +122,9 @@ class PropertyServiceTest {
         // assertThat(found).extracting(Property::getId).containsOnly(prop4.getId());
 
 
-        Property found= service.getProperty(prop2.getAddress());
+        Property found= service.getProperty(prop2.getName(), prop2.getAddress());
 
-        assertTrue(!found.isEmpty());
+        assertThat(found).isNotNull();
         assertThat(found.equals(prop2));
     }
 	

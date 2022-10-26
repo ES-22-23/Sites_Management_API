@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
 
 import org.springframework.http.MediaType;
@@ -39,8 +38,6 @@ class AlarmControllerIT {
 
 	@Autowired
     private AlarmRepository repository;
-
-    Gson gson = new Gson();
 
     @AfterEach
     public void resetDb() {

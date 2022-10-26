@@ -25,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.google.gson.Gson;
 
 import es.module2.smapi.SmapiApplication;
 import es.module2.smapi.model.Camera;
@@ -48,8 +47,6 @@ class CameraControllerIT {
 
     @Autowired
     private PropertyRepository propertyRepository;
-
-    Gson gson = new Gson();
 
     @AfterEach
     public void resetDb() {
