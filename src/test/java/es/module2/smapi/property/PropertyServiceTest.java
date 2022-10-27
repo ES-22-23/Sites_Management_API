@@ -138,8 +138,6 @@ class PropertyServiceTest {
         assertThat(found).isNotNull();
         assertThat(found.equals(prop1));
     }
-	
-	
     Property buildPropertyObject(long id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"name"+id);

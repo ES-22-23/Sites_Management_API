@@ -58,9 +58,8 @@ public class AlarmService {
     public Alarm getAlarm(long privateId) {
         log.info("Getting Alarm");
 
-        Alarm alarm = alarmRepository.findByPrivateId(privateId).orElse(null);
+        return alarmRepository.findByPrivateId(privateId).orElse(null);
 
-        return alarm;
     }
 
     public Alarm updateAlarm(AlarmDTO alarmDTO) {
@@ -70,7 +69,6 @@ public class AlarmService {
 
 
         if (alarm== null){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
             return null;
         }
         Alarm alarm2 = alarm;
@@ -94,9 +92,9 @@ public class AlarmService {
         return alarmRepository.saveAndFlush(alarm2);
     }
 
-    public void deleteAlarm(long private_id) {
+    public int  deleteAlarm(long private_id) {
         log.info("Deleting Alarm");
-        alarmRepository.deleteByPrivateId(private_id);
+        return alarmRepository.deleteByPrivateId(private_id);
     }
 
 }

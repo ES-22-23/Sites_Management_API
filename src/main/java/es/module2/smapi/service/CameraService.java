@@ -63,9 +63,8 @@ public class CameraService {
     public Camera getCamera(long privateId) {
         log.info("Getting Camera");
 
-        Camera cam = camRepository.findByPrivateId(privateId).orElse(null);
+        return camRepository.findByPrivateId(privateId).orElse(null);
 
-        return cam;
     }
 
     public Camera updateCamera(CameraDTO camDTO) {
@@ -100,9 +99,9 @@ public class CameraService {
         return camRepository.saveAndFlush(cam2);
     }
     
-    public void deleteCamera(long privateId) {
+    public int deleteCamera(long privateId) {
         log.info("Deleting Camera");
-        camRepository.deleteByPrivateId(privateId);
+        return camRepository.deleteByPrivateId(privateId);
     }
 
 }

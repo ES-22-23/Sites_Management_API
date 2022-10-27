@@ -71,7 +71,7 @@ class PropertyRepositoryTests {
 
     @AfterEach
     void cleanUp(){
-        entityManager.clear();
+        propRepository.deleteAll();
     }
 
 
@@ -103,19 +103,18 @@ class PropertyRepositoryTests {
 
     @Test
 	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
-        // Property prop3 = new Property( "address3","Bio",new Owner( "alex@deti.com","1234","alex"));
-        // entityManager.persistAndFlush(prop3); //ensure data is persisted at this point
 
-        // // test the query method of interest
-        // Property found = propRepository.findByName(prop3.getName());
-        // assertThat( found ).isEqualTo(prop3);
 
-        // propRepository.deleteById(prop3.getId());
-        // List<Property> found2 = propRepository.findAll();
-        // assertThat(found2.isEmpty()).isTrue();
+        int result = propRepository.deleteByNameAndAddress(propDTO3.getName(),propDTO3.getAddress());
+        assertTrue(result==1);
+	}
 
-        propRepository.deleteByNameAndAddress(propDTO3.getName(),propDTO3.getAddress());
-        assertThat(propRepository.findAll(),  not(hasItem(prop3)));
+    @Test
+	void whenDeletePropNotInRepThenReturnZero() {
+
+
+        int result = propRepository.deleteByNameAndAddress("randomNAme","randomAddress");
+        assertTrue(result==0);
 	}
 
     // @Test

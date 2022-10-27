@@ -1,16 +1,29 @@
 package es.module2.smapi.alarm;
 
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
+import es.module2.smapi.repository.PropertyRepository;
 import es.module2.smapi.repository.AlarmRepository;
 import es.module2.smapi.model.Property;
-import es.module2.smapi.model.Owner;
+import es.module2.smapi.datamodel.AlarmDTO;
 import es.module2.smapi.model.Alarm;
+import es.module2.smapi.model.Owner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.Matchers.*;
 
 
 @DataJpaTest
@@ -19,49 +32,76 @@ class AlarmRepositoryTests {
 
 
 	@Autowired
-    private AlarmRepository alRepository;
+    private AlarmRepository repository;
 
 	@Autowired
     private TestEntityManager entityManager;
 
+    Alarm al1, al2, al3, al4;
+    AlarmDTO alDTO1, alDTO2, alDTO3, alDTO4;
+        
+    @BeforeEach
+    void setUp() throws JsonProcessingException{
 
-	// @Test
-	// void whenFindPropByAddressThenReturnProp() {
-    //     Alarm al1 = new Alarm(1, new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
-    //     entityManager.persistAndFlush(al1); //ensure data is persisted at this point
+        al1 = buildAlarmObject(1);
+        al2 = buildAlarmObject(2);
+        al3 = buildAlarmObject(3);
+        al4 = buildAlarmObject(4);
 
-    //     // test the query method of interest
-    //     Alarm found = alRepository.findById(al1.getId());
-    //     assertThat( found ).isEqualTo(al1);
-	// }
+        repository.saveAndFlush(al1);
+        repository.saveAndFlush(al2);
+        repository.saveAndFlush(al3);
+
+        alDTO1 = buildAlarmDTO(1);
+        alDTO2 = buildAlarmDTO(2);
+        alDTO3 = buildAlarmDTO(3);
+        alDTO4 = buildAlarmDTO(4);
+    }
+
+    @AfterEach
+    void cleanUp(){
+        repository.deleteAll();
+    }
+
+    @Test
+	void whenFindAlarmByPrivateIDThenReturnProp() {
+
+        // test the query method of interest
+        Optional<Alarm> result = repository.findByPrivateId(alDTO1.getPrivateId());
+        assertTrue(result.isPresent());
+	}
+
+    @Test
+	void whenDeleteAlarmByPrivateIdThenReturnOne() {
 
 
-	// @Test
-	// void whenFindPropByNameThenReturnProp() {
-    //     Alarm al2 = new Alarm(1, 
-    //     new Property( "address2","DETI",
-    //     new Owner( "alex@deti.com","1234","alex")));
+        int result =repository.deleteByPrivateId(alDTO3.getPrivateId());
+        assertTrue(result==1);
+	}
+    @Test
+	void whenDeleteAlNotInRepThenReturnZero() {
 
-    //     entityManager.persistAndFlush(al2); //ensure data is persisted at this point
 
-    //     // test the query method of interest
-    //     Alarm found = alRepository.findById(al2.getId());
-    //     assertThat( found ).isEqualTo(al2);
-	// }
+        int result =repository.deleteByPrivateId(1000);
+        assertTrue(result==0);
+	}
 
-    // @Test
-	// void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
-    //     Alarm al3 = new Alarm(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
-    //     entityManager.persistAndFlush(al3); //ensure data is persisted at this point
+    Alarm buildAlarmObject(long id){
+        Alarm al = new Alarm();
+        Property prop=  new Property("address"+id,"name"+id,new Owner("username","name"));
+        al.setId(id);
+        al.setPrivateId( id);
+        al.setProperty(prop);
+        return al;
+    }
 
-    //     // test the query method of interest
-    //     Alarm found = alRepository.findById(al3.getId());
-    //     assertThat( found ).isEqualTo(al3);
-
-    //     alRepository.deleteById(al3.getId());
-    //     List<Alarm> found2 = alRepository.findAll();
-    //     assertThat(found2.isEmpty()).isTrue();
-	// }
+    AlarmDTO buildAlarmDTO(long id){
+        AlarmDTO al = new AlarmDTO();
+        al.setPrivateId( id);
+        al.setPropertyAddress("Address"+id);
+        al.setPropertyName("name"+id);
+        return al;
+    }
 	
 
 }

@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     Optional<Alarm> findByPrivateId(long id);
     @Transactional 
-    Optional<Alarm> deleteByPrivateId(long id);
+    int deleteByPrivateId(long id);
 }
