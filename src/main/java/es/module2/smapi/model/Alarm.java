@@ -37,7 +37,7 @@ public class Alarm implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.AUTO) 
+  @GeneratedValue(strategy = GenerationType.IDENTITY) 
   @Column(name = "alarm_id", nullable = false)
   private long id;
 
@@ -45,7 +45,7 @@ public class Alarm implements Serializable{
   private long privateId;
 
   @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-  @JoinColumn(name = "property_id", referencedColumnName = "property_id")
+  @JoinColumn(name = "property_id", nullable = false)
   @JsonIgnoreProperties("alarms")
   @JsonIdentityReference(alwaysAsId = true)
   //@JsonIgnore

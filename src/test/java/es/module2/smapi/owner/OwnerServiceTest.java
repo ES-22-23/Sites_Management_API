@@ -36,67 +36,67 @@ class OwnerServiceTest {
         
 
 
-    @Test
-     void whenValidInputThenCreateOwner() throws IOException, Exception {
-        Owner alex = new Owner( "alex@deti.com","1234","alex");
+    // @Test
+    //  void whenValidInputThenCreateOwner() throws IOException, Exception {
+    //     Owner alex = new Owner( "alex@deti.com","1234","alex");
 
-        service.createOwner(alex);
+    //     service.createOwner(alex);
 
-        List<Owner> found = repository.findAll();
-        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
-        repository.deleteAll();
-    }
-
-
-    @Test
-    void whenValidInputThenUpdateOwner() throws IOException, Exception {
-        Owner alex = new Owner( "alex@deti.com","1234","alex");
+    //     List<Owner> found = repository.findAll();
+    //     assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
+    //     repository.deleteAll();
+    // }
 
 
-        repository.save(alex);
-
-        List<Owner> found = repository.findAll();
-        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
-
-        alex.setName("bob");
-        service.updateOwner(alex);
-        List<Owner> found2 = repository.findAll();
-        assertThat(found2).extracting(Owner::getName).containsOnly(alex.getName());
-        repository.deleteAll();
-    }
+    // @Test
+    // void whenValidInputThenUpdateOwner() throws IOException, Exception {
+    //     Owner alex = new Owner( "alex@deti.com","1234","alex");
 
 
-    @Test
-    void whenValidInputThenDeleteOwner() throws IOException, Exception {
-        Owner alex = new Owner( "alex@deti.com","1234","alex");
+    //     repository.save(alex);
+
+    //     List<Owner> found = repository.findAll();
+    //     assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
+
+    //     alex.setName("bob");
+    //     service.updateOwner(alex);
+    //     List<Owner> found2 = repository.findAll();
+    //     assertThat(found2).extracting(Owner::getName).containsOnly(alex.getName());
+    //     repository.deleteAll();
+    // }
 
 
-        repository.save(alex);
-
-        List<Owner> found = repository.findAll();
-        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
-
-        service.deleteOwner(alex.getUsername());
-        List<Owner> found2 = repository.findAll();
-        assertThat(found2 == null);
-        repository.deleteAll();
-    }
-
-    @Test
-     void whenValidInputThenGetOwner() throws IOException, Exception {
-        Owner alex = new Owner( "alex@deti.com","1234","alex");
-
-        repository.save(alex);
-
-        List<Owner> found = repository.findAll();
-        assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
+    // @Test
+    // void whenValidInputThenDeleteOwner() throws IOException, Exception {
+    //     Owner alex = new Owner( "alex@deti.com","1234","alex");
 
 
-        Owner found2= service.getOwner(alex.getUsername());
+    //     repository.save(alex);
 
-        assertThat(found.equals(found2));
-        repository.deleteAll();
-    }
+    //     List<Owner> found = repository.findAll();
+    //     assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
+
+    //     service.deleteOwner(alex.getUsername());
+    //     List<Owner> found2 = repository.findAll();
+    //     assertThat(found2 == null);
+    //     repository.deleteAll();
+    // }
+
+    // @Test
+    //  void whenValidInputThenGetOwner() throws IOException, Exception {
+    //     Owner alex = new Owner( "alex@deti.com","1234","alex");
+
+    //     repository.save(alex);
+
+    //     List<Owner> found = repository.findAll();
+    //     assertThat(found).extracting(Owner::getUsername).containsOnly(alex.getUsername());
+
+
+    //     Owner found2= service.getOwner(alex.getUsername());
+
+    //     assertThat(found.equals(found2));
+    //     repository.deleteAll();
+    // }
 	
 	
 	

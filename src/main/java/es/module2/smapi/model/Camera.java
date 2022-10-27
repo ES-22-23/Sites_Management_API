@@ -41,7 +41,7 @@ public class Camera implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.AUTO) 
+  @GeneratedValue(strategy = GenerationType.IDENTITY) 
   @Column(name = "camera_id", nullable = false)
   private long id;
 
@@ -49,7 +49,7 @@ public class Camera implements Serializable{
   private long privateId;
 
   @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-  @JoinColumn(name = "property_id", referencedColumnName = "property_id")
+  @JoinColumn(name = "property_id", nullable = false)
   @JsonIgnoreProperties("cameras")
   @JsonIdentityReference(alwaysAsId = true)
   //@JsonIgnore

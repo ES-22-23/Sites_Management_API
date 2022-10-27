@@ -10,6 +10,7 @@ import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.PropertyRepository;
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.model.Owner;
+import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,78 +31,71 @@ public class PropertyService {
     
     // CRUD Func Owner
 
-    public Property createProperty(PropertyDTO propDTO) {
+    public Property createProperty(PropertyDTO propDTO) throws PropertyAlreadyExistsException{
         log.info("Inserting Property");
 
-        Optional<Property> prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress());
+        Property prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress()).orElse(null);
 
-        if (prop.isPresent()){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
-            return null;
+        if (prop != null){
+            throw new PropertyAlreadyExistsException("Property already exists: " + prop);
         }
 
         Property prop2 = new Property();
         prop2.convertDTOtoObject(propDTO);
 
-        Optional<Owner> ow1 = owRepository.findByUsername(propDTO.getOwnerUsername());
+        Owner ow1 = owRepository.findByUsername(propDTO.getOwnerUsername()).orElse(null);
 
-        if (ow1.isEmpty()){
+        if (ow1== null){
             return null;
         }
 
-        prop2.setOwner(ow1.get());
-        ow1.get().getProperties().add(prop2);
-
+        prop2.setOwner(ow1);
+        ow1.getProperties().add(prop2);
+    
         return propRepository.saveAndFlush(prop2);
     }
 
     public Property getProperty(String name, String address) {
         log.info("Getting Property");
 
-        Optional<Property> prop = propRepository.findByNameAndAddress(name, address);
-        if (prop.isPresent()){
-            return null;
-        }
-        return prop.get();
+        return propRepository.findByNameAndAddress(name, address).orElse(null);
 
     }
 
     public Property updateProperty(PropertyDTO propDTO) {
         log.info("Updating Property");
 
-        Optional<Property> prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress());
+        Property prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress()).orElse(null);
 
 
-        if (prop.isPresent()){
+        if (prop== null){
             return null;
         }
 
 
-        Property prop2 = prop.get();
 
-
-        Optional<Owner> oldOwner = owRepository.findByProperties(prop2);
-        if (oldOwner.isPresent()){
-            oldOwner.get().getProperties().remove(prop);
+        Owner oldOwner = owRepository.findByProperties(prop).orElse(null);
+        if (oldOwner!=null){
+            oldOwner.getProperties().remove(prop);
         }
 
-        prop2.convertDTOtoObject(propDTO);
+        prop.convertDTOtoObject(propDTO);
 
 
-        Optional<Owner> ow1 = owRepository.findByUsername(propDTO.getOwnerUsername());
+        Owner ow1 = owRepository.findByUsername(propDTO.getOwnerUsername()).orElse(null);
 
-        if (ow1.isEmpty()){
+        if (ow1==null){
             return null;
         }
 
-        prop2.setOwner(ow1.get());
-        ow1.get().getProperties().add(prop2);
+        prop.setOwner(ow1);
+        ow1.getProperties().add(prop);
 
-        return propRepository.saveAndFlush(prop2);
+        return propRepository.saveAndFlush(prop);
     }
-    public void deleteProperty(String name, String address) {
+    public int deleteProperty(String name, String address) {
         log.info("Deleting Property");
-        propRepository.deleteByNameAndAddress(name,address);
+        return  propRepository.deleteByNameAndAddress(name,address);
     }
 
 }

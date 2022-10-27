@@ -8,7 +8,6 @@ import java.util.Optional;
 
 public interface CameraRepository extends JpaRepository<Camera, Long> {
     Optional<Camera> findByPrivateId(long id);
-    
     @Transactional 
     Optional<Camera> deleteByPrivateId(long id);
 }

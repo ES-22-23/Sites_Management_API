@@ -18,10 +18,15 @@ import org.springframework.validation.annotation.Validated;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/properties")
 @Validated
+//@CrossOrigin
 class PropertyController {
     private static final Logger log = LoggerFactory.getLogger(PropertyController.class);
 
@@ -30,30 +35,48 @@ class PropertyController {
 
 
     @PostMapping("/newProperty")
-    Property createProperty(@RequestBody PropertyDTO newProperty) {
+    public ResponseEntity<Property> createProperty(@RequestBody PropertyDTO propertyDTO) {
         log.info("POST Request -> Store a new Property");
-
-        return propService.createProperty(newProperty);
+        Property prop = null;
+        // return new ResponseEntity<>(new Property(), HttpStatus.CREATED);
+        try {
+            prop = propService.createProperty(propertyDTO);
+            return new ResponseEntity<>(prop, HttpStatus.CREATED);
+        } catch (PropertyAlreadyExistsException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/getProperty")
-    Property getProperty(@RequestParam  String name,String address) {
+    public ResponseEntity<Property> getProperty(@RequestParam  String name,String address) {
         log.info("GET Request -> get a property");
-
-        return propService.getProperty(name, address);
+        Property prop = propService.getProperty(name, address);
+        if (prop == null){
+            return new ResponseEntity<>(prop, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(prop, HttpStatus.OK);
     }
 
     @PostMapping("/updateProperty")
-    Property updateProperty(@RequestBody PropertyDTO newProperty) {
+    public ResponseEntity<Property> updateProperty(@RequestBody PropertyDTO propertyDTO) {
         log.info("POST Request -> Update a new Property");
-        return propService.updateProperty(newProperty);
+        Property prop = propService.updateProperty(propertyDTO);
+        if (prop == null){
+            return new ResponseEntity<>(prop, HttpStatus.NOT_MODIFIED);
+        }
+        return new ResponseEntity<>(prop, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteProperty")
-    void deleteProperty(@RequestParam  String name,String address) {
+    public ResponseEntity<Integer> deleteProperty(@RequestParam  String name,String address) {
         log.info("DELETE Request -> Delete a new Property");
 
-        propService.deleteProperty(name, address);
+        int resp = propService.deleteProperty(name, address);
+        if (resp == 1){
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+
     }
 
         

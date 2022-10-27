@@ -2,7 +2,7 @@ package es.module2.smapi.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import es.module2.smapi.datamodel.OwnerDTO;
+import java.util.ArrayList;
 
 
 @Entity
@@ -45,7 +46,7 @@ public class Owner implements Serializable{
   @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
-  private Set<Property> properties;
+  private List<Property> properties=new ArrayList<Property>();
 
   public Owner(String username,String name) {
 
@@ -72,11 +73,11 @@ public class Owner implements Serializable{
     this.name = name;
   }
 
-  public Set<Property> getProperties() {
+  public List<Property> getProperties() {
     return this.properties;
   }
 
-  public void setProperties(Set<Property> properties) {
+  public void setProperties(List<Property> properties) {
     this.properties = properties;
   }
 

@@ -3,7 +3,7 @@ package es.module2.smapi.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +27,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import es.module2.smapi.datamodel.PropertyDTO;
-
+import java.util.ArrayList;
 
 @Entity
 @Data
@@ -39,7 +39,7 @@ public class Property implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.AUTO) 
+  @GeneratedValue(strategy = GenerationType.IDENTITY) 
   @Column(name = "property_id", nullable = false)
   private long id;
 
@@ -52,7 +52,7 @@ public class Property implements Serializable{
 
 
   @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-  @JoinColumn(name = "username", referencedColumnName = "username")
+  @JoinColumn(name = "username", nullable = false)
   @JsonIgnoreProperties("properties")
   @JsonIdentityReference(alwaysAsId = true)
   //@JsonIgnore
@@ -64,7 +64,7 @@ public class Property implements Serializable{
   @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
-  private Set<Camera> cameras;
+  private List<Camera> cameras= new ArrayList<Camera>();
 
 
 
@@ -72,7 +72,7 @@ public class Property implements Serializable{
   @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
-  private Set<Alarm> alarms;
+  private List<Alarm> alarms=new ArrayList<Alarm>();
 
 
 
@@ -118,19 +118,19 @@ public class Property implements Serializable{
     this.owner = owner;
   }
 
-  public Set<Camera> getCameras() {
+  public List<Camera> getCameras() {
     return this.cameras;
   }
 
-  public void setCameras(Set<Camera> cameras) {
+  public void setCameras(List<Camera> cameras) {
     this.cameras = cameras;
   }
 
-  public Set<Alarm> getAlarms() {
+  public List<Alarm> getAlarms() {
     return this.alarms;
   }
 
-  public void setAlarms(Set<Alarm> alarms) {
+  public void setAlarms(List<Alarm> alarms) {
     this.alarms = alarms;
   }
 

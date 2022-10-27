@@ -11,6 +11,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     Optional<Owner> findByName(String name);
     Optional<Owner> findByUsername(String username);
     @Transactional 
-    long deleteByUsername(String username);
+    Optional<Owner> deleteByUsername(String username);
     Optional<Owner> findByProperties(Property prop);
 }

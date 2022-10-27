@@ -11,6 +11,7 @@ import es.module2.smapi.repository.OwnerRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import es.module2.smapi.exceptions.OwnerAlreadyExistsException;
 
 
 
@@ -26,14 +27,13 @@ public class OwnerService {
     
     // CRUD Func Owner
 
-    public Owner createOwner(OwnerDTO ownerDTO) {
+    public Owner createOwner(OwnerDTO ownerDTO) throws OwnerAlreadyExistsException{
         log.info("Inserting Owner");
 
-        Optional<Owner> owner = ownerRepository.findByUsername(ownerDTO.getUsername());
+        Owner owner = ownerRepository.findByUsername(ownerDTO.getUsername()).orElse(null);
 
-        if (owner.isPresent()){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
-            return null;
+        if (owner != null){
+            throw new OwnerAlreadyExistsException("Owner already exists: " + owner);
         }
 
         Owner owner2 = new Owner();
@@ -45,23 +45,17 @@ public class OwnerService {
     public Owner getOwner(String username) {
         log.info("Getting Owner");
 
-        Optional<Owner> owner = ownerRepository.findByUsername(username);
-
-        if (owner.isPresent()){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
-            return null;
-        }
-        return owner.get();
+        Owner owner = ownerRepository.findByUsername(username).orElse(null);
+        return owner;
     }
 
     public Owner updateOwner(OwnerDTO ownerDTO) {
         log.info("Updating Owner");
 
-        Optional<Owner> owner = ownerRepository.findByUsername(ownerDTO.getUsername());
+        Owner owner = ownerRepository.findByUsername(ownerDTO.getUsername()).orElse(null);
 
 
-        if (owner.isPresent()){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
+        if (owner==null){
             return null;
         }
 

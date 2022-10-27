@@ -30,25 +30,25 @@ class AlarmController {
     private AlarmService alService;
 
 
-    @PostMapping("/newAlarm")
-    Alarm createAlarm(@RequestBody AlarmDTO newAlarm) {
-        return alService.createAlarm(newAlarm);
-    }
+    // @PostMapping("/newAlarm")
+    // Alarm createAlarm(@RequestBody AlarmDTO newAlarm) {
+    //     return alService.createAlarm(newAlarm);
+    // }
 
-    @GetMapping("/getAlarm")
-    Alarm getAlarm(@RequestParam  long privateId) {
-        return alService.getAlarm(privateId);
-    }
+    // @GetMapping("/getAlarm")
+    // Alarm getAlarm(@RequestParam  long privateId) {
+    //     return alService.getAlarm(privateId);
+    // }
 
-    @PostMapping("/updateAlarm")
-    Alarm updateAlarm(@RequestBody AlarmDTO newAlarm) {
-        return alService.updateAlarm(newAlarm);
-    }
+    // @PostMapping("/updateAlarm")
+    // Alarm updateAlarm(@RequestBody AlarmDTO newAlarm) {
+    //     return alService.updateAlarm(newAlarm);
+    // }
 
-    @DeleteMapping("/deleteAlarm")
-    void deleteAlarm(@RequestParam long privateId) {
-        alService.deleteAlarm(privateId);
-    }
+    // @DeleteMapping("/deleteAlarm")
+    // void deleteAlarm(@RequestParam long privateId) {
+    //     alService.deleteAlarm(privateId);
+    // }
 
         
 }

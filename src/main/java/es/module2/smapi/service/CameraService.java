@@ -13,6 +13,7 @@ import es.module2.smapi.model.Property;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import es.module2.smapi.exceptions.CameraAlreadyExistsException;
 
 
 
@@ -31,28 +32,27 @@ public class CameraService {
     
     // CRUD Func Owner
 
-    public Camera createCamera(CameraDTO camDTO) {
+    public Camera createCamera(CameraDTO camDTO) throws CameraAlreadyExistsException{
         log.info("Inserting Camera");
 
-        Optional<Camera> cam = camRepository.findByPrivateId(camDTO.getPrivateId());
+        Camera cam = camRepository.findByPrivateId(camDTO.getPrivateId()).orElse(null);
 
-        if (cam.isPresent()){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
-            return null;
+        if (cam != null){
+            throw new CameraAlreadyExistsException("Camera already exists: " + cam);
         }
 
 
         Camera cam2 = new Camera();
         cam2.convertDTOtoObject(camDTO);
 
-        Optional<Property> p1 = propRepository.findByNameAndAddress(camDTO.getPropertyName(), camDTO.getPropertyAddress());
+        Property p1 = propRepository.findByNameAndAddress(camDTO.getPropertyName(), camDTO.getPropertyAddress()).orElse(null);
 
-        if (p1.isEmpty()){
+        if (p1==null){
             return null;
         }
 
-        cam2.setProperty(p1.get());
-        p1.get().getCameras().add(cam2);
+        cam2.setProperty(p1);
+        p1.getCameras().add(cam2);
 
         return camRepository.saveAndFlush(cam2);
 
@@ -63,43 +63,38 @@ public class CameraService {
     public Camera getCamera(long privateId) {
         log.info("Getting Camera");
 
-        Optional<Camera> cam = camRepository.findByPrivateId(privateId);
+        Camera cam = camRepository.findByPrivateId(privateId).orElse(null);
 
-        if (cam.isPresent()){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
-            return null;
-        }
-        return cam.get();
+        return cam;
     }
 
     public Camera updateCamera(CameraDTO camDTO) {
         log.info("Updating Camera");
         
-        Optional<Camera>  cam = camRepository.findByPrivateId(camDTO.getPrivateId());
+        Camera  cam = camRepository.findByPrivateId(camDTO.getPrivateId()).orElse(null);
 
 
-        if (cam.isPresent()){
-            // throw new AddressAlreadyExistsException("Address already exists: " + address);
+        if (cam== null){
             return null;
         }
 
-        Camera cam2 = cam.get();
-        Optional<Property> oldProp = propRepository.findByCameras(cam2);
-        if (oldProp.isPresent()){
-            oldProp.get().getCameras().remove(cam2);
+        Camera cam2 = cam;
+        Property oldProp = propRepository.findByCameras(cam2).orElse(null);
+        if (oldProp!= null){
+            oldProp.getCameras().remove(cam2);
         }
 
         cam2.convertDTOtoObject(camDTO);
 
 
-        Optional<Property> p1 = propRepository.findByNameAndAddress(camDTO.getPropertyName(), camDTO.getPropertyAddress());
+        Property p1 = propRepository.findByNameAndAddress(camDTO.getPropertyName(), camDTO.getPropertyAddress()).orElse(null);
 
-        if (p1.isEmpty()){
+        if (p1== null){
             return null;
         }
 
-        cam2.setProperty(p1.get());
-        p1.get().getCameras().add(cam2);
+        cam2.setProperty(p1);
+        p1.getCameras().add(cam2);
 
 
         return camRepository.saveAndFlush(cam2);

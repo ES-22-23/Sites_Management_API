@@ -30,25 +30,25 @@ class CameraController {
     private CameraService camService;
 
 
-    @PostMapping("/newCamera")
-    Camera createCamera(@RequestBody CameraDTO newCamera) {
-        return camService.createCamera(newCamera);
-    }
+    // @PostMapping("/newCamera")
+    // Camera createCamera(@RequestBody CameraDTO newCamera) {
+    //     return camService.createCamera(newCamera);
+    // }
 
-    @GetMapping("/getCamera")
-    Camera getCamera(@RequestParam  long privateId) {
-        return camService.getCamera(privateId);
-    }
+    // @GetMapping("/getCamera")
+    // Camera getCamera(@RequestParam  long privateId) {
+    //     return camService.getCamera(privateId);
+    // }
 
-    @PostMapping("/updateCamera")
-    Camera updateCamera(@RequestBody CameraDTO newCamera) {
-        return camService.updateCamera(newCamera);
-    }
+    // @PostMapping("/updateCamera")
+    // Camera updateCamera(@RequestBody CameraDTO newCamera) {
+    //     return camService.updateCamera(newCamera);
+    // }
 
-    @DeleteMapping("/deleteCamera")
-    void deleteCamera(@RequestParam long privateId) {
-        camService.deleteCamera(privateId);
-    }
+    // @DeleteMapping("/deleteCamera")
+    // void deleteCamera(@RequestParam long privateId) {
+    //     camService.deleteCamera(privateId);
+    // }
 
         
 }

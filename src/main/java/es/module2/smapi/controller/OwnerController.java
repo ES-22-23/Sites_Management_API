@@ -29,25 +29,25 @@ class OwnerController {
 
 
     
-    // Owner endpoints
-    @PostMapping("/newOwner")
-    Owner createOwner(@RequestBody OwnerDTO newOwner) {
-        return owService.createOwner(newOwner);
-    }
+    // // Owner endpoints
+    // @PostMapping("/newOwner")
+    // Owner createOwner(@RequestBody OwnerDTO newOwner) {
+    //     return owService.createOwner(newOwner);
+    // }
 
-    @GetMapping("/getOwner")
-    Owner getOwner(@RequestParam  String username) {
-        return owService.getOwner(username);
-    }
+    // @GetMapping("/getOwner")
+    // Owner getOwner(@RequestParam  String username) {
+    //     return owService.getOwner(username);
+    // }
 
-    @PostMapping("/updateOwner")
-    Owner updateOwner(@RequestBody OwnerDTO newOwner) {
-        return owService.updateOwner(newOwner);
-    }
-    @DeleteMapping("/deleteOwner")
-    void deleteOwner(@RequestBody String username) {
-        owService.deleteOwner(username);
-    }
+    // @PostMapping("/updateOwner")
+    // Owner updateOwner(@RequestBody OwnerDTO newOwner) {
+    //     return owService.updateOwner(newOwner);
+    // }
+    // @DeleteMapping("/deleteOwner")
+    // void deleteOwner(@RequestBody String username) {
+    //     owService.deleteOwner(username);
+    // }
 
 
 

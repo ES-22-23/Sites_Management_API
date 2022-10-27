@@ -76,38 +76,38 @@ class AlarmControllerIT {
     }*/
 
 
-    @Test
-    void whenValidInputThenDeleteAlarm() throws IOException, Exception {
-        Alarm al3 = new Alarm(1,new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+    // @Test
+    // void whenValidInputThenDeleteAlarm() throws IOException, Exception {
+    //     Alarm al3 = new Alarm(1,new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
 
 
-        repository.save(al3);
+    //     repository.save(al3);
 
-        List<Alarm> found = repository.findAll();
-        assertThat(found).extracting(Alarm::getId).containsOnly(al3.getId());
+    //     List<Alarm> found = repository.findAll();
+    //     assertThat(found).extracting(Alarm::getId).containsOnly(al3.getId());
 
-        mvc.perform(post("/deleteAlarm?id="+al3.getId()));
-        List<Alarm> found2 = repository.findAll();
-        assertThat(found2 == null);
-        repository.deleteAll();
-    }
+    //     mvc.perform(post("/deleteAlarm?id="+al3.getId()));
+    //     List<Alarm> found2 = repository.findAll();
+    //     assertThat(found2 == null);
+    //     repository.deleteAll();
+    // }
 
-    @Test
-     void whenValidInputThenGetAlarm() throws IOException, Exception {
-        Alarm al3 = new Alarm(1,new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+    // @Test
+    //  void whenValidInputThenGetAlarm() throws IOException, Exception {
+    //     Alarm al3 = new Alarm(1,new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
 
-        repository.save(al3);
+    //     repository.save(al3);
 
-        List<Alarm> found = repository.findAll();
-        assertThat(found).extracting(Alarm::getId).containsOnly(al3.getId());
+    //     List<Alarm> found = repository.findAll();
+    //     assertThat(found).extracting(Alarm::getId).containsOnly(al3.getId());
 
 
-        mvc.perform(get("/getAlarm?id="+al3.getId()).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is( (int)(al3.getId()))));
-        repository.deleteAll();
-    }
+    //     mvc.perform(get("/getAlarm?id="+al3.getId()).contentType(MediaType.APPLICATION_JSON))
+    //             .andDo(print())
+    //             .andExpect(status().isOk())
+    //             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+    //             .andExpect(jsonPath("$.id", is( (int)(al3.getId()))));
+    //     repository.deleteAll();
+    // }
 	
  }

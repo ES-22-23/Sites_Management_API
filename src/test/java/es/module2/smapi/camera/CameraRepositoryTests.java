@@ -25,41 +25,41 @@ class CameraRepositoryTests {
     private TestEntityManager entityManager;
 
 
-	@Test
-	void whenFindPropByAddressThenReturnProp() {
-        Camera cam1 = new Camera(1, new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
-        entityManager.persistAndFlush(cam1); //ensure data is persisted at this point
+	// @Test
+	// void whenFindPropByAddressThenReturnProp() {
+    //     Camera cam1 = new Camera(1, new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+    //     entityManager.persistAndFlush(cam1); //ensure data is persisted at this point
 
-        // test the query method of interest
-        Camera found = camRepository.findById(cam1.getId());
-        assertThat( found ).isEqualTo(cam1);
-	}
+    //     // test the query method of interest
+    //     Camera found = camRepository.findById(cam1.getId());
+    //     assertThat( found ).isEqualTo(cam1);
+	// }
 
 
-	@Test
-	void whenFindPropByNameThenReturnProp() {
-        Camera cam2 = new Camera(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
+	// @Test
+	// void whenFindPropByNameThenReturnProp() {
+    //     Camera cam2 = new Camera(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
 
-        entityManager.persistAndFlush(cam2); //ensure data is persisted at this point
+    //     entityManager.persistAndFlush(cam2); //ensure data is persisted at this point
 
-        // test the query method of interest
-        Camera found = camRepository.findById(cam2.getId());
-        assertThat( found ).isEqualTo(cam2);
-	}
+    //     // test the query method of interest
+    //     Camera found = camRepository.findById(cam2.getId());
+    //     assertThat( found ).isEqualTo(cam2);
+	// }
 
-    @Test
-	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
-        Camera cam3 = new Camera(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
-        entityManager.persistAndFlush(cam3); //ensure data is persisted at this point
+    // @Test
+	// void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
+    //     Camera cam3 = new Camera(1, new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
+    //     entityManager.persistAndFlush(cam3); //ensure data is persisted at this point
 
-        // test the query method of interest
-        Camera found = camRepository.findById(cam3.getId());
-        assertThat( found ).isEqualTo(cam3);
+    //     // test the query method of interest
+    //     Camera found = camRepository.findById(cam3.getId());
+    //     assertThat( found ).isEqualTo(cam3);
 
-        camRepository.deleteById(cam3.getId());
-        List<Camera> found2 = camRepository.findAll();
-        assertThat(found2.isEmpty()).isTrue();
-	}
+    //     camRepository.deleteById(cam3.getId());
+    //     List<Camera> found2 = camRepository.findAll();
+    //     assertThat(found2.isEmpty()).isTrue();
+	// }
 	
 
 }
