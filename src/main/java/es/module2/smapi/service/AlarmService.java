@@ -34,7 +34,13 @@ public class AlarmService {
     public Alarm createAlarm(AlarmDTO alarmDTO) throws AlarmAlreadyExistsException {
         log.info("Inserting Alarm");
 
-        Alarm alarm = alarmRepository.findByPrivateId(alarmDTO.getPrivateId()).orElse(null);
+        Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
+
+        if (p1==null){
+            return null;
+        }
+
+        Alarm alarm = alarmRepository.findByPropertyAndPrivateId(p1, alarmDTO.getPrivateId()).orElse(null);
 
         if (alarm!=null){
             throw new AlarmAlreadyExistsException("Alarm already exists: " + alarm);
@@ -43,58 +49,55 @@ public class AlarmService {
         Alarm alarm2 = new Alarm();
         alarm2.convertDTOtoObject(alarmDTO);
 
+        
+
+        alarm2.setProperty(p1);
+        alarm2.setPrivateId(alarm2.getId());
+        p1.getAlarms().add(alarm2);
+
+        return alarmRepository.saveAndFlush(alarm2);
+    }
+
+    public Alarm getAlarm(long id) {
+        log.info("Getting Alarm");
+
+        return alarmRepository.findById(id).orElse(null);
+
+    }
+
+    public Alarm updateAlarm(AlarmDTO alarmDTO) {
+        log.info("Updating Alarm");
+
         Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
 
         if (p1==null){
             return null;
         }
 
-        alarm2.setProperty(p1);
-        p1.getAlarms().add(alarm2);
-
-        return alarmRepository.saveAndFlush(alarm2);
-    }
-
-    public Alarm getAlarm(long privateId) {
-        log.info("Getting Alarm");
-
-        return alarmRepository.findByPrivateId(privateId).orElse(null);
-
-    }
-
-    public Alarm updateAlarm(AlarmDTO alarmDTO) {
-        log.info("Updating Alarm");
-        
-        Alarm alarm = alarmRepository.findByPrivateId(alarmDTO.getPrivateId()).orElse(null);
-
+        Alarm alarm = alarmRepository.findByPropertyAndPrivateId(p1,alarmDTO.getPrivateId()).orElse(null);
 
         if (alarm== null){
             return null;
         }
         Alarm alarm2 = alarm;
 
-        Property oldProp = propRepository.findByAlarms(alarm2).orElse(null);
+        Property oldProp = propRepository.findByAlarms(alarm2.getId()).orElse(null);
         if (oldProp != null){
-            oldProp.getAlarms().remove(alarm2);
+            oldProp.getAlarms().remove(alarm2.getId());
         }
         alarm2.convertDTOtoObject(alarmDTO);
 
-        Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
-
-        if (p1 != null){
-            return null;
-        }
-
         alarm2.setProperty(p1);
+        alarm2.setPrivateId(alarm2.getId());
         p1.getAlarms().add(alarm2);
 
 
         return alarmRepository.saveAndFlush(alarm2);
     }
 
-    public int  deleteAlarm(long private_id) {
+    public int  deleteAlarm(long id) {
         log.info("Deleting Alarm");
-        return alarmRepository.deleteByPrivateId(private_id);
+        return alarmRepository.deleteById(id);
     }
 
 }

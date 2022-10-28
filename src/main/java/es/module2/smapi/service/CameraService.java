@@ -78,7 +78,7 @@ public class CameraService {
         }
 
         Camera cam2 = cam;
-        Property oldProp = propRepository.findByCameras(cam2).orElse(null);
+        Property oldProp = propRepository.findByCameras(cam2.getId()).orElse(null);
         if (oldProp!= null){
             oldProp.getCameras().remove(cam2);
         }

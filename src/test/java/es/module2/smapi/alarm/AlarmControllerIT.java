@@ -90,8 +90,8 @@ class AlarmControllerIT {
         given().contentType(ContentType.JSON).body(alDTO4)
         .post("/alarms/newAlarm")
         .then().log().body().assertThat()
-        .contentType(ContentType.JSON).and()
         .status(HttpStatus.CREATED).and()
+        .contentType(ContentType.JSON).and()
         .body("privateId", is(al4.getPrivateId()));
         
     }
@@ -123,7 +123,7 @@ class AlarmControllerIT {
     void whenValidInputThenDeleteAlarm() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .delete("/alarms/deleteAlarm?privateId="+alDTO2.getPrivateId())
+        .delete("/alarms/deleteAlarm?id="+al2.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK);
 
@@ -133,7 +133,7 @@ class AlarmControllerIT {
     void whenInValidInputThenNotFound() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .delete("/alarms/deleteAlarm?privateId="+1000)
+        .delete("/alarms/deleteAlarm?id="+1000)
         .then().log().body().assertThat()
         .status(HttpStatus.NOT_FOUND);
 
@@ -142,16 +142,16 @@ class AlarmControllerIT {
     @Test
      void whenValidInputThenGetAlarm() throws IOException, Exception {
 
-        given().get("/alarms/getAlarm?privateId="+al1.getPrivateId())
+        given().get("/alarms/getAlarm?id="+al1.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
-        .body("privateId", is(al1.getPrivateId()));
+        .body("id", is((int)al1.getId()));
 
      }
     Alarm buildAlarmObject(long id){
         Alarm al = new Alarm();
-        Property prop=  new Property("address"+id,"name"+id, new Owner("username","name"));
+        Property prop=  new Property("address"+id,"name"+id, new Owner("username"+id,"name"+id));
         al.setId(id);
         al.setPrivateId( id);
         al.setProperty(prop);
@@ -162,7 +162,7 @@ class AlarmControllerIT {
     AlarmDTO buildAlarmDTO(long id){
         AlarmDTO al = new AlarmDTO();
         al.setPrivateId( id);
-        al.setPropertyAddress("Address"+id);
+        al.setPropertyAddress("address"+id);
         al.setPropertyName("name"+id);
         return al;
     }

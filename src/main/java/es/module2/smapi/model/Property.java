@@ -69,10 +69,12 @@ public class Property implements Serializable{
 
 
   @Column(name = "alarms")
-  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
+  @OneToMany(targetEntity = Alarm.class, mappedBy = "property", fetch = FetchType.EAGER,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
   private List<Alarm> alarms=new ArrayList<Alarm>();
+
+
 
 
 
@@ -118,6 +120,7 @@ public class Property implements Serializable{
     this.owner = owner;
   }
 
+
   public List<Camera> getCameras() {
     return this.cameras;
   }
@@ -133,6 +136,9 @@ public class Property implements Serializable{
   public void setAlarms(List<Alarm> alarms) {
     this.alarms = alarms;
   }
+
+
+
 
 
     public void convertDTOtoObject(PropertyDTO dto){

@@ -48,9 +48,9 @@ class AlarmController {
     }
 
     @GetMapping("/getAlarm")
-    public ResponseEntity<Alarm> getAlarm(@RequestParam  long privateId) {
+    public ResponseEntity<Alarm> getAlarm(@RequestParam long id) {
         log.info("GET Request -> get a Alarm");
-        Alarm al = service.getAlarm(privateId);
+        Alarm al = service.getAlarm(id);
         if (al == null){
             return new ResponseEntity<>(al, HttpStatus.NOT_FOUND);
         }
@@ -68,10 +68,10 @@ class AlarmController {
     }
 
     @DeleteMapping("/deleteAlarm")
-    public ResponseEntity<Integer> deleteAlarm(@RequestParam long privateId) {
+    public ResponseEntity<Integer> deleteAlarm(@RequestParam long id) {
         log.info("DELETE Request -> Delete a new Alarm");
 
-        int resp = service.deleteAlarm(privateId);
+        int resp = service.deleteAlarm(id);
         if (resp == 1){
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }

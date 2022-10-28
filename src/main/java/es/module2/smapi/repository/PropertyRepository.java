@@ -19,8 +19,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     @Transactional 
     int deleteByNameAndAddress(String name, String address);
     
-    Optional<Property> findByCameras(Camera cam);
-    Optional<Property> findByAlarms(Alarm al);
+    Optional<Property> findByCameras(long cam);
+    Optional<Property> findByAlarms(long al);
 
 
     // find property by alarm id

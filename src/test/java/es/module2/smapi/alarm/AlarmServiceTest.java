@@ -56,7 +56,9 @@ class AlarmServiceTest {
     
 
     Alarm al1, al2, al3, al4;
+    Property prop1, prop2, prop3, prop4;
     AlarmDTO alDTO1, alDTO2, alDTO3, alDTO4;
+    Property prop;
         
     @BeforeEach
     void setUp() throws JsonProcessingException{
@@ -66,20 +68,25 @@ class AlarmServiceTest {
         al3 = buildAlarmObject(3);
         al4 = buildAlarmObject(4);
 
+        prop1 = buildPropertyObject(1);
+        prop2 = buildPropertyObject(2);
+        prop3 = buildPropertyObject(3);
+        prop4 = buildPropertyObject(4);
+        
+        al1.setProperty(prop1);
+        al2.setProperty(prop2);
+        al3.setProperty(prop3);
+        al4.setProperty(prop4);
 
         alDTO1 = buildAlarmDTO(1);
         alDTO2 = buildAlarmDTO(2);
         alDTO3 = buildAlarmDTO(3);
         alDTO4 = buildAlarmDTO(4);
 
-        Mockito.when(repository.findByPrivateId(alDTO1.getPrivateId())).thenReturn(Optional.of(al1));
-        Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(new Property("address","name",new Owner("username","name"))));
+        Mockito.when(repository.findByPropertyAndPrivateId(any(), alDTO1.getPrivateId())).thenReturn(Optional.of(al1));
+        Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop));
     }
 
-    @AfterEach
-    void cleanUp(){
-        repository.deleteAll();
-    }
         
     @Test
      void whenValidInputThenCreateAlarm() throws IOException, Exception, AlarmAlreadyExistsException{
@@ -96,7 +103,7 @@ class AlarmServiceTest {
         Mockito.when(repository.saveAndFlush(any(Alarm.class))).thenReturn(al1);
 
         Alarm result = service.updateAlarm(alDTO1);
-
+        System.out.println(result);
         assertTrue(al1.equals(result));
     }
 
@@ -104,28 +111,18 @@ class AlarmServiceTest {
      void whenValidInputThenGetAlarm() throws IOException, Exception, AlarmAlreadyExistsException {
 
 
-        Alarm found= service.getAlarm(al1.getPrivateId());
+        Alarm found= service.getAlarm(al1.getId());
 
         assertThat(found).isNotNull();
         assertTrue(found.equals(al1));
     }
 
-    @Test
-     void whenValidInputThenDeleteAlarm() throws IOException, Exception, AlarmAlreadyExistsException {
-
-
-        int found= service.deleteAlarm(al1.getPrivateId());
-
-        assertTrue(found==1);
-    }
 
 
     Alarm buildAlarmObject(long id){
         Alarm al = new Alarm();
-        Property prop= new Property("address"+id,"name"+id,new Owner("username","name"));
         al.setId(id);
         al.setPrivateId( id);
-        al.setProperty(prop);
         propRepository.saveAndFlush(prop);
         return al;
     }
@@ -136,6 +133,17 @@ class AlarmServiceTest {
         al.setPropertyAddress("Address"+id);
         al.setPropertyName("name"+id);
         return al;
+    }
+
+    Property buildPropertyObject(long id){
+        Property prop = new Property();
+        Owner ow= new Owner("username"+id,"name"+id);
+        prop.setId(id);
+        prop.setName("Name" + id);
+        prop.setAddress("address"  + id);
+        prop.setOwner(ow);
+        // owRepository.saveAndFlush(ow);
+        return prop;
     }
 	
 	
