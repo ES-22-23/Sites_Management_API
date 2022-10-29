@@ -59,9 +59,9 @@ class PropertyRepositoryTests {
         // al.setId(0);
         // prop1.getAlarms().add(al);
 
-        propRepository.saveAndFlush(prop1);
-        propRepository.saveAndFlush(prop2);
-        propRepository.saveAndFlush(prop3);
+        prop1 = propRepository.saveAndFlush(prop1);
+        prop2 = propRepository.saveAndFlush(prop2);
+        prop3 = propRepository.saveAndFlush(prop3);
 
         propDTO1 = buildPropertyDTO(1);
         propDTO2 = buildPropertyDTO(2);
@@ -98,12 +98,12 @@ class PropertyRepositoryTests {
         // test the query method of interest
         Optional<Property> result = propRepository.findByNameAndAddress(propDTO1.getName(),propDTO1.getAddress());
         assertTrue(result.isPresent());
+        assertEquals(prop1, result.get());
 	}
 
 
     @Test
 	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
-
 
         int result = propRepository.deleteByNameAndAddress(propDTO3.getName(),propDTO3.getAddress());
         assertTrue(result==1);
@@ -112,26 +112,9 @@ class PropertyRepositoryTests {
     @Test
 	void whenDeletePropNotInRepThenReturnZero() {
 
-
         int result = propRepository.deleteByNameAndAddress("randomNAme","randomAddress");
         assertTrue(result==0);
 	}
-
-    // @Test
-	// void whenFindPropByCameraThenReturnProp() {
-
-    //     // test the query method of interest
-    //     Optional<Property> result = propRepository.findByCameras(cam);
-    //     assertTrue(result.isPresent());
-	// }
-
-    //     @Test
-	// void whenFindPropByAlarmThenReturnProp() {
-
-    //     // test the query method of interest
-    //     Optional<Property> result = propRepository.findByAlarms(al);
-    //     assertTrue(result.isPresent());
-	// }	
 
     Property buildPropertyObject(long id){
         Property prop = new Property();

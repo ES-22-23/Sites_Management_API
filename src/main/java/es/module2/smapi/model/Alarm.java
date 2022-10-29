@@ -41,10 +41,10 @@ public class Alarm implements Serializable{
   @Column(name = "alarm_id", nullable = false)
   private long id;
 
-  @Column(name = "private_id",nullable = false,unique=true)
+  @Column(name = "private_id",nullable = false)
   private long privateId;
 
-  @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @JoinColumn(name = "property_id", nullable = false)
   @JsonIgnoreProperties("alarms")
   @JsonIdentityReference(alwaysAsId = true)
@@ -56,13 +56,9 @@ public class Alarm implements Serializable{
     this.privateId = private_id;
   }
 
-
-
-
     public void convertDTOtoObject(AlarmDTO dto){
         this.setPrivateId(dto.getPrivateId());
     }
- 
 
   public long getId() {
     return this.id;

@@ -20,6 +20,8 @@ import org.springframework.validation.annotation.Validated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import es.module2.smapi.exceptions.AlarmAlreadyExistsException;
+import es.module2.smapi.exceptions.PropertyDoesNotExistException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,7 +44,7 @@ class AlarmController {
         try {
             al = service.createAlarm(alarmDTO);
             return new ResponseEntity<>(al, HttpStatus.CREATED);
-        } catch (AlarmAlreadyExistsException e) {
+        } catch (AlarmAlreadyExistsException | PropertyDoesNotExistException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

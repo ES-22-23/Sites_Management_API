@@ -51,7 +51,7 @@ public class Property implements Serializable{
   private String address;
 
 
-  @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @JoinColumn(name = "username", nullable = false)
   @JsonIgnoreProperties("properties")
   @JsonIdentityReference(alwaysAsId = true)
@@ -61,7 +61,7 @@ public class Property implements Serializable{
 
 
   @Column(name = "cameras")
-  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
+  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.LAZY,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
   private List<Camera> cameras= new ArrayList<Camera>();
@@ -69,7 +69,7 @@ public class Property implements Serializable{
 
 
   @Column(name = "alarms")
-  @OneToMany(targetEntity = Alarm.class, mappedBy = "property", fetch = FetchType.EAGER,
+  @OneToMany(targetEntity = Alarm.class, mappedBy = "property", fetch = FetchType.LAZY,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
   private List<Alarm> alarms=new ArrayList<Alarm>();

@@ -20,29 +20,4 @@ public class OwnerDTO {
     @NonNull
     private String propertyAddress;
 
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPropertyAddress() {
-        return this.propertyAddress;
-    }
-
-    public void setPropertyAddress(String propertyAddress) {
-        this.propertyAddress = propertyAddress;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

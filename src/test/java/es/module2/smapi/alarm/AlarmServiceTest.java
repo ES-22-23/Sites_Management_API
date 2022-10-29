@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import static org.mockito.ArgumentMatchers.any;
-
+import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -83,14 +83,14 @@ class AlarmServiceTest {
         alDTO3 = buildAlarmDTO(3);
         alDTO4 = buildAlarmDTO(4);
 
-        Mockito.when(repository.findByPropertyAndPrivateId(any(), alDTO1.getPrivateId())).thenReturn(Optional.of(al1));
-        Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop));
+        Mockito.when(repository.findByPropertyAndPrivateId(any(), eq(alDTO1.getPrivateId()))).thenReturn(Optional.of(al1));
     }
 
         
     @Test
      void whenValidInputThenCreateAlarm() throws IOException, Exception, AlarmAlreadyExistsException{
-
+        
+        Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop4));
         Mockito.when(repository.saveAndFlush(any(Alarm.class))).thenReturn(al4);
 
         Alarm result = service.createAlarm(alDTO4);
@@ -100,6 +100,7 @@ class AlarmServiceTest {
     @Test
     void whenValidInputThenUpdateAlarm() throws IOException, Exception, AlarmAlreadyExistsException {
 
+        Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop1));
         Mockito.when(repository.saveAndFlush(any(Alarm.class))).thenReturn(al1);
 
         Alarm result = service.updateAlarm(alDTO1);
@@ -110,7 +111,8 @@ class AlarmServiceTest {
     @Test
      void whenValidInputThenGetAlarm() throws IOException, Exception, AlarmAlreadyExistsException {
 
-
+        Mockito.when(propRepository.findByNameAndAddress(prop1.getName(),prop1.getAddress())).thenReturn(Optional.of(prop1));
+        Mockito.when(repository.findById(al1.getId())).thenReturn(Optional.of(al1));
         Alarm found= service.getAlarm(al1.getId());
 
         assertThat(found).isNotNull();
@@ -123,7 +125,6 @@ class AlarmServiceTest {
         Alarm al = new Alarm();
         al.setId(id);
         al.setPrivateId( id);
-        propRepository.saveAndFlush(prop);
         return al;
     }
 
@@ -142,7 +143,7 @@ class AlarmServiceTest {
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);
         prop.setOwner(ow);
-        // owRepository.saveAndFlush(ow);
+        propRepository.saveAndFlush(prop);
         return prop;
     }
 	

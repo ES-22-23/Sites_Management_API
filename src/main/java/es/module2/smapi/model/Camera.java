@@ -48,7 +48,7 @@ public class Camera implements Serializable{
   @Column(name = "private_id",nullable = false)
   private long privateId;
 
-  @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @JoinColumn(name = "property_id", nullable = false)
   @JsonIgnoreProperties("cameras")
   @JsonIdentityReference(alwaysAsId = true)

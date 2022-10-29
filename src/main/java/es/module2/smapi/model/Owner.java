@@ -43,7 +43,7 @@ public class Owner implements Serializable{
   private String name;
 
   @Column(name = "properties")
-  @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.EAGER,
+  @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.LAZY,
           cascade = CascadeType.ALL)
   @JsonIdentityReference(alwaysAsId = true)
   private List<Property> properties=new ArrayList<Property>();

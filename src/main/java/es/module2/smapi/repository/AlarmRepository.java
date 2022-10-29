@@ -11,5 +11,4 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     Optional<Alarm> findByPropertyAndPrivateId(Property prop, long id);
     @Transactional 
     int deleteByPropertyAndPrivateId(Property prop, long id);
-    int deleteById(long id);
 }
