@@ -18,7 +18,8 @@ jobs:
           path: ~/artifacts
           destination: artifact-file
   test:
-    machine: true
+    machine: true 
+    env: CODACY_PROJECT_TOKEN = ${{secrets.CODACY_PROJECT_TOKEN}}
     steps:
       - checkout
       - run: 
@@ -33,6 +34,10 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/junit
+      - run:
+          name: Code Coverage
+          command: |
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r codeCoverageReport
           
 workflows:
   build-and-test:
