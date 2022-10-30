@@ -1,103 +1,71 @@
 package es.module2.smapi.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import es.module2.smapi.datamodel.OwnerDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Objects;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="OWNER")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 public class Owner implements Serializable{
 
   @Id
   @Column(name = "username", nullable = false)
   private String username;
 
-  @Column(name = "password",nullable = false)
-  private String password;
+  @Column(name = "email",nullable = false)
+  private String email;
   
   @Column(name = "name",nullable = false)
   private String name;
 
   @Column(name = "properties")
-  @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.EAGER,
+  @OneToMany(targetEntity = Property.class, mappedBy = "owner", fetch = FetchType.LAZY,
           cascade = CascadeType.ALL)
-  private Set<Property> properties;
+  @JsonIdentityReference(alwaysAsId = true)
+  private List<Property> properties=new ArrayList<Property>();
 
-  public Owner(String username,String password,String name) {
-
-    this.username=username;
-    this.password=password;
-    this.name=name;
-  }
-
-  public Set<Property> getProperties() {
-    return this.properties;
-  }
-
-  public void setProperties(Set<Property> properties) {
-    this.properties = properties;
-  }
-
-  public String getUsername() {
-    return this.username;
-  }
-
-  public void setUsername(String username) {
+  public Owner(String username, String email, String name){
     this.username = username;
-  }
-
-  public String getPassword() {
-    return this.password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(String name) {
+    this.email = email;
     this.name = name;
   }
 
-  @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Owner)) {
-            return false;
-        }
-        Owner owner = (Owner) o;
-        return  Objects.equals(username, owner.username);
+  public void convertDTOtoObject(OwnerDTO dto){
+      this.setUsername(dto.getUsername());
+      this.setEmail(dto.getEmail());
+      this.setName(dto.getName());
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(username, password, name);
-  }
 
   @Override
   public String toString() {
     return "{" +
-      ", username='" + getUsername() + "'" +
-      ", password='" + getPassword() + "'" +
+      " username='" + getUsername() + "'" +
+      ", email='" + getEmail() + "'" +
       ", name='" + getName() + "'" +
       "}";
   }
-  
+
 }

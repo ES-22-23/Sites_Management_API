@@ -1,22 +1,22 @@
 package es.module2.smapi.owner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
-import java.util.List;
-import es.module2.smapi.repository.OwnerRepository;
-import es.module2.smapi.model.Owner;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-
-import java.util.List;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.repository.OwnerRepository;
 
 
 @DataJpaTest
 class OwnerRepositoryTests {
-
-
 
 	@Autowired
     private OwnerRepository ownerRepository;
@@ -24,26 +24,25 @@ class OwnerRepositoryTests {
 	@Autowired
     private TestEntityManager entityManager;
 
-
 	@Test
 	void whenFindAlexByNameThenReturnAlexOwner() {
         Owner alex = new Owner( "alex@deti.com","1234","alex");
-        entityManager.persistAndFlush(alex); //ensure data is persisted at this point
+        alex = entityManager.persistAndFlush(alex); //ensure data is persisted at this point
 
         // test the query method of interest
-        Owner found = ownerRepository.findByName(alex.getName());
-        assertThat( found ).isEqualTo(alex);
-	}
+        Optional<Owner> found = ownerRepository.findByName(alex.getName());
+        assertEquals(alex, found.get());
+    }
 
 
 	@Test
 	void whenFindBobByUsernameThenReturnAlexOwner() {
         Owner bob = new Owner( "bob@deti.com","1234","bob");
-        entityManager.persistAndFlush(bob); //ensure data is persisted at this point
+        bob = entityManager.persistAndFlush(bob); //ensure data is persisted at this point
 
         // test the query method of interest
-        Owner found = ownerRepository.findByUsername(bob.getUsername());
-        assertThat( found ).isEqualTo(bob);
+        Optional<Owner> found = ownerRepository.findByUsername(bob.getUsername());
+        assertEquals(bob, found.get());
 	}
 	
 
@@ -51,15 +50,15 @@ class OwnerRepositoryTests {
     @Test
 	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
         Owner alex =  new Owner( "alex@deti.com","1234","alex");
-        entityManager.persistAndFlush(alex); //ensure data is persisted at this point
+        alex = entityManager.persistAndFlush(alex); //ensure data is persisted at this point
 
         // test the query method of interest
-        Owner found = ownerRepository.findByName(alex.getName());
-        assertThat( found ).isEqualTo(alex);
+        Optional<Owner> found = ownerRepository.findByName(alex.getName());
+        assertEquals(alex, found.get());
 
         ownerRepository.deleteByUsername(alex.getUsername());
         List<Owner> found2 = ownerRepository.findAll();
-        assertThat(found2.isEmpty()).isTrue();
-	}
+        assertTrue(found2.isEmpty());
+    }
 
 }

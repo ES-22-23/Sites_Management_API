@@ -1,65 +1,104 @@
 package es.module2.smapi.camera;
 
-import org.junit.jupiter.api.Test;
-import java.util.List;
-import es.module2.smapi.repository.CameraRepository;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.model.Owner;
-import es.module2.smapi.model.Camera;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import es.module2.smapi.datamodel.CameraDTO;
+import es.module2.smapi.model.Camera;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
+import es.module2.smapi.repository.CameraRepository;
+import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.repository.PropertyRepository;
 
 @DataJpaTest
 class CameraRepositoryTests {
 
-
-
 	@Autowired
-    private CameraRepository camRepository;
+    private CameraRepository repository;
 
-	@Autowired
-    private TestEntityManager entityManager;
+    @Autowired
+    private PropertyRepository propertyRepository;
 
+    @Autowired
+    private OwnerRepository ownerRepository;
 
-	@Test
-	void whenFindPropByAddressThenReturnProp() {
-        Camera cam1 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
-        entityManager.persistAndFlush(cam1); //ensure data is persisted at this point
+    Camera cam1, cam2, cam3, cam4;
+    CameraDTO camDTO1, camDTO2, camDTO3, camDTO4;
+    Property prop1, prop2, prop3, prop4;
+        
+    @BeforeEach
+    void setUp() throws JsonProcessingException{
+        prop1 = buildPropertyObject(1);
+        prop2 = buildPropertyObject(2);
+        prop3 = buildPropertyObject(3);
+        prop4 = buildPropertyObject(4);
 
-        // test the query method of interest
-        Camera found = camRepository.findById(cam1.getId());
-        assertThat( found ).isEqualTo(cam1);
-	}
+        cam1 = buildCameraObject(1);
+        cam2 = buildCameraObject(2);
+        cam3 = buildCameraObject(3);
+        cam4 = buildCameraObject(4);
 
+        cam1.setProperty(prop1);
+        cam2.setProperty(prop2);
+        cam3.setProperty(prop3);
+        cam4.setProperty(prop4);
 
-	@Test
-	void whenFindPropByNameThenReturnProp() {
-        Camera cam2 = new Camera(new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
+        repository.saveAndFlush(cam1);
+        repository.saveAndFlush(cam2);
+        repository.saveAndFlush(cam3);
 
-        entityManager.persistAndFlush(cam2); //ensure data is persisted at this point
+        camDTO1 = buildCameraDTO(1);
+        camDTO2 = buildCameraDTO(2);
+        camDTO3 = buildCameraDTO(3);
+        camDTO4 = buildCameraDTO(4);
+    }
 
-        // test the query method of interest
-        Camera found = camRepository.findById(cam2.getId());
-        assertThat( found ).isEqualTo(cam2);
-	}
+    @AfterEach
+    void cleanUp(){
+        repository.deleteAll();
+    }
 
     @Test
-	void whenDeletePropInRepositoryThenPropNoLongerInRepository() {
-        Camera cam3 = new Camera(new Property( "address2","DETI",new Owner( "alex@deti.com","1234","alex")));
-        entityManager.persistAndFlush(cam3); //ensure data is persisted at this point
+	void whenFindCameraByPropAndPrivateIDThenReturnProp() {
 
-        // test the query method of interest
-        Camera found = camRepository.findById(cam3.getId());
-        assertThat( found ).isEqualTo(cam3);
-
-        camRepository.deleteById(cam3.getId());
-        List<Camera> found2 = camRepository.findAll();
-        assertThat(found2.isEmpty()).isTrue();
+        Optional<Camera> result = repository.findByPropertyAndPrivateId(prop1,camDTO1.getPrivateId());
+        assertTrue(result.isPresent());
 	}
-	
 
+    Camera buildCameraObject(long id){
+        Camera al = new Camera();
+        al.setPrivateId( id);
+        return al;
+    }
+
+    CameraDTO buildCameraDTO(long id){
+        CameraDTO al = new CameraDTO();
+        al.setPrivateId(id);
+        al.setPropertyAddress("Address"+id);
+        al.setPropertyName("name"+id);
+        return al;
+    }
+	
+    Property buildPropertyObject(long id){
+        Property prop = new Property();
+        Owner ow= new Owner("username"+id,"email"+id,"name"+id);
+        ow = ownerRepository.saveAndFlush(ow);
+        prop.setId(id);
+        prop.setName("Name" + id);
+        prop.setAddress("address"  + id);
+        prop.setOwner(ow);
+        prop = propertyRepository.saveAndFlush(prop);
+        ow.getProperties().add(prop);
+        return prop;
+    }
 }

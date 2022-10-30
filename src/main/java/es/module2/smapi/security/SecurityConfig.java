@@ -4,7 +4,9 @@ import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +17,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 
 @EnableWebSecurity
 @KeycloakConfiguration
+@ConditionalOnProperty(name = "keycloak.enabled", havingValue = "true", matchIfMissing = true)
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Autowired
@@ -40,22 +43,10 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/newOwner").hasRole("admin")
-                .antMatchers("/getOwner").hasAnyRole("user", "admin")
-                .antMatchers("/updateOwner").hasAnyRole("user", "admin")
-                .antMatchers("/deleteOwner").hasRole("admin")
-                .antMatchers("/newProperty").hasRole("admin")
-                .antMatchers("/getProperty").hasRole("admin")
-                .antMatchers("/updateProperty").hasRole("admin")
-                .antMatchers("/deleteProperty").hasRole("admin")
-                .antMatchers("/newAlarm").hasRole("admin")
-                .antMatchers("/getAlarm").hasRole("admin")
-                .antMatchers("/updateAlarm").hasRole("admin")
-                .antMatchers("/deleteAlarm").hasRole("admin")
-                .antMatchers("/newCamera").hasRole("admin")
-                .antMatchers("/getCamera").hasRole("admin")
-                .antMatchers("/updateCamera").hasRole("admin")
-                .antMatchers("/deleteCamera").hasRole("admin")
+                .antMatchers(HttpMethod.GET).hasAnyRole("user", "admin")
+                .antMatchers(HttpMethod.POST).hasRole("admin")
+                .antMatchers(HttpMethod.PUT).hasRole("admin")
+                .antMatchers(HttpMethod.DELETE).hasRole("admin")
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -1,46 +1,61 @@
 package es.module2.smapi.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import es.module2.smapi.datamodel.AlarmDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-
-import javax.persistence.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="alarm")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Alarm implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.AUTO) 
+  @GeneratedValue(strategy = GenerationType.IDENTITY) 
   @Column(name = "alarm_id", nullable = false)
   private long id;
 
+  @Column(name = "private_id",nullable = false)
+  private long privateId;
 
-
-  @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-  @JoinColumn(name = "property_id", referencedColumnName = "property_id")
+  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+  @JoinColumn(name = "property_id", nullable = false)
   @JsonIgnoreProperties("alarms")
+  @JsonIdentityReference(alwaysAsId = true)
   //@JsonIgnore
   private Property property;
 
-  public Alarm(Property property) {
-    this.property=property;
+  public Alarm(long private_id, Property property) {
+    this.property = property;
+    this.privateId = private_id;
   }
 
+    public void convertDTOtoObject(AlarmDTO dto){
+        this.setPrivateId(dto.getPrivateId());
+    }
 
   public long getId() {
     return this.id;
@@ -48,6 +63,14 @@ public class Alarm implements Serializable{
 
   public void setId(long id) {
     this.id = id;
+  }
+
+  public long getPrivateId() {
+    return this.privateId;
+  }
+
+  public void setPrivateId(long privateId) {
+    this.privateId = privateId;
   }
 
   public Property getProperty() {
@@ -60,7 +83,6 @@ public class Alarm implements Serializable{
 
 
 
-
   @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -69,13 +91,12 @@ public class Alarm implements Serializable{
             return false;
         }
         Alarm alarm = (Alarm) o;
-        return id == alarm.id ;
+        return id == alarm.id && Objects.equals(privateId, alarm.privateId) && Objects.equals(property, alarm.property);
   }
-
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, property);
+    return Objects.hash(id, privateId, property);
   }
 
 
@@ -83,8 +104,9 @@ public class Alarm implements Serializable{
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
+      ", private_id='" + getPrivateId() + "'" +
+      ", property='" + getProperty() + "'" +
       "}";
   }
 
- 
 }
