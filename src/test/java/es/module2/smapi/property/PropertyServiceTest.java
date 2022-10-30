@@ -1,111 +1,118 @@
 package es.module2.smapi.property;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+
 import java.io.IOException;
+import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.google.gson.Gson;
-import org.junit.jupiter.api.AfterEach;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
+import es.module2.smapi.datamodel.PropertyDTO;
+import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
-import es.module2.smapi.service.SMAPIService;
-import es.module2.smapi.SmapiApplication;
+import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import es.module2.smapi.service.PropertyService;
 
-
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
-@AutoConfigureMockMvc
-@AutoConfigureTestDatabase
+@ExtendWith(MockitoExtension.class)
 class PropertyServiceTest {
 
 
-    @Autowired
+    @Mock(lenient = true)
     private PropertyRepository repository;
     
-    @Autowired
-    private SMAPIService service;
 
-    Gson gson = new Gson();
-
-    @AfterEach
-    public void resetDb() {
-        repository.deleteAll();
-    }
-        
+    @Mock(lenient = true)
+    private OwnerRepository owRepository; 
 
 
-    @Test
-     void whenValidInputThenCreateProperty() throws IOException, Exception {
-        Property prop1 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
-
-        service.createProperty(prop1);
-
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop1.getId());
-        repository.deleteAll();
-    }
+    @InjectMocks
+    private PropertyService service;
 
 
-    @Test
-    void whenValidInputThenUpdateProperty() throws IOException, Exception {
-        Property prop2 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
+    Property prop1, prop2, prop3, prop4;
+    PropertyDTO propDTO1, propDTO2, propDTO3, propDTO4;
+
+    @BeforeEach
+    void setUp() throws JsonProcessingException{
+
+        prop1 = buildPropertyObject(1);
+        prop2 = buildPropertyObject(2);
+        prop3 = buildPropertyObject(3);
+        prop4 = buildPropertyObject(4);
 
 
-        repository.save(prop2);
+        propDTO1 = buildPropertyDTO(1);
+        propDTO2 = buildPropertyDTO(2);
+        propDTO3 = buildPropertyDTO(3);
+        propDTO4 = buildPropertyDTO(4);
 
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop2.getId());
-
-        prop2.setAddress("address2");
-        service.updateProperty(prop2);
-        List<Property> found2 = repository.findAll();
-        assertThat(found2).extracting(Property::getAddress).containsOnly(prop2.getAddress());
-        repository.deleteAll();
+        Mockito.when(repository.findByNameAndAddress(propDTO1.getName(), propDTO1.getAddress())).thenReturn(Optional.of(prop1));
+        Mockito.when(owRepository.findByUsername(any())).thenReturn(Optional.of(new Owner("username","email", "name")));
     }
 
 
     @Test
-    void whenValidInputThenDeleteProperty() throws IOException, Exception {
-        Property prop3 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
+     void whenValidInputThenCreateProperty() throws IOException, Exception, PropertyAlreadyExistsException{
 
+        Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop4);
 
-        repository.save(prop3);
+        Property result = service.createProperty(propDTO4);
 
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop3.getId());
-
-        service.deleteProperty(prop3.getId());
-        List<Property> found2 = repository.findAll();
-        assertThat(found2 == null);
-        repository.deleteAll();
+        assertEquals(prop4, result);
     }
+
 
     @Test
-     void whenValidInputThenGetProperty() throws IOException, Exception {
-        Property prop4 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
+    void whenValidInputThenUpdateProperty() throws IOException, Exception, PropertyAlreadyExistsException {
 
-        repository.save(prop4);
+        Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop1);
 
-        List<Property> found = repository.findAll();
-        assertThat(found).extracting(Property::getId).containsOnly(prop4.getId());
+        Property result = service.updateProperty(propDTO1);
 
-
-        Property found2= service.getProperty(prop4.getAddress());
-
-        assertThat(found.equals(found2));
-        repository.deleteAll();
+        assertTrue(prop1.equals(result));
     }
-	
-	
-	
+
+
+
+    @Test
+     void whenValidInputThenGetProperty() throws IOException, Exception, PropertyAlreadyExistsException {
+   
+        Property found= service.getProperty(prop1.getName(), prop1.getAddress());
+
+        assertThat(found).isNotNull();
+        assertThat(found.equals(prop1));
+    }
+    Property buildPropertyObject(long id){
+        Property prop = new Property();
+        Owner ow= new Owner("username"+id,"email"+id,"name"+id);
+        prop.setId(id);
+        prop.setName("Name" + id);
+        prop.setAddress("address"  + id);
+        prop.setOwner(ow);
+        owRepository.saveAndFlush(ow);
+        return prop;
+    }
+
+    PropertyDTO buildPropertyDTO(long id){
+        PropertyDTO prop = new PropertyDTO();
+        prop.setName("Name" + id);
+        prop.setAddress("address"  + id);
+        prop.setOwnerUsername("username"+id);
+        return prop;
+    }
 
  }

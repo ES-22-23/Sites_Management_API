@@ -1,112 +1,131 @@
 package es.module2.smapi.camera;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-import es.module2.smapi.SmapiApplication;
+import es.module2.smapi.datamodel.CameraDTO;
 import es.module2.smapi.model.Camera;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.CameraRepository;
-import es.module2.smapi.service.SMAPIService;
+import es.module2.smapi.repository.PropertyRepository;
+import es.module2.smapi.service.CameraService;
 
-
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
-@AutoConfigureMockMvc
-@AutoConfigureTestDatabase
-class CameraServiceTest {
-
-
-    @Autowired
-    private CameraRepository repository;
+@ExtendWith(MockitoExtension.class)
+public class CameraServiceTest {
     
-    @Autowired
-    private SMAPIService service;
+    @Mock(lenient = true)
+    private PropertyRepository propRepository;
+    
 
-    Gson gson = new Gson();
+    @Mock(lenient = true)
+    private CameraRepository repository; 
 
-    @AfterEach
-    public void resetDb() {
-        repository.deleteAll();
-    }
+
+    @InjectMocks
+    private CameraService service;
+    
+
+    Camera cam1, cam2, cam3, cam4;
+    Property prop1, prop2, prop3, prop4;
+    CameraDTO camDTO1, camDTO2, camDTO3, camDTO4;
         
+    @BeforeEach
+    void setUp() throws JsonProcessingException{
 
+        cam1 = buildCameraObject(1);
+        cam2 = buildCameraObject(2);
+        cam3 = buildCameraObject(3);
+        cam4 = buildCameraObject(4);
 
-    @Test
-     void whenValidInputThenCreateCamera() throws IOException, Exception {
-        Camera cam1 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+        prop1 = buildPropertyObject(1);
+        prop2 = buildPropertyObject(2);
+        prop3 = buildPropertyObject(3);
+        prop4 = buildPropertyObject(4);
+        
+        cam1.setProperty(prop1);
+        cam2.setProperty(prop2);
+        cam3.setProperty(prop3);
+        cam4.setProperty(prop4);
 
-        service.createCamera(cam1);
+        camDTO1 = buildCameraDTO(1);
+        camDTO2 = buildCameraDTO(2);
+        camDTO3 = buildCameraDTO(3);
+        camDTO4 = buildCameraDTO(4);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam1.getId());
-        repository.deleteAll();
-    }
-
-
-    @Test
-    void whenValidInputThenUpdateCamera() throws IOException, Exception {
-        Property prop = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
-        Camera cam2 = new Camera(prop);
-
-        repository.save(cam2);
-
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam2.getId());
-        prop.setAddress("Address2");
-        cam2.setProperty(prop);
-        service.updateCamera(cam2);
-        List<Camera> found2 = repository.findAll();
-        assertThat(found2).extracting(Camera::getProperty).containsOnly(prop);
-        repository.deleteAll();
-    }
-
-
-    @Test
-    void whenValidInputThenDeleteCamera() throws IOException, Exception {
-        Camera cam3 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
-
-
-        repository.save(cam3);
-
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam3.getId());
-
-        service.deleteCamera(cam3.getId());
-        List<Camera> found2 = repository.findAll();
-        assertThat(found2 == null);
-        repository.deleteAll();
+        Mockito.when(repository.findByPropertyAndPrivateId(any(), eq(camDTO1.getPrivateId()))).thenReturn(Optional.of(cam1));
     }
 
     @Test
-     void whenValidInputThenGetCamera() throws IOException, Exception {
-        Camera cam3 = new Camera(new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex")));
+     void whenValidInputThenCreateCamera() throws IOException, Exception{
+        
+        Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop4));
+        Mockito.when(repository.saveAndFlush(any(Camera.class))).thenReturn(cam4);
 
-        repository.save(cam3);
+        Camera result = service.createCamera(camDTO4);
 
-        List<Camera> found = repository.findAll();
-        assertThat(found).extracting(Camera::getId).containsOnly(cam3.getId());
-
-
-        Camera found2= service.getCamera(cam3.getId());
-
-        assertThat(found.equals(found2));
-        repository.deleteAll();
+        assertEquals(cam4, result);
     }
-	
-	
-	
+    @Test
+    void whenValidInputThenUpdateAlarm() throws IOException, Exception {
 
- }
+        Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop1));
+        Mockito.when(repository.saveAndFlush(any(Camera.class))).thenReturn(cam1);
+
+        Camera result = service.updateCamera(camDTO1);
+        assertTrue(cam1.equals(result));
+    }
+
+    @Test
+     void whenValidInputThenGetAlarm() throws IOException, Exception {
+
+        Mockito.when(propRepository.findByNameAndAddress(prop1.getName(),prop1.getAddress())).thenReturn(Optional.of(prop1));
+        Mockito.when(repository.findById(cam1.getId())).thenReturn(Optional.of(cam1));
+        Camera found= service.getCamera(cam1.getId());
+
+        assertNotNull(found);
+        assertEquals(cam1,found);
+    }
+
+    Camera buildCameraObject(long id){
+        Camera cam = new Camera();
+        cam.setId(id);
+        cam.setPrivateId( id);
+        return cam;
+    }
+
+    CameraDTO buildCameraDTO(long id){
+        CameraDTO cam = new CameraDTO();
+        cam.setPrivateId(id);
+        cam.setPropertyAddress("Address"+id);
+        cam.setPropertyName("name"+id);
+        return cam;
+    }
+
+    Property buildPropertyObject(long id){
+        Property prop = new Property();
+        Owner ow= new Owner("username"+id, "email"+id, "name"+id);
+        prop.setId(id);
+        prop.setName("Name" + id);
+        prop.setAddress("address"  + id);
+        prop.setOwner(ow);
+        propRepository.saveAndFlush(prop);
+        return prop;
+    }
+}

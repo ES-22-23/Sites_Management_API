@@ -1,33 +1,43 @@
 package es.module2.smapi.model;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import es.module2.smapi.datamodel.PropertyDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Set;
-
-
-import javax.persistence.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="property")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Property implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.AUTO) 
+  @GeneratedValue(strategy = GenerationType.IDENTITY) 
   @Column(name = "property_id", nullable = false)
   private long id;
 
@@ -39,46 +49,38 @@ public class Property implements Serializable{
   private String address;
 
 
-  @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-  @JoinColumn(name = "username", referencedColumnName = "username")
-  @JsonIgnoreProperties("properties")
-  //@JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+  @JoinColumn(name = "username", nullable = false)
+  @JsonIdentityReference(alwaysAsId = true)
   private Owner owner;
 
 
 
   @Column(name = "cameras")
-  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
+  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.LAZY,
           cascade = CascadeType.ALL)
-  private Set<Camera> cameras;
+  @JsonIdentityReference(alwaysAsId = true)
+  private List<Camera> cameras= new ArrayList<Camera>();
+
+
 
   @Column(name = "alarms")
-  @OneToMany(targetEntity = Camera.class, mappedBy = "property", fetch = FetchType.EAGER,
+  @OneToMany(targetEntity = Alarm.class, mappedBy = "property", fetch = FetchType.LAZY,
           cascade = CascadeType.ALL)
-  private Set<Camera> alarms;
+  @JsonIdentityReference(alwaysAsId = true)
+  private List<Alarm> alarms=new ArrayList<Alarm>();
+
+
+
+
+
+
+
 
   public Property(String address,String name,Owner owner) {
     this.address=address;
     this.name=name;
     this.owner=owner;
-  }
-
-
-  public Set<Camera> getAlarms() {
-    return this.alarms;
-  }
-
-  public void setAlarms(Set<Camera> alarms) {
-    this.alarms = alarms;
-  }
-
-
-  public Set<Camera> getCameras() {
-    return this.cameras;
-  }
-
-  public void setCameras(Set<Camera> cameras) {
-    this.cameras = cameras;
   }
 
 
@@ -88,14 +90,6 @@ public class Property implements Serializable{
 
   public void setId(long id) {
     this.id = id;
-  }
-
-  public Owner getOwner() {
-    return this.owner;
-  }
-
-  public void setOwner(Owner owner) {
-    this.owner = owner;
   }
 
   public String getName() {
@@ -114,7 +108,39 @@ public class Property implements Serializable{
     this.address = address;
   }
 
+  public Owner getOwner() {
+    return this.owner;
+  }
 
+  public void setOwner(Owner owner) {
+    this.owner = owner;
+  }
+
+
+  public List<Camera> getCameras() {
+    return this.cameras;
+  }
+
+  public void setCameras(List<Camera> cameras) {
+    this.cameras = cameras;
+  }
+
+  public List<Alarm> getAlarms() {
+    return this.alarms;
+  }
+
+  public void setAlarms(List<Alarm> alarms) {
+    this.alarms = alarms;
+  }
+
+
+
+
+
+    public void convertDTOtoObject(PropertyDTO dto){
+        this.setAddress(dto.getAddress());
+        this.setName(dto.getName());
+    }
 
 
 
