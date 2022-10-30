@@ -86,9 +86,8 @@ class AlarmControllerTestIT {
 
 
     @Test
-     void testGetAllAlarms() throws IOException, Exception {
-        given().contentType(ContentType.JSON)
-        .post("/alarms")
+     void whenGetAllAlarmsThenReturnAllAlarms() throws IOException, Exception {
+        given().get("/alarms")
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()

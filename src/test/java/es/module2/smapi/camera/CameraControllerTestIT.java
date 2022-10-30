@@ -93,8 +93,8 @@ public class CameraControllerTestIT {
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
         .body("[0].id", is((int)cam1.getId())).and()
-        .body("[0].id", is((int)cam2.getId())).and()
-        .body("[0].id", is((int)cam3.getId()));
+        .body("[1].id", is((int)cam2.getId())).and()
+        .body("[2].id", is((int)cam3.getId()));
 
     }
 
