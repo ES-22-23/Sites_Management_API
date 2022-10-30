@@ -19,7 +19,8 @@ jobs:
           destination: artifact-file
   test:
     machine: true 
-    env: CODACY_PROJECT_TOKEN=9ad8eb74a4654417a0a879df076394b3
+    environment: 
+      {"CODACY_PROJECT_TOKEN":9ad8eb74a4654417a0a879df076394b3}
     steps:
       - checkout
       - run: 
