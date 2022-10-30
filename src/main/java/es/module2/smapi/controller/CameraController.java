@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.module2.smapi.datamodel.CameraDTO;
 import es.module2.smapi.exceptions.CameraAlreadyExistsException;
+import es.module2.smapi.exceptions.CameraDoesNotExistException;
+import es.module2.smapi.exceptions.PropertyDoesNotExistException;
 import es.module2.smapi.model.Camera;
 import es.module2.smapi.service.CameraService;
 
@@ -24,7 +26,6 @@ import es.module2.smapi.service.CameraService;
 @Validated
 class CameraController {
     private static final Logger log = LoggerFactory.getLogger(CameraController.class);
-
 
     @Autowired
     private CameraService service;
@@ -36,15 +37,15 @@ class CameraController {
         try {
             cam = service.createCamera(cameraDTO);
             return new ResponseEntity<>(cam, HttpStatus.CREATED);
-        } catch (CameraAlreadyExistsException e) {
+        } catch (CameraAlreadyExistsException | PropertyDoesNotExistException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/getCamera")
-    public ResponseEntity<Camera> getCamera(@RequestParam  long privateId) {
+    public ResponseEntity<Camera> getCamera(@RequestParam  long id) {
         log.info("GET Request -> get a Camera");
-        Camera cam = service.getCamera(privateId);
+        Camera cam = service.getCamera(id);
         if (cam == null){
             return new ResponseEntity<>(cam, HttpStatus.NOT_FOUND);
         }
@@ -54,23 +55,23 @@ class CameraController {
     @PostMapping("/updateCamera")
     public ResponseEntity<Camera> updateCamera(@RequestBody CameraDTO cameraDTO) {
         log.info("POST Request -> Update a new Camera");
-        Camera cam = service.updateCamera(cameraDTO);
-        if (cam == null){
-            return new ResponseEntity<>(cam, HttpStatus.NOT_MODIFIED);
+        Camera cam;
+        try {
+            cam = service.updateCamera(cameraDTO);
+            return new ResponseEntity<>(cam, HttpStatus.OK);
+        } catch (PropertyDoesNotExistException | CameraDoesNotExistException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
-        return new ResponseEntity<>(cam, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteCamera")
-    public ResponseEntity<Integer> deleteCamera(@RequestParam long privateId) {
+    public ResponseEntity<Integer> deleteCamera(@RequestParam long id) {
         log.info("DELETE Request -> Delete a new Camera");
 
-        int resp = service.deleteCamera(privateId);
+        int resp = service.deleteCamera(id);
         if (resp == 1){
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
-  
 }
-

@@ -29,10 +29,8 @@ import es.module2.smapi.repository.AlarmRepository;
 import es.module2.smapi.repository.PropertyRepository;
 import es.module2.smapi.service.AlarmService;
 
-
 @ExtendWith(MockitoExtension.class)
 class AlarmServiceTest {
-
 
     @Mock(lenient = true)
     private PropertyRepository propRepository;
@@ -40,7 +38,6 @@ class AlarmServiceTest {
 
     @Mock(lenient = true)
     private AlarmRepository repository; 
-
 
     @InjectMocks
     private AlarmService service;
@@ -76,7 +73,6 @@ class AlarmServiceTest {
 
         Mockito.when(repository.findByPropertyAndPrivateId(any(), eq(alDTO1.getPrivateId()))).thenReturn(Optional.of(al1));
     }
-
         
     @Test
      void whenValidInputThenCreateAlarm() throws IOException, Exception, AlarmAlreadyExistsException{
@@ -110,8 +106,6 @@ class AlarmServiceTest {
         assertTrue(found.equals(al1));
     }
 
-
-
     Alarm buildAlarmObject(long id){
         Alarm al = new Alarm();
         al.setId(id);
@@ -137,6 +131,4 @@ class AlarmServiceTest {
         propRepository.saveAndFlush(prop);
         return prop;
     }
-	
-
  }

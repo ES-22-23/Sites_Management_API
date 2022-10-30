@@ -30,8 +30,6 @@ public class AlarmService {
     @Autowired
     private PropertyRepository propRepository;
     
-    // CRUD Func Owner
-
     public Alarm createAlarm(AlarmDTO alarmDTO) throws AlarmAlreadyExistsException, PropertyDoesNotExistException {
         log.info("Inserting Alarm");
 
@@ -68,13 +66,9 @@ public class AlarmService {
 
         Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
 
-        System.out.println("RRRRRR");
-
         if (p1==null){
             return null;
         }
-
-        System.out.println("TTTTTTTT");
 
         Alarm alarm = alarmRepository.findByPropertyAndPrivateId(p1,alarmDTO.getPrivateId()).orElse(null);
 

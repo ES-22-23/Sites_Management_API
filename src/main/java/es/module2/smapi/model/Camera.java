@@ -22,11 +22,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Getter;
-
-import es.module2.smapi.datamodel.CameraDTO;
 
 
 @Entity
@@ -83,11 +81,6 @@ public class Camera implements Serializable{
   public void setProperty(Property property) {
     this.property = property;
   }
-
-
-    public void convertDTOtoObject(CameraDTO dto){
-        this.setPrivateId(dto.getPrivateId());
-    }
 
   @Override
     public boolean equals(Object o) {

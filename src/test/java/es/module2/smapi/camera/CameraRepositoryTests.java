@@ -1,5 +1,4 @@
-package es.module2.smapi.alarm;
-
+package es.module2.smapi.camera;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,19 +12,19 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import es.module2.smapi.datamodel.AlarmDTO;
-import es.module2.smapi.model.Alarm;
+import es.module2.smapi.datamodel.CameraDTO;
+import es.module2.smapi.model.Camera;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
-import es.module2.smapi.repository.AlarmRepository;
+import es.module2.smapi.repository.CameraRepository;
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
 
 @DataJpaTest
-class AlarmRepositoryTests {
+class CameraRepositoryTests {
 
 	@Autowired
-    private AlarmRepository repository;
+    private CameraRepository repository;
 
     @Autowired
     private PropertyRepository propertyRepository;
@@ -33,8 +32,8 @@ class AlarmRepositoryTests {
     @Autowired
     private OwnerRepository ownerRepository;
 
-    Alarm al1, al2, al3, al4;
-    AlarmDTO alDTO1, alDTO2, alDTO3, alDTO4;
+    Camera cam1, cam2, cam3, cam4;
+    CameraDTO camDTO1, camDTO2, camDTO3, camDTO4;
     Property prop1, prop2, prop3, prop4;
         
     @BeforeEach
@@ -44,24 +43,24 @@ class AlarmRepositoryTests {
         prop3 = buildPropertyObject(3);
         prop4 = buildPropertyObject(4);
 
-        al1 = buildAlarmObject(1);
-        al2 = buildAlarmObject(2);
-        al3 = buildAlarmObject(3);
-        al4 = buildAlarmObject(4);
+        cam1 = buildCameraObject(1);
+        cam2 = buildCameraObject(2);
+        cam3 = buildCameraObject(3);
+        cam4 = buildCameraObject(4);
 
-        al1.setProperty(prop1);
-        al2.setProperty(prop2);
-        al3.setProperty(prop3);
-        al4.setProperty(prop4);
+        cam1.setProperty(prop1);
+        cam2.setProperty(prop2);
+        cam3.setProperty(prop3);
+        cam4.setProperty(prop4);
 
-        repository.saveAndFlush(al1);
-        repository.saveAndFlush(al2);
-        repository.saveAndFlush(al3);
+        repository.saveAndFlush(cam1);
+        repository.saveAndFlush(cam2);
+        repository.saveAndFlush(cam3);
 
-        alDTO1 = buildAlarmDTO(1);
-        alDTO2 = buildAlarmDTO(2);
-        alDTO3 = buildAlarmDTO(3);
-        alDTO4 = buildAlarmDTO(4);
+        camDTO1 = buildCameraDTO(1);
+        camDTO2 = buildCameraDTO(2);
+        camDTO3 = buildCameraDTO(3);
+        camDTO4 = buildCameraDTO(4);
     }
 
     @AfterEach
@@ -70,23 +69,21 @@ class AlarmRepositoryTests {
     }
 
     @Test
-	void whenFindAlarmByPropAndPrivateIDThenReturnProp() {
+	void whenFindCameraByPropAndPrivateIDThenReturnProp() {
 
-        // test the query method of interest
-        Optional<Alarm> result = repository.findByPropertyAndPrivateId(prop1,alDTO1.getPrivateId());
+        Optional<Camera> result = repository.findByPropertyAndPrivateId(prop1,camDTO1.getPrivateId());
         assertTrue(result.isPresent());
 	}
 
-    Alarm buildAlarmObject(long id){
-        Alarm al = new Alarm();
-        al.setId(id);
+    Camera buildCameraObject(long id){
+        Camera al = new Camera();
         al.setPrivateId( id);
         return al;
     }
 
-    AlarmDTO buildAlarmDTO(long id){
-        AlarmDTO al = new AlarmDTO();
-        al.setPrivateId( id);
+    CameraDTO buildCameraDTO(long id){
+        CameraDTO al = new CameraDTO();
+        al.setPrivateId(id);
         al.setPropertyAddress("Address"+id);
         al.setPropertyName("name"+id);
         return al;

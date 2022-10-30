@@ -58,7 +58,7 @@ class AlarmController {
         log.info("POST Request -> Update a new Alarm");
         Alarm al = service.updateAlarm(alarmDTO);
         if (al == null){
-            return new ResponseEntity<>(al, HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
         return new ResponseEntity<>(al, HttpStatus.OK);
     }
