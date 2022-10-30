@@ -33,6 +33,8 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/junit
+      - store_artifacts:
+          path:  target
   
 workflows:
   build-and-test:
