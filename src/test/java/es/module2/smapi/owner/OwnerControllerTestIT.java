@@ -30,7 +30,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-class OwnerControllerIT {
+class OwnerControllerTestIT {
 
     @Autowired
     private MockMvc mvc;

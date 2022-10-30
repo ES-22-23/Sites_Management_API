@@ -32,7 +32,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = SmapiApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-class PropertyControllerIT {
+class PropertyControllerTestIT {
 
     @Autowired
     private MockMvc mvc;
