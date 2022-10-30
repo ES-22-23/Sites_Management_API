@@ -1,44 +1,31 @@
 package es.module2.smapi.property;
 
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import java.io.IOException;
-
-
-import org.junit.jupiter.api.AfterEach;
-
-import java.util.Optional;
-import es.module2.smapi.model.Owner;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.datamodel.PropertyDTO;
-import es.module2.smapi.service.PropertyService;
-import es.module2.smapi.SmapiApplication;
-import es.module2.smapi.repository.PropertyRepository;
-import es.module2.smapi.repository.OwnerRepository;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-
-import static org.mockito.ArgumentMatchers.any;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.mockito.ArgumentMatchers.any;
 
+import java.io.IOException;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
+import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.repository.PropertyRepository;
+import es.module2.smapi.service.PropertyService;
 
 @ExtendWith(MockitoExtension.class)
 class PropertyServiceTest {

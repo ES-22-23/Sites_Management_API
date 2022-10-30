@@ -1,45 +1,32 @@
 package es.module2.smapi.property;
 
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+
+import java.io.IOException;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.springframework.http.HttpStatus;
-import io.restassured.http.ContentType;
-
-import org.springframework.http.MediaType;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.model.Owner;
-import es.module2.smapi.datamodel.PropertyDTO;
-import es.module2.smapi.SmapiApplication;
-import es.module2.smapi.repository.PropertyRepository;
-import es.module2.smapi.repository.OwnerRepository;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import es.module2.smapi.SmapiApplication;
+import es.module2.smapi.datamodel.PropertyDTO;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
+import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.repository.PropertyRepository;
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-
-import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
-
-
-
-import static org.hamcrest.CoreMatchers.is;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = SmapiApplication.class)

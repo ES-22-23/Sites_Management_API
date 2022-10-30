@@ -1,30 +1,24 @@
 package es.module2.smapi.controller;
 
-import es.module2.smapi.datamodel.AlarmDTO;
-import es.module2.smapi.model.Alarm;
-import es.module2.smapi.service.AlarmService;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.validation.annotation.Validated;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import es.module2.smapi.datamodel.AlarmDTO;
 import es.module2.smapi.exceptions.AlarmAlreadyExistsException;
 import es.module2.smapi.exceptions.PropertyDoesNotExistException;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import es.module2.smapi.model.Alarm;
+import es.module2.smapi.service.AlarmService;
 
 @RestController
 @RequestMapping("/alarms")

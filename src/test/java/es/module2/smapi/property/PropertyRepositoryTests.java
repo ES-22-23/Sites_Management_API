@@ -1,29 +1,25 @@
 package es.module2.smapi.property;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.List;
-import es.module2.smapi.repository.PropertyRepository;
-import es.module2.smapi.repository.OwnerRepository;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.datamodel.PropertyDTO;
-import es.module2.smapi.model.Owner;
-import es.module2.smapi.model.Camera;
-import es.module2.smapi.model.Alarm;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import java.util.List;
-import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.Matchers.*;
+import es.module2.smapi.datamodel.PropertyDTO;
+import es.module2.smapi.model.Alarm;
+import es.module2.smapi.model.Camera;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
+import es.module2.smapi.repository.PropertyRepository;
 
 @DataJpaTest
 class PropertyRepositoryTests {

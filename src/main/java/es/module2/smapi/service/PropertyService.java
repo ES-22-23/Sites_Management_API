@@ -1,19 +1,16 @@
 package es.module2.smapi.service;
 
-import java.util.Optional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.module2.smapi.datamodel.PropertyDTO;
-import es.module2.smapi.model.Property;
-import es.module2.smapi.repository.PropertyRepository;
-import es.module2.smapi.repository.OwnerRepository;
-import es.module2.smapi.model.Owner;
 import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import es.module2.smapi.model.Owner;
+import es.module2.smapi.model.Property;
+import es.module2.smapi.repository.OwnerRepository;
+import es.module2.smapi.repository.PropertyRepository;
 
 
 

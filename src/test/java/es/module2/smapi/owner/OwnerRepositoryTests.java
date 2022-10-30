@@ -1,16 +1,10 @@
 package es.module2.smapi.owner;
 
-import org.junit.jupiter.api.Test;
-import java.util.List;
-import es.module2.smapi.repository.OwnerRepository;
-import es.module2.smapi.model.Owner;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-
-import java.util.List;
+import es.module2.smapi.repository.OwnerRepository;
 
 
 @DataJpaTest
