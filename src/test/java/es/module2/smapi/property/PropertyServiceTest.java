@@ -64,6 +64,7 @@ class PropertyServiceTest {
         Mockito.when(owRepository.findByUsername(any())).thenReturn(Optional.of(new Owner("username","email", "name")));
     }
 
+
     @Test
      void whenValidInputThenCreateProperty() throws IOException, Exception, PropertyAlreadyExistsException{
 
@@ -95,6 +96,7 @@ class PropertyServiceTest {
         assertThat(found).isNotNull();
         assertThat(found.equals(prop1));
     }
+
     Property buildPropertyObject(long id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email"+id,"name"+id);

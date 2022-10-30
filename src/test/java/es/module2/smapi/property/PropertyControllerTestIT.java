@@ -1,11 +1,9 @@
 package es.module2.smapi.property;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,6 +69,23 @@ class PropertyControllerTestIT {
     void cleanUp(){
         repository.deleteAll();
         owRepository.deleteAll();
+    }
+
+
+
+    @Test
+     void testGetAllProperties() throws IOException, Exception {
+
+        given().get("/properties")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("[0].name", is(prop1.getName())).and()
+        .body("[0].address", is(prop1.getAddress())).and()
+        .body("[1].name", is(prop2.getName())).and()
+        .body("[1].address", is(prop2.getAddress())).and()
+        .body("[2].name", is(prop3.getName())).and()
+        .body("[2].address", is(prop3.getAddress()));
     }
         
     @Test
@@ -139,6 +154,8 @@ class PropertyControllerTestIT {
         .body("name", is(prop1.getName())).and()
         .body("address", is(prop1.getAddress()));
     }
+
+
 
     Property buildPropertyObject(long id){
         Property prop = new Property();

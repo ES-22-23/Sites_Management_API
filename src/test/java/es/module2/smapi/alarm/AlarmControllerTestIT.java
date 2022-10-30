@@ -84,6 +84,21 @@ class AlarmControllerTestIT {
         propertyRepository.deleteAll();
     }
 
+
+    @Test
+     void testGetAllAlarms() throws IOException, Exception {
+        given().contentType(ContentType.JSON)
+        .post("/alarms")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("[0].id", is((int)al1.getId())).and()
+        .body("[1].id", is((int)al2.getId())).and()
+        .body("[2].id", is((int)al3.getId()));
+
+        
+    }
+
     @Test
      void whenValidInputThenCreateAlarm() throws IOException, Exception {
         given().contentType(ContentType.JSON).body(alDTO4)

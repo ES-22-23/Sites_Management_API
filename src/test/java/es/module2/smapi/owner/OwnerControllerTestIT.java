@@ -60,6 +60,19 @@ class OwnerControllerTestIT {
         repository.deleteAll();
     }
 
+
+    @Test
+     void whenGetAllOwnerThenReturnAllOwners() throws IOException, Exception {
+
+        given().get("/owners")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("[0].username", is(bobDTO.getUsername())).and()
+        .body("[0].email", is(bobDTO.getEmail()));
+
+    }
+
     @Test
      void whenValidInputThenCreateOwner() throws IOException, Exception {
 
