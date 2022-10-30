@@ -1,5 +1,7 @@
 package es.module2.smapi.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +29,17 @@ import es.module2.smapi.service.AlarmService;
 class AlarmController {
     private static final Logger log = LoggerFactory.getLogger(AlarmController.class);
 
-
     @Autowired
     private AlarmService service;
 
+    @GetMapping()
+    public ResponseEntity<List<Alarm>> getAllAlarms(){
+        log.info("GET Request -> Get all alarms");
 
-    @PostMapping("/newAlarm")
+        return new ResponseEntity<>(service.getAllAlarms(), HttpStatus.OK);
+    }
+
+    @PostMapping()
     public ResponseEntity<Alarm> createAlarm(@RequestBody AlarmDTO alarmDTO) {
         log.info("POST Request -> Store a new Alarm");
         Alarm al = null;
@@ -43,8 +51,8 @@ class AlarmController {
         }
     }
 
-    @GetMapping("/getAlarm")
-    public ResponseEntity<Alarm> getAlarm(@RequestParam long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Alarm> getAlarm(@PathVariable long id) {
         log.info("GET Request -> get a Alarm");
         Alarm al = service.getAlarm(id);
         if (al == null){
@@ -53,18 +61,18 @@ class AlarmController {
         return new ResponseEntity<>(al, HttpStatus.OK);
     }
 
-    @PostMapping("/updateAlarm")
-    public ResponseEntity<Alarm> updateAlarm(@RequestBody AlarmDTO alarmDTO) {
+    @PostMapping("/{id}")
+    public ResponseEntity<Alarm> updateAlarm(@PathVariable long id, @RequestBody AlarmDTO alarmDTO) {
         log.info("POST Request -> Update a new Alarm");
-        Alarm al = service.updateAlarm(alarmDTO);
+        Alarm al = service.updateAlarm(id, alarmDTO);
         if (al == null){
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
         return new ResponseEntity<>(al, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteAlarm")
-    public ResponseEntity<Integer> deleteAlarm(@RequestParam long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Integer> deleteAlarm(@PathVariable long id) {
         log.info("DELETE Request -> Delete a new Alarm");
 
         int resp = service.deleteAlarm(id);

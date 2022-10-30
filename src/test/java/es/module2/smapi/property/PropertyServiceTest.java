@@ -64,7 +64,6 @@ class PropertyServiceTest {
         Mockito.when(owRepository.findByUsername(any())).thenReturn(Optional.of(new Owner("username","email", "name")));
     }
 
-
     @Test
      void whenValidInputThenCreateProperty() throws IOException, Exception, PropertyAlreadyExistsException{
 
@@ -75,23 +74,23 @@ class PropertyServiceTest {
         assertEquals(prop4, result);
     }
 
-
     @Test
     void whenValidInputThenUpdateProperty() throws IOException, Exception, PropertyAlreadyExistsException {
 
         Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop1);
+        Mockito.when(repository.findById(any())).thenReturn(Optional.of(prop1));
 
-        Property result = service.updateProperty(propDTO1);
+        Property result = service.updateProperty(1,propDTO1);
 
         assertTrue(prop1.equals(result));
     }
 
-
-
     @Test
      void whenValidInputThenGetProperty() throws IOException, Exception, PropertyAlreadyExistsException {
    
-        Property found= service.getProperty(prop1.getName(), prop1.getAddress());
+        Mockito.when(repository.findById((long) 1)).thenReturn(Optional.of(prop1));
+
+        Property found= service.getProperty(1);
 
         assertThat(found).isNotNull();
         assertThat(found.equals(prop1));

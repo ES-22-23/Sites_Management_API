@@ -87,7 +87,7 @@ class AlarmControllerTestIT {
     @Test
      void whenValidInputThenCreateAlarm() throws IOException, Exception {
         given().contentType(ContentType.JSON).body(alDTO4)
-        .post("/alarms/newAlarm")
+        .post("/alarms")
         .then().log().body().assertThat()
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
@@ -97,7 +97,7 @@ class AlarmControllerTestIT {
     @Test
      void whenInvalidInputThenNotCreateAlarm() throws IOException, Exception {
         given().contentType(ContentType.JSON).body(alDTO1)
-        .post("/alarms/newAlarm")
+        .post("/alarms")
         .then().log().body().assertThat()
         .status(HttpStatus.BAD_REQUEST);
         
@@ -107,7 +107,7 @@ class AlarmControllerTestIT {
     void whenValidInputThenDeleteAlarm() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .delete("/alarms/deleteAlarm?id="+al2.getId())
+        .delete("/alarms/"+al2.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK);
 
@@ -117,7 +117,7 @@ class AlarmControllerTestIT {
     void whenInvalidInputThenNotFound() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .get("/alarms/getAlarm?id="+1000)
+        .get("/alarms/"+1000)
         .then().log().body().assertThat()
         .status(HttpStatus.NOT_FOUND);
 
@@ -126,7 +126,7 @@ class AlarmControllerTestIT {
     @Test
      void whenValidInputThenGetAlarm() throws IOException, Exception {
 
-        given().get("/alarms/getAlarm?id="+al1.getId())
+        given().get("/alarms/"+al1.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()

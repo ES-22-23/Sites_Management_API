@@ -70,19 +70,11 @@ public class Property implements Serializable{
   @JsonIdentityReference(alwaysAsId = true)
   private List<Alarm> alarms=new ArrayList<Alarm>();
 
-
-
-
-
-
-
-
   public Property(String address,String name,Owner owner) {
     this.address=address;
     this.name=name;
     this.owner=owner;
   }
-
 
   public long getId() {
     return this.id;
@@ -133,16 +125,10 @@ public class Property implements Serializable{
     this.alarms = alarms;
   }
 
-
-
-
-
     public void convertDTOtoObject(PropertyDTO dto){
         this.setAddress(dto.getAddress());
         this.setName(dto.getName());
     }
-
-
 
   @Override
     public boolean equals(Object o) {

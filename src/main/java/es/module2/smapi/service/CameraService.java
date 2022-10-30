@@ -1,5 +1,6 @@
 package es.module2.smapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -30,8 +31,11 @@ public class CameraService {
     @Autowired
     private PropertyRepository propRepository;
     
-    
-    // CRUD Func Owner
+    public List<Camera> getAllCameras(){
+        log.info("Getting All Cameras");
+
+        return camRepository.findAll();
+    }
 
     public Camera createCamera(CameraDTO camDTO) throws CameraAlreadyExistsException, PropertyDoesNotExistException{
         log.info("Inserting Camera");
@@ -62,7 +66,7 @@ public class CameraService {
         return camRepository.findById(id).orElse(null);
     }
 
-    public Camera updateCamera(CameraDTO camDTO) throws PropertyDoesNotExistException, CameraDoesNotExistException {
+    public Camera updateCamera(long id, CameraDTO camDTO) throws PropertyDoesNotExistException, CameraDoesNotExistException {
         log.info("Updating Camera");
         
         Property p1 = propRepository.findByNameAndAddress(camDTO.getPropertyName(), camDTO.getPropertyAddress()).orElse(null);
@@ -71,7 +75,7 @@ public class CameraService {
             throw new PropertyDoesNotExistException("Property does not exist: " + p1);
         }
         
-        Camera cam = camRepository.findByPropertyAndPrivateId(p1, camDTO.getPrivateId()).orElse(null);
+        Camera cam = camRepository.findById(id).orElse(null);
 
         if (cam == null){
             throw new CameraDoesNotExistException("Camera already exists: " + cam);

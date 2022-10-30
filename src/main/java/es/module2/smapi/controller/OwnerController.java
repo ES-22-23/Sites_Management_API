@@ -1,5 +1,7 @@
 package es.module2.smapi.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,9 +32,15 @@ class OwnerController {
 
     @Autowired
     private OwnerService service;
+
+    @GetMapping()
+    public ResponseEntity<List<Owner>> getAllOwners(){
+        log.info("GET Request -> Get all owners");
+
+        return new ResponseEntity<>(service.getAllOwners(), HttpStatus.OK);
+    }
     
-    // Owner endpoints
-    @PostMapping("/newOwner")
+    @PostMapping()
     public ResponseEntity<Owner> createOwner(@RequestBody OwnerDTO ownerDTO) {
         log.info("POST Request -> Store a new Owner");
         Owner ow = null;
@@ -42,8 +52,8 @@ class OwnerController {
         }
     }
 
-    @GetMapping("/getOwner")
-    public ResponseEntity<Owner> getOwner(@RequestParam  String username) {
+    @GetMapping("/{username}")
+    public ResponseEntity<Owner> getOwner(@PathVariable String username) {
         log.info("GET Request -> get an Owner");
         Owner ow = service.getOwner(username);
         if (ow == null){
@@ -52,18 +62,18 @@ class OwnerController {
         return new ResponseEntity<>(ow, HttpStatus.OK);
     }
 
-    @PostMapping("/updateOwner")
-    public ResponseEntity<Owner> updateOwner(@RequestBody OwnerDTO ownerDTO) {
+    @PutMapping("/{username}")
+    public ResponseEntity<Owner> updateOwner(@PathVariable String username, @RequestBody OwnerDTO ownerDTO) {
         log.info("POST Request -> Update an Owner");
-        Owner ow = service.updateOwner(ownerDTO);
+        Owner ow = service.updateOwner(username, ownerDTO);
         if (ow == null){
             return new ResponseEntity<>(ow, HttpStatus.NOT_MODIFIED);
         }
         return new ResponseEntity<>(ow, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteOwner")
-    public ResponseEntity<Integer> deleteOwner(@RequestBody String username) {
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Integer> deleteOwner(@PathVariable String username) {
         log.info("DELETE Request -> Delete an Owner");
 
         int resp = service.deleteOwner(username);
