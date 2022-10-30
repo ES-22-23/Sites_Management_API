@@ -86,9 +86,10 @@ public class CameraServiceTest {
     void whenValidInputThenUpdateAlarm() throws IOException, Exception {
 
         Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop1));
+        Mockito.when(repository.findById(any())).thenReturn(Optional.of(cam1));
         Mockito.when(repository.saveAndFlush(any(Camera.class))).thenReturn(cam1);
 
-        Camera result = service.updateCamera(camDTO1);
+        Camera result = service.updateCamera(1, camDTO1);
         assertTrue(cam1.equals(result));
     }
 

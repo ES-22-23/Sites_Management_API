@@ -1,5 +1,6 @@
 package es.module2.smapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,12 @@ public class AlarmService {
 
     @Autowired
     private PropertyRepository propRepository;
+
+    public List<Alarm> getAllAlarms(){
+        log.info("Getting All Alarms");
+
+        return alarmRepository.findAll();
+    }
     
     public Alarm createAlarm(AlarmDTO alarmDTO) throws AlarmAlreadyExistsException, PropertyDoesNotExistException {
         log.info("Inserting Alarm");
@@ -61,7 +68,7 @@ public class AlarmService {
 
     }
 
-    public Alarm updateAlarm(AlarmDTO alarmDTO) {
+    public Alarm updateAlarm(long id, AlarmDTO alarmDTO) {
         log.info("Updating Alarm");
 
         Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
@@ -70,7 +77,7 @@ public class AlarmService {
             return null;
         }
 
-        Alarm alarm = alarmRepository.findByPropertyAndPrivateId(p1,alarmDTO.getPrivateId()).orElse(null);
+        Alarm alarm = alarmRepository.findById(id).orElse(null);
 
         if (alarm== null){
             return null;

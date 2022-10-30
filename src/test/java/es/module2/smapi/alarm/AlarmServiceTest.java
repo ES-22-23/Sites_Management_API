@@ -88,9 +88,10 @@ class AlarmServiceTest {
     void whenValidInputThenUpdateAlarm() throws IOException, Exception, AlarmAlreadyExistsException {
 
         Mockito.when(propRepository.findByNameAndAddress(any(),any())).thenReturn(Optional.of(prop1));
+        Mockito.when(repository.findById(any())).thenReturn(Optional.of(al1));
         Mockito.when(repository.saveAndFlush(any(Alarm.class))).thenReturn(al1);
 
-        Alarm result = service.updateAlarm(alDTO1);
+        Alarm result = service.updateAlarm(1, alDTO1);
         System.out.println(result);
         assertTrue(al1.equals(result));
     }

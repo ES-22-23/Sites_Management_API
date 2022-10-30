@@ -1,19 +1,20 @@
 package es.module2.smapi.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.module2.smapi.datamodel.PropertyDTO;
+import es.module2.smapi.exceptions.OwnerDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
-
-
-
 
 @Service
 public class PropertyService {
@@ -25,10 +26,13 @@ public class PropertyService {
     @Autowired
     private OwnerRepository owRepository;
     
-    
-    // CRUD Func Owner
+    public List<Property> getAllProperties(){
+        log.info("Getting All Properties");
 
-    public Property createProperty(PropertyDTO propDTO) throws PropertyAlreadyExistsException{
+        return propRepository.findAll();
+    }
+
+    public Property createProperty(PropertyDTO propDTO) throws PropertyAlreadyExistsException, OwnerDoesNotExistException{
         log.info("Inserting Property");
 
         Property prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress()).orElse(null);
@@ -43,7 +47,7 @@ public class PropertyService {
         Owner ow1 = owRepository.findByUsername(propDTO.getOwnerUsername()).orElse(null);
 
         if (ow1== null){
-            return null;
+            throw new OwnerDoesNotExistException("Owner does not exist: " + propDTO.getOwnerUsername());
         }
 
         prop2.setOwner(ow1);
@@ -52,32 +56,30 @@ public class PropertyService {
         return propRepository.saveAndFlush(prop2);
     }
 
-    public Property getProperty(String name, String address) {
+    public Property getProperty(long id) {
         log.info("Getting Property");
 
-        return propRepository.findByNameAndAddress(name, address).orElse(null);
+        return propRepository.findById(id).orElse(null);
 
     }
 
-    public Property updateProperty(PropertyDTO propDTO) {
+    public Property updateProperty(long id, PropertyDTO propDTO) {
         log.info("Updating Property");
 
-        Property prop = propRepository.findByNameAndAddress(propDTO.getName(),propDTO.getAddress()).orElse(null);
-
+        Property prop = propRepository.findById(id).orElse(null);
 
         if (prop== null){
             return null;
         }
 
-
-
         Owner oldOwner = owRepository.findByProperties(prop).orElse(null);
+
         if (oldOwner!=null){
             oldOwner.getProperties().remove(prop);
         }
 
-        prop.convertDTOtoObject(propDTO);
-
+        prop.setAddress(propDTO.getAddress());
+        prop.setName(propDTO.getName());
 
         Owner ow1 = owRepository.findByUsername(propDTO.getOwnerUsername()).orElse(null);
 
@@ -90,9 +92,15 @@ public class PropertyService {
 
         return propRepository.saveAndFlush(prop);
     }
-    public int deleteProperty(String name, String address) {
+    public int deleteProperty(long id) {
         log.info("Deleting Property");
-        return  propRepository.deleteByNameAndAddress(name,address);
-    }
 
+        Optional<Property> camera = propRepository.findById(id);
+
+        if(camera.isEmpty()){
+            return 0;
+        }
+        propRepository.deleteById(id);
+        return  1;
+    }
 }

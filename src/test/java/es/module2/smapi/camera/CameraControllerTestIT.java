@@ -84,10 +84,24 @@ public class CameraControllerTestIT {
         propertyRepository.deleteAll();
     }
 
+
+    @Test
+     void testGetAllCameras() throws IOException, Exception {
+
+        given().get("/cameras")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("[0].id", is((int)cam1.getId())).and()
+        .body("[1].id", is((int)cam2.getId())).and()
+        .body("[2].id", is((int)cam3.getId()));
+
+    }
+
     @Test
      void whenValidInputThenCreateCamera() throws IOException, Exception {
         given().contentType(ContentType.JSON).body(camDTO4)
-        .post("/cameras/newCamera")
+        .post("/cameras")
         .then().log().body().assertThat()
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
@@ -97,7 +111,7 @@ public class CameraControllerTestIT {
     @Test
      void whenInvalidInputThenNotCreateCamera() throws IOException, Exception {
         given().contentType(ContentType.JSON).body(camDTO1)
-        .post("/cameras/newCamera")
+        .post("/cameras")
         .then().log().body().assertThat()
         .status(HttpStatus.BAD_REQUEST);
         
@@ -107,7 +121,7 @@ public class CameraControllerTestIT {
     void whenValidInputThenDeleteCamera() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .delete("/cameras/deleteCamera?id="+cam2.getId())
+        .delete("/cameras/"+cam2.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK);
 
@@ -117,7 +131,7 @@ public class CameraControllerTestIT {
     void whenInvalidInputThenNotFound() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .get("/cameras/getCamera?id="+1000)
+        .get("/cameras/"+1000)
         .then().log().body().assertThat()
         .status(HttpStatus.NOT_FOUND);
 
@@ -126,7 +140,7 @@ public class CameraControllerTestIT {
     @Test
      void whenValidInputThenGetCamera() throws IOException, Exception {
 
-        given().get("/cameras/getCamera?id="+cam1.getId())
+        given().get("/cameras/"+cam1.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()

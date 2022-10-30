@@ -1,11 +1,9 @@
 package es.module2.smapi.property;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,9 +55,9 @@ class PropertyControllerTestIT {
         prop3 = buildPropertyObject(3);
         prop4 = buildPropertyObject(4);
 
-        repository.saveAndFlush(prop1);
-        repository.saveAndFlush(prop2);
-        repository.saveAndFlush(prop3);
+        prop1 = repository.saveAndFlush(prop1);
+        prop2 = repository.saveAndFlush(prop2);
+        prop3 = repository.saveAndFlush(prop3);
 
         propDTO1 = buildPropertyDTO(1);
         propDTO2 = buildPropertyDTO(2);
@@ -72,15 +70,29 @@ class PropertyControllerTestIT {
         repository.deleteAll();
         owRepository.deleteAll();
     }
+
+
+
+    @Test
+     void testGetAllProperties() throws IOException, Exception {
+
+        given().get("/properties")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("[0].name", is(prop1.getName())).and()
+        .body("[0].address", is(prop1.getAddress())).and()
+        .body("[1].name", is(prop2.getName())).and()
+        .body("[1].address", is(prop2.getAddress())).and()
+        .body("[2].name", is(prop3.getName())).and()
+        .body("[2].address", is(prop3.getAddress()));
+    }
         
     @Test
      void whenValidInputThenCreateProperty() throws IOException, Exception {
 
-        List<Owner> found = owRepository.findAll();
-        assertThat(found).extracting(Owner::getUsername).contains(propDTO4.getOwnerUsername());
-        assertThat(propDTO4!= null).isTrue();
         given().contentType(ContentType.JSON).body(propDTO4)
-        .post("/properties/newProperty")
+        .post("/properties")
         .then().log().body().assertThat()
         .contentType(ContentType.JSON).and()
         .status(HttpStatus.CREATED).and()
@@ -93,23 +105,21 @@ class PropertyControllerTestIT {
      void whenInValidInputThenNotCreateProperty() throws IOException, Exception {
 
         given().contentType(ContentType.JSON).body(propDTO1)
-        .post("/properties/newProperty")
+        .post("/properties")
         .then().log().body().assertThat()
         .status(HttpStatus.BAD_REQUEST);
     }
 
-
     @Test
     void whenValidInputThenUpdateProperty() throws IOException, Exception {
 
-        propDTO2.setOwnerUsername("username3");
+        propDTO2.setName("New name");
         given().contentType(ContentType.JSON).body(propDTO2)
-        .post("/properties/updateProperty")
+        .put("/properties/"+prop2.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
-        .body("owner", is("username3")).and()
-        .body("name", is(prop2.getName())).and()
+        .body("name", is("New name")).and()
         .body("address", is(prop2.getAddress()));
 
     }
@@ -118,7 +128,7 @@ class PropertyControllerTestIT {
     void whenValidInputThenDeleteProperty() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .delete("/properties/deleteProperty?name="+propDTO2.getName()+"&address="+propDTO2.getAddress())
+        .delete("/properties/"+prop2.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK);
 
@@ -128,7 +138,7 @@ class PropertyControllerTestIT {
     void whenDeleteInValidInputThenNotFOund() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .delete("/properties/deleteProperty?name="+propDTO3.getName()+"&address="+propDTO2.getAddress())
+        .delete("/properties/"+1000)
         .then().log().body().assertThat()
         .status(HttpStatus.NOT_FOUND);
 
@@ -137,13 +147,15 @@ class PropertyControllerTestIT {
     @Test
      void whenValidInputThenGetProperty() throws IOException, Exception {
 
-        given().get("/properties/getProperty?name="+prop1.getName()+"&address="+prop1.getAddress())
+        given().get("/properties/"+prop1.getId())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
         .body("name", is(prop1.getName())).and()
         .body("address", is(prop1.getAddress()));
     }
+
+
 
     Property buildPropertyObject(long id){
         Property prop = new Property();

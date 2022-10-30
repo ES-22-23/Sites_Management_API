@@ -60,11 +60,24 @@ class OwnerControllerTestIT {
         repository.deleteAll();
     }
 
+
+    @Test
+     void whenGetAllOwnerThenReturnAllOwners() throws IOException, Exception {
+
+        given().get("/owners")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("[0].username", is(bobDTO.getUsername())).and()
+        .body("[0].email", is(bobDTO.getEmail()));
+
+    }
+
     @Test
      void whenValidInputThenCreateOwner() throws IOException, Exception {
 
         given().contentType(ContentType.JSON).body(alexDTO)
-        .post("/owners/newOwner")
+        .post("/owners")
         .then().log().body().assertThat()
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
@@ -79,7 +92,7 @@ class OwnerControllerTestIT {
         updatedBobDTO.setEmail("updatedemail1");
 
         given().contentType(ContentType.JSON).body(updatedBobDTO)
-        .post("/owners/updateOwner")
+        .put("/owners/"+updatedBobDTO.getUsername())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
@@ -92,7 +105,7 @@ class OwnerControllerTestIT {
     void whenValidInputThenDeleteOwner() throws IOException, Exception {
 
         given().contentType(ContentType.JSON).body(bobDTO.getUsername())
-        .delete("/owners/deleteOwner")
+        .delete("/owners/"+bobDTO.getUsername())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON);
@@ -101,7 +114,7 @@ class OwnerControllerTestIT {
     @Test
      void whenFindAlexByUsernameThenReturnAlexOwner() throws IOException, Exception {
 
-        given().get("/owners/getOwner?username="+bobDTO.getUsername())
+        given().get("/owners/"+bobDTO.getUsername())
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()

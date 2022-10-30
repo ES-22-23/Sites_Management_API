@@ -1,5 +1,7 @@
 package es.module2.smapi.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,6 @@ import es.module2.smapi.exceptions.OwnerAlreadyExistsException;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.repository.OwnerRepository;
 
-
-
-
 @Service
 public class OwnerService {
     private static final Logger log = LoggerFactory.getLogger(OwnerService.class);
@@ -20,9 +19,11 @@ public class OwnerService {
     @Autowired
     private OwnerRepository ownerRepository;
 
-    
-    
-    // CRUD Func Owner
+    public List<Owner> getAllOwners(){
+        log.info("Getting All Owners");
+
+        return ownerRepository.findAll();
+    }
 
     public Owner createOwner(OwnerDTO ownerDTO) throws OwnerAlreadyExistsException{
         log.info("Inserting Owner");
@@ -46,19 +47,19 @@ public class OwnerService {
         return owner;
     }
 
-    public Owner updateOwner(OwnerDTO ownerDTO) {
+    public Owner updateOwner(String username, OwnerDTO ownerDTO) {
         log.info("Updating Owner");
 
-        Owner owner = ownerRepository.findByUsername(ownerDTO.getUsername()).orElse(null);
+        Owner owner = ownerRepository.findByUsername(username).orElse(null);
 
         if (owner==null){
             return null;
         }
 
-        Owner owner2 = new Owner();
-        owner2.convertDTOtoObject(ownerDTO);
-
-        return ownerRepository.saveAndFlush(owner2);
+        owner.setEmail(ownerDTO.getEmail());
+        owner.setName(ownerDTO.getName());
+        
+        return ownerRepository.saveAndFlush(owner);
     }
 
     public int deleteOwner(String username) {
