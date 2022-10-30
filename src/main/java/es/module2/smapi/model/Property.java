@@ -2,8 +2,9 @@ package es.module2.smapi.model;
 
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,15 +20,12 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import es.module2.smapi.datamodel.PropertyDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import es.module2.smapi.datamodel.PropertyDTO;
-import java.util.ArrayList;
 
 @Entity
 @Data
@@ -53,9 +51,7 @@ public class Property implements Serializable{
 
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @JoinColumn(name = "username", nullable = false)
-  @JsonIgnoreProperties("properties")
   @JsonIdentityReference(alwaysAsId = true)
-  //@JsonIgnore
   private Owner owner;
 
 

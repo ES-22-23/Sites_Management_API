@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -29,15 +28,10 @@ class PropertyRepositoryTests {
 	@Autowired
     private PropertyRepository propRepository;
 
-	@Autowired
-    private TestEntityManager entityManager;
-
-
     Property prop1, prop2, prop3, prop4;
     PropertyDTO propDTO1, propDTO2, propDTO3, propDTO4;
     Camera cam;
     Alarm al;
-
 
     @BeforeEach
     void setUp() throws JsonProcessingException{
@@ -46,14 +40,6 @@ class PropertyRepositoryTests {
         prop2 = buildPropertyObject(2);
         prop3 = buildPropertyObject(3);
         prop4 = buildPropertyObject(4);
-
-        // cam = new Camera(1,prop1);
-        // cam.setId(0);
-        // prop1.getCameras().add(cam);
-
-        // al = new Alarm(3,prop1);
-        // al.setId(0);
-        // prop1.getAlarms().add(al);
 
         prop1 = propRepository.saveAndFlush(prop1);
         prop2 = propRepository.saveAndFlush(prop2);
@@ -70,12 +56,9 @@ class PropertyRepositoryTests {
         propRepository.deleteAll();
     }
 
-
-
 	@Test
 	void whenFindPropByAddressThenReturnProp() {
 
-        // test the query method of interest
         Optional<Property> result = propRepository.findByAddress(propDTO1.getAddress());
         assertTrue(result.isPresent());
 	}
@@ -83,7 +66,6 @@ class PropertyRepositoryTests {
     @Test
 	void whenFindPropByNameThenReturnProp() {
 
-        // test the query method of interest
         Optional<Property> result = propRepository.findByName(propDTO1.getName());
         assertTrue(result.isPresent());
 	}
@@ -91,7 +73,6 @@ class PropertyRepositoryTests {
     @Test
 	void whenFindPropByNameAndAddressThenReturnProp() {
 
-        // test the query method of interest
         Optional<Property> result = propRepository.findByNameAndAddress(propDTO1.getName(),propDTO1.getAddress());
         assertTrue(result.isPresent());
         assertEquals(prop1, result.get());
@@ -114,12 +95,11 @@ class PropertyRepositoryTests {
 
     Property buildPropertyObject(long id){
         Property prop = new Property();
-        Owner ow= new Owner("username"+id,"name"+id);
+        Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         prop.setId(id);
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);
         prop.setOwner(ow);
-        // owRepository.saveAndFlush(ow);
         return prop;
     }
 

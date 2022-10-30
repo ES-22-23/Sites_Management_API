@@ -102,20 +102,6 @@ class AlarmControllerIT {
         .status(HttpStatus.BAD_REQUEST);
         
     }
-    /*@Test
-    void whenValidInputThenUpdateAlarm() throws IOException, Exception {
-
-        alDTO2.setPropertyName("name3");
-        alDTO2.setPropertyAddress("address3");
-        given().contentType(ContentType.JSON).body(alDTO2)
-        .post("/alarms/updateAlarm")
-        .then().log().body().assertThat()
-        .status(HttpStatus.OK).and()
-        .contentType(ContentType.JSON).and()
-        .body("privateId", is(al2.getPrivateId()));
-
-    }*/
-
 
     @Test
     void whenValidInputThenDeleteAlarm() throws IOException, Exception {
@@ -165,7 +151,7 @@ class AlarmControllerIT {
 	
     Property buildPropertyObject(long id){
         Property prop = new Property();
-        Owner ow= new Owner("username"+id,"name"+id);
+        Owner ow= new Owner("username"+id,"email" + id, "name"+id);
         ow = ownerRepository.saveAndFlush(ow);
         prop.setId(id);
         prop.setName("name" + id);

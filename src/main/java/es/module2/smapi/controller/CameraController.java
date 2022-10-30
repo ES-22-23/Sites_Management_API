@@ -29,7 +29,6 @@ class CameraController {
     @Autowired
     private CameraService service;
 
-
     @PostMapping("/newCamera")
     public ResponseEntity<Camera> createCamera(@RequestBody CameraDTO cameraDTO) {
         log.info("POST Request -> Store a new Camera");
@@ -72,9 +71,6 @@ class CameraController {
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
-
-    
-
-        
+  
 }
 

@@ -129,7 +129,7 @@ class AlarmServiceTest {
 
     Property buildPropertyObject(long id){
         Property prop = new Property();
-        Owner ow= new Owner("username"+id,"name"+id);
+        Owner ow= new Owner("username"+id, "email"+id, "name"+id);
         prop.setId(id);
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);
@@ -137,7 +137,6 @@ class AlarmServiceTest {
         propRepository.saveAndFlush(prop);
         return prop;
     }
-	
 	
 
  }

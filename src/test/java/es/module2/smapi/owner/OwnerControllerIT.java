@@ -1,91 +1,128 @@
 package es.module2.smapi.owner;
 
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.hamcrest.CoreMatchers.is;
+
+import java.io.IOException;
+
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import es.module2.smapi.SmapiApplication;
+import es.module2.smapi.datamodel.OwnerDTO;
+import es.module2.smapi.model.Owner;
 import es.module2.smapi.repository.OwnerRepository;
+import io.restassured.http.ContentType;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
 
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = SmapiApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-// @SpringBootTest
 class OwnerControllerIT {
 
-    // @Autowired
-    // private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
     @Autowired
     private OwnerRepository repository;
+
+    Owner bob;
+    Owner alex;
+
+    OwnerDTO bobDTO;
+    OwnerDTO alexDTO;
+
+    @BeforeEach
+    void setUp() throws JsonProcessingException{
+
+        RestAssuredMockMvc.mockMvc( mvc );
+
+        bobDTO = buildOwnerDTO(1);
+        alexDTO = buildOwnerDTO(2);
+
+        bob = buildOwnerObject(1);
+    }
 
     @AfterEach
     public void resetDb() {
         repository.deleteAll();
     }
 
+    @Test
+     void whenValidInputThenCreateOwner() throws IOException, Exception {
 
-    // @Test
-    //  void whenValidInputThenCreateOwner() throws IOException, Exception {
-    //     Owner bob = new Owner( "bob@deti.com", "1234", "bob");
-    //     mvc.perform(post("/newOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
-
-    //     List<Owner> found = repository.findAll();
-    //     assertThat(found).extracting(Owner::getName).containsOnly("bob");
-    //     repository.deleteAll();
-    // }
-
-
-    // @Test
-    // void whenValidInputThenUpdateOwner() throws IOException, Exception {
-    //     Owner bob = new Owner( "bob@deti.com", "1234", "bob");
-    //     repository.save(bob);
-
-    //     List<Owner> found = repository.findAll();
-    //     assertThat(found).extracting(Owner::getName).containsOnly("bob");
-
-    //     bob.setName("alex");
-    //     mvc.perform(post("/updateOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
-    //     List<Owner> found2 = repository.findAll();
-    //     assertThat(found2).extracting(Owner::getName).containsOnly("alex");
-    //     repository.deleteAll();
-    // }
+        given().contentType(ContentType.JSON).body(alexDTO)
+        .post("/owners/newOwner")
+        .then().log().body().assertThat()
+        .status(HttpStatus.CREATED).and()
+        .contentType(ContentType.JSON).and()
+        .body("username", is(alexDTO.getUsername()));
+    }
 
 
-    // @Test
-    // void whenValidInputThenDeleteOwner() throws IOException, Exception {
-    //     Owner bob = new Owner( "bob@deti.com", "1234", "bob");
+    @Test
+    void whenValidInputThenUpdateOwner() throws IOException, Exception {
 
-    //     repository.save(bob);
+        OwnerDTO updatedBobDTO = buildOwnerDTO(1);
+        updatedBobDTO.setEmail("updatedemail1");
 
-    //     List<Owner> found = repository.findAll();
-    //     assertThat(found).extracting(Owner::getName).containsOnly("bob");
-
-    //     mvc.perform(post("/deleteOwner").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bob)));
-    //     List<Owner> found2 = repository.findAll();
-    //     assertThat(found2 == null);
-    //     repository.deleteAll();
-    // }
-
-    // @Test
-    //  void whenFindAlexByUsernameThenReturnAlexOwner() throws IOException, Exception {
-    //     Owner alex = new Owner( "alex@deti.com", "1234", "alex");
-    //     repository.save(alex);
-
-    //     List<Owner> found = repository.findAll();
-    //     assertThat(found).extracting(Owner::getName).containsOnly("alex");
+        given().contentType(ContentType.JSON).body(updatedBobDTO)
+        .post("/owners/updateOwner")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("email", is(updatedBobDTO.getEmail())).and()
+        .body("username", is(updatedBobDTO.getUsername()));
+    }
 
 
-    //      mvc.perform(get("/getOwner?username={username}",alex.getUsername()).contentType(MediaType.APPLICATION_JSON))
-    //             .andDo(print())
-    //             .andExpect(status().isOk())
-    //             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-    //             .andExpect(jsonPath("$.name", is("alex")));
-    //     repository.deleteAll();
-    // }
+    @Test
+    void whenValidInputThenDeleteOwner() throws IOException, Exception {
+
+        given().contentType(ContentType.JSON).body(bobDTO.getUsername())
+        .delete("/owners/deleteOwner")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON);
+    }
+
+    @Test
+     void whenFindAlexByUsernameThenReturnAlexOwner() throws IOException, Exception {
+
+        given().get("/owners/getOwner?username="+bobDTO.getUsername())
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .contentType(ContentType.JSON).and()
+        .body("username", is(bobDTO.getUsername())).and()
+        .body("email", is(bobDTO.getEmail()));
+
+    }
+
+    OwnerDTO buildOwnerDTO(long id){
+        OwnerDTO ow = new OwnerDTO();
+        ow.setName("name"+id);
+        ow.setEmail("email"+id);
+        ow.setUsername("username"+id);
+        return ow;
+    }
+
+    Owner buildOwnerObject(long id){
+        Owner ow = new Owner();
+        ow.setName("name"+id);
+        ow.setEmail("email"+id);
+        ow.setUsername("username"+id);
+        return repository.saveAndFlush(ow);
+    }
  }

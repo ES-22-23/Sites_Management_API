@@ -60,11 +60,6 @@ public class Camera implements Serializable{
     this.privateId=privateId;
   }
 
- 
-
-
-
-
   public long getId() {
     return this.id;
   }

@@ -97,7 +97,7 @@ class AlarmRepositoryTests {
 	
     Property buildPropertyObject(long id){
         Property prop = new Property();
-        Owner ow= new Owner("username"+id,"name"+id);
+        Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         ow = ownerRepository.saveAndFlush(ow);
         prop.setId(id);
         prop.setName("Name" + id);

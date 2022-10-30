@@ -60,22 +60,13 @@ class PropertyServiceTest {
         propDTO3 = buildPropertyDTO(3);
         propDTO4 = buildPropertyDTO(4);
 
-        //Mockito.when(addressRepository.findAll()).thenReturn(new ArrayList<>(Arrays.asList(address1, address2)));
         Mockito.when(repository.findByNameAndAddress(propDTO1.getName(), propDTO1.getAddress())).thenReturn(Optional.of(prop1));
-        //Mockito.when(repository.findByNameAndAddress(propDTO2.getName(), propDTO2.getAddress())).thenReurn(null);
-        Mockito.when(owRepository.findByUsername(any())).thenReturn(Optional.of(new Owner("name","username")));
+        Mockito.when(owRepository.findByUsername(any())).thenReturn(Optional.of(new Owner("username","email", "name")));
     }
 
 
     @Test
      void whenValidInputThenCreateProperty() throws IOException, Exception, PropertyAlreadyExistsException{
-        // Property prop1 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
-
-        // service.createProperty(prop1);
-
-        // List<Property> found = repository.findAll();
-        // assertThat(found).extracting(Property::getId).containsOnly(prop1.getId());
-        // repository.deleteAll();
 
         Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop4);
 
@@ -87,19 +78,6 @@ class PropertyServiceTest {
 
     @Test
     void whenValidInputThenUpdateProperty() throws IOException, Exception, PropertyAlreadyExistsException {
-        // Property prop2 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
-
-
-        // repository.save(prop2);
-
-        // List<Property> found = repository.findAll();
-        // assertThat(found).extracting(Property::getId).containsOnly(prop2.getId());
-
-        // prop2.setAddress("address2");
-        // service.updateProperty(prop2);
-        // List<Property> found2 = repository.findAll();
-        // assertThat(found2).extracting(Property::getAddress).containsOnly(prop2.getAddress());
-        // repository.deleteAll();
 
         Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop1);
 
@@ -112,14 +90,7 @@ class PropertyServiceTest {
 
     @Test
      void whenValidInputThenGetProperty() throws IOException, Exception, PropertyAlreadyExistsException {
-        // Property prop4 = new Property( "address1","DETI",new Owner( "alex@deti.com","1234","alex"));
-
-        // repository.save(prop4);
-
-        // List<Property> found = repository.findAll();
-        // assertThat(found).extracting(Property::getId).containsOnly(prop4.getId());
-
-
+   
         Property found= service.getProperty(prop1.getName(), prop1.getAddress());
 
         assertThat(found).isNotNull();
@@ -127,7 +98,7 @@ class PropertyServiceTest {
     }
     Property buildPropertyObject(long id){
         Property prop = new Property();
-        Owner ow= new Owner("username"+id,"name"+id);
+        Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         prop.setId(id);
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);

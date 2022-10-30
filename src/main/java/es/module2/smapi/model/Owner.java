@@ -1,7 +1,7 @@
 package es.module2.smapi.model;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,12 +16,10 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import es.module2.smapi.datamodel.OwnerDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import es.module2.smapi.datamodel.OwnerDTO;
-import java.util.ArrayList;
 
 
 @Entity
@@ -36,8 +34,8 @@ public class Owner implements Serializable{
   @Column(name = "username", nullable = false)
   private String username;
 
-  // @Column(name = "password",nullable = false)
-  // private String password;
+  @Column(name = "email",nullable = false)
+  private String email;
   
   @Column(name = "name",nullable = false)
   private String name;
@@ -48,69 +46,26 @@ public class Owner implements Serializable{
   @JsonIdentityReference(alwaysAsId = true)
   private List<Property> properties=new ArrayList<Property>();
 
-  public Owner(String username,String name) {
-
-    this.username=username;
-    this.name=name;
-  }
-
-
-
-
-  public String getUsername() {
-    return this.username;
-  }
-
-  public void setUsername(String username) {
+  public Owner(String username, String email, String name){
     this.username = username;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(String name) {
+    this.email = email;
     this.name = name;
   }
 
-  public List<Property> getProperties() {
-    return this.properties;
+  public void convertDTOtoObject(OwnerDTO dto){
+      this.setUsername(dto.getUsername());
+      this.setEmail(dto.getEmail());
+      this.setName(dto.getName());
   }
 
-  public void setProperties(List<Property> properties) {
-    this.properties = properties;
-  }
-
-
-
-    public void convertDTOtoObject(OwnerDTO dto){
-        this.setUsername(dto.getUsername());
-        this.setName(dto.getName());
-    }
- 
-
-  @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Owner)) {
-            return false;
-        }
-        Owner owner = (Owner) o;
-        return  Objects.equals(username, owner.username);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(username, name);
-  }
 
   @Override
   public String toString() {
     return "{" +
-      ", username='" + getUsername() + "'" +
+      " username='" + getUsername() + "'" +
+      ", email='" + getEmail() + "'" +
       ", name='" + getName() + "'" +
       "}";
   }
-  
+
 }

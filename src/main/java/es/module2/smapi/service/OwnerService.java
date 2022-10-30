@@ -51,7 +51,6 @@ public class OwnerService {
 
         Owner owner = ownerRepository.findByUsername(ownerDTO.getUsername()).orElse(null);
 
-
         if (owner==null){
             return null;
         }
@@ -62,9 +61,9 @@ public class OwnerService {
         return ownerRepository.saveAndFlush(owner2);
     }
 
-    public void deleteOwner(String username) {
+    public int deleteOwner(String username) {
         log.info("Deleting Owner");
-        ownerRepository.deleteByUsername(username);
+        return ownerRepository.deleteByUsername(username);
     }
 
 }

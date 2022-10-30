@@ -15,9 +15,9 @@ public class OwnerDTO {
     private String username;
 
     @NonNull
-    private String name;
+    private String email;
 
     @NonNull
-    private String propertyAddress;
+    private String name;
 
 }
