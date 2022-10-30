@@ -33,11 +33,6 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/junit
-      - coverage-reporter/send_report:
-          coverage-reports: 'report.xml,coverage.info'
-          project-token: $CODACY_PROJECT_TOKEN
-orbs:
-  coverage-reporter: codacy/coverage-reporter@13.11.3
   
 workflows:
   build-and-test:
