@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequestMapping("/cameras")
 @Validated
 //@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-//@CrossOrigin(origins = "http://panel.admin.hgsoft.me:3000/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://panel.admin.hgsoft.me:3000/", allowedHeaders = "*")
 class CameraController {
     private static final Logger log = LoggerFactory.getLogger(CameraController.class);
 

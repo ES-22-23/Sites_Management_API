@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequestMapping("/owners")
 @Validated
 //@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-//@CrossOrigin(origins = "http://panel.admin.hgsoft.me:3000/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://panel.admin.hgsoft.me:3000/", allowedHeaders = "*")
 class OwnerController {
     private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
 
