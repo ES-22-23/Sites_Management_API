@@ -1,6 +1,5 @@
 package es.module2.smapi.health;
 
-import es.module2.smapi.entities.HealthStatus;
 import es.module2.smapi.service.HealthService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
