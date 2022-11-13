@@ -27,8 +27,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequestMapping("/properties")
 @Validated
-//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-@CrossOrigin(origins = "http://panel.admin.hgsoft.me:3000/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://scss.hgsoft.me:3000/", allowedHeaders = "*")
 class PropertyController {
     private static final Logger log = LoggerFactory.getLogger(PropertyController.class);
 

@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequestMapping("/alarms")
 @Validated
 //@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-@CrossOrigin(origins = "http://panel.admin.hgsoft.me:3000/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://scss.hgsoft.me:3000/", allowedHeaders = "*")
 class AlarmController {
     private static final Logger log = LoggerFactory.getLogger(AlarmController.class);
 
