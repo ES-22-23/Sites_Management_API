@@ -21,14 +21,10 @@ import es.module2.smapi.datamodel.OwnerDTO;
 import es.module2.smapi.exceptions.OwnerAlreadyExistsException;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.service.OwnerService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
 
 @RestController
 @RequestMapping("/owners")
 @Validated
-//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-@CrossOrigin(origins = "http://scss.hgsoft.me:3000/", allowedHeaders = "*")
 class OwnerController {
     private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
 

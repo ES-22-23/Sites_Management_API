@@ -22,12 +22,10 @@ import es.module2.smapi.exceptions.OwnerDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.service.PropertyService;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/properties")
 @Validated
-@CrossOrigin(origins = "http://scss.hgsoft.me:3000/", allowedHeaders = "*")
 class PropertyController {
     private static final Logger log = LoggerFactory.getLogger(PropertyController.class);
 
