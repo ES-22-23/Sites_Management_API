@@ -50,7 +50,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/health").anonymous()
                 .antMatchers(HttpMethod.GET, "/alarms/**").hasAnyRole("user", "admin")
-                .antMatchers(HttpMethod.GET, "/cameras/**").hasAnyRole("user", "admin")
+                .antMatchers(HttpMethod.GET, "/cameras/**").hasAnyRole("user", "admin", "service")
                 .antMatchers(HttpMethod.GET, "/owners/**").hasAnyRole("admin")
                 .antMatchers(HttpMethod.GET, "/properties/**").hasAnyRole("admin")
                 .antMatchers(HttpMethod.POST).hasRole("admin")
