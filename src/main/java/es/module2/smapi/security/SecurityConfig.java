@@ -53,6 +53,8 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/cameras/**").hasAnyRole("user", "admin", "service")
                 .antMatchers(HttpMethod.GET, "/owners/**").hasAnyRole("admin")
                 .antMatchers(HttpMethod.GET, "/properties/**").hasAnyRole("admin")
+                .antMatchers(HttpMethod.GET, "/events").hasAnyRole("admin")
+                .antMatchers(HttpMethod.GET, "/events/**").hasAnyRole("user","admin")
                 .antMatchers(HttpMethod.POST).hasRole("admin")
                 .antMatchers(HttpMethod.PUT).hasRole("admin")
                 .antMatchers(HttpMethod.DELETE).hasRole("admin")
