@@ -23,13 +23,10 @@ import es.module2.smapi.exceptions.CameraDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyDoesNotExistException;
 import es.module2.smapi.model.Camera;
 import es.module2.smapi.service.CameraService;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/cameras")
 @Validated
-//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-@CrossOrigin(origins = "http://panel.admin.hgsoft.me:3000/", allowedHeaders = "*")
 class CameraController {
     private static final Logger log = LoggerFactory.getLogger(CameraController.class);
 
