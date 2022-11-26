@@ -100,6 +100,8 @@ public class EventServiceTest {
 
         assertEquals(listObjectSummary.size(), result.size());
         assertTrue(result.contains(object1.getKey()));
+        assertTrue(result.contains(object2.getKey()));
+        assertTrue(result.contains(object3.getKey()));
     }
 
     @Test
@@ -112,6 +114,8 @@ public class EventServiceTest {
 
         assertEquals(listObjectSummary.size(), result.size());
         assertTrue(result.contains(object1.getKey()));
+        assertTrue(result.contains(object2.getKey()));
+        assertTrue(result.contains(object3.getKey()));
     }
 
     @Test
@@ -132,5 +136,7 @@ public class EventServiceTest {
 
         assertEquals(listObjectSummary.size(), result.size());
         assertTrue(result.contains(object1.getKey()));
+        assertTrue(result.contains(object2.getKey()));
+        assertTrue(result.contains(object3.getKey()));
     }
 }
