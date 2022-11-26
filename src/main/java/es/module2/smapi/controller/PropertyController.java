@@ -44,6 +44,7 @@ class PropertyController {
         log.info("POST Request -> Store a new Property");
         try {
             Property prop = service.createProperty(propertyDTO);
+            log.info(prop.toString());
             return new ResponseEntity<>(prop, HttpStatus.CREATED);
         } catch (PropertyAlreadyExistsException | OwnerDoesNotExistException e) {
             log.error(e.getMessage());
@@ -59,6 +60,7 @@ class PropertyController {
             log.error("Property -> This Property doesn't exist");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        log.info(prop.toString());
         return new ResponseEntity<>(prop, HttpStatus.OK);
     }
 
@@ -67,6 +69,7 @@ class PropertyController {
         log.info("POST Request -> Update a new Property");
         try {
             Property prop = service.updateProperty(id, propertyDTO);
+            log.info(prop.toString());
             return new ResponseEntity<>(prop, HttpStatus.OK);
         } catch (PropertyAlreadyExistsException | OwnerDoesNotExistException e) {
             log.error(e.getMessage());

@@ -43,6 +43,7 @@ class AlarmController {
         log.info("POST Request -> Store a new Alarm");
         try {
             Alarm al = service.createAlarm(alarmDTO);
+            log.info(al.toString());
             return new ResponseEntity<>(al, HttpStatus.CREATED);
         } catch (AlarmAlreadyExistsException | PropertyDoesNotExistException e) {
             log.error(e.getMessage());
@@ -58,6 +59,7 @@ class AlarmController {
             log.error("Alarm -> This Alarm doesn't exist");
             return new ResponseEntity<>(al, HttpStatus.NOT_FOUND);
         }
+        log.info(al.toString());
         return new ResponseEntity<>(al, HttpStatus.OK);
     }
 
@@ -66,6 +68,7 @@ class AlarmController {
         log.info("POST Request -> Update a new Alarm");
         try {
             Alarm al= service.updateAlarm(id, alarmDTO);
+            log.info(al.toString());
             return new ResponseEntity<>(al, HttpStatus.OK);
 
         } catch (AlarmAlreadyExistsException | PropertyDoesNotExistException e){

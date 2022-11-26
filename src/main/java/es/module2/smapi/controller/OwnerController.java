@@ -43,6 +43,7 @@ class OwnerController {
         log.info("POST Request -> Store a new Owner");
         try {
             Owner ow = service.createOwner(ownerDTO);
+            log.info(ow.toString());
             return new ResponseEntity<>(ow, HttpStatus.CREATED);
         } catch (OwnerAlreadyExistsException e) {
             log.error(e.getMessage());
@@ -58,6 +59,7 @@ class OwnerController {
             log.error("Owner -> This Owner doesn't exist");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        log.info(ow.toString());
         return new ResponseEntity<>(ow, HttpStatus.OK);
     }
 
@@ -66,6 +68,7 @@ class OwnerController {
         log.info("POST Request -> Update an Owner");
         try {
             Owner ow  = service.updateOwner(username, ownerDTO);
+            log.info(ow.toString());
             return new ResponseEntity<>(ow, HttpStatus.OK);
         }catch (OwnerAlreadyExistsException e) {
             log.error(e.getMessage());

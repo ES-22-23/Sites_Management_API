@@ -11,7 +11,8 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class CameraDTO {
 
-    private long privateId;
+    @NonNull
+    private long id;
 
     @NonNull
     private String propertyName;

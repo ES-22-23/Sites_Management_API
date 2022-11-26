@@ -105,7 +105,7 @@ public class CameraControllerTestIT {
         .then().log().body().assertThat()
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
-        .body("privateId", is((int) camDTO4.getPrivateId()));
+        .body("id", is((int) camDTO4.getId()));
         
     }
     @Test
@@ -151,13 +151,13 @@ public class CameraControllerTestIT {
     Camera buildCameraObject(long id){
         Camera cam = new Camera();
         cam.setId(id);
-        cam.setPrivateId( id);
+        cam.setId( id);
         return cam;
     }
 
     CameraDTO buildCameraDTO(long id){
         CameraDTO cam = new CameraDTO();
-        cam.setPrivateId( id);
+        cam.setId( id);
         cam.setPropertyAddress("address"+id);
         cam.setPropertyName("name"+id);
         return cam;

@@ -46,14 +46,14 @@ public class CameraService {
             throw new PropertyDoesNotExistException("Property does not exist: " + p1);
         }
         
-        Camera cam = camRepository.findByPropertyAndPrivateId(p1, camDTO.getPrivateId()).orElse(null);
+        Camera cam = camRepository.findByPropertyAndId(p1, camDTO.getId()).orElse(null);
 
         if (cam != null){
             throw new CameraAlreadyExistsException("Camera already exists: " + cam);
         }
 
         Camera cam2 = new Camera();
-        cam2.setPrivateId(camDTO.getPrivateId());
+        cam2.setId(camDTO.getId());
         cam2.setProperty(p1);
         p1.getCameras().add(cam2);
 
@@ -83,7 +83,7 @@ public class CameraService {
 
         cam.getProperty().getCameras().remove(cam);
 
-        cam.setPrivateId(camDTO.getPrivateId());
+        cam.setId(camDTO.getId());
         cam.setProperty(p1);
         p1.getCameras().add(cam);
 

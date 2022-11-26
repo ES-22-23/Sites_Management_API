@@ -37,8 +37,7 @@ public class Property implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.IDENTITY) 
-  @Column(name = "property_id", nullable = false)
+  @Column(name = "property_id", nullable = false, unique=true)
   private long id;
 
   @Column(name = "name", nullable = false)
@@ -49,7 +48,7 @@ public class Property implements Serializable{
   private String address;
 
 
-  @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "username", nullable = false)
   @JsonIdentityReference(alwaysAsId = true)
   private Owner owner;
@@ -128,6 +127,7 @@ public class Property implements Serializable{
     public void convertDTOtoObject(PropertyDTO dto){
         this.setAddress(dto.getAddress());
         this.setName(dto.getName());
+        this.setId(dto.getId());
     }
 
   @Override

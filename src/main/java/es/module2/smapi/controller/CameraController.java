@@ -46,6 +46,7 @@ class CameraController {
         Camera cam = null;
         try {
             cam = service.createCamera(cameraDTO);
+            log.info(cam.toString());
             return new ResponseEntity<>(cam, HttpStatus.CREATED);
         } catch (CameraAlreadyExistsException | PropertyDoesNotExistException e) {
             log.error(e.getMessage());
@@ -61,6 +62,7 @@ class CameraController {
             log.error("Alarm -> This Alarm doesn't exist");
             return new ResponseEntity<>(cam, HttpStatus.NOT_FOUND);
         }
+        log.info(cam.toString());
         return new ResponseEntity<>(cam, HttpStatus.OK);
     }
 
@@ -70,6 +72,7 @@ class CameraController {
         Camera cam;
         try {
             cam = service.updateCamera(id, cameraDTO);
+            log.info(cam.toString());
             return new ResponseEntity<>(cam, HttpStatus.OK);
         } catch (PropertyDoesNotExistException | CameraDoesNotExistException e) {
             log.error(e.getMessage());
