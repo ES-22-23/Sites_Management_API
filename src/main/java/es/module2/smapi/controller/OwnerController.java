@@ -25,7 +25,7 @@ import es.module2.smapi.service.OwnerService;
 @RestController
 @RequestMapping("/owners")
 @Validated
-class OwnerController {
+public class OwnerController {
     private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
 
     @Autowired

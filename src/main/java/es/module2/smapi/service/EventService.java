@@ -37,7 +37,16 @@ public class EventService {
     @Autowired
     private OwnerRepository ownerRepository;
 
+    public String getBucketName() {
+        return this.bucketName;
+    }
+
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
+    } 
+
     public byte[] getVideoFile(String videoKey){
+
         S3Object s3Object = s3Client.getObject(bucketName, videoKey);
         S3ObjectInputStream inputStream = s3Object.getObjectContent();
         byte[] content;
@@ -113,8 +122,6 @@ public class EventService {
 
         long propertyId = cameraRepository.findById(cameraId).get().getProperty().getId();
 
-        System.out.println("TEste: " + propertyId);
-
         ListObjectsRequest objectsRequest = new ListObjectsRequest();
         objectsRequest.setBucketName(bucketName);
         objectsRequest.setPrefix("propId" + propertyId + "/cam" + cameraId);
@@ -127,7 +134,6 @@ public class EventService {
         }
 
         for (S3ObjectSummary s3ObjectSummary : objects) {
-            System.out.println("YOOO: " + s3ObjectSummary.getKey());
             objectKeys.add(s3ObjectSummary.getKey());
         }
 

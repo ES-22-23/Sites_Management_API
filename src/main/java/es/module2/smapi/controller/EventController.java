@@ -19,7 +19,7 @@ import es.module2.smapi.service.EventService;
 @RestController
 @RequestMapping("/events")
 @Validated
-class EventController {
+public class EventController {
     private static final Logger log = LoggerFactory.getLogger(EventController.class);
 
     @Autowired

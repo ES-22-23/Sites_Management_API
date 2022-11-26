@@ -26,7 +26,7 @@ import es.module2.smapi.service.PropertyService;
 @RestController
 @RequestMapping("/properties")
 @Validated
-class PropertyController {
+public class PropertyController {
     private static final Logger log = LoggerFactory.getLogger(PropertyController.class);
 
     @Autowired
