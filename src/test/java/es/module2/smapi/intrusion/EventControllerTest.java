@@ -1,4 +1,4 @@
-package es.module2.smapi.intrusionEvent;
+package es.module2.smapi.intrusion;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.CoreMatchers.is;

@@ -1,4 +1,4 @@
-package es.module2.smapi.intrusionEvent;
+package es.module2.smapi.intrusion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,7 +51,9 @@ public class EventServiceTest {
     private ObjectListing listingMock = new ObjectListing();
 
     private ArrayList<S3ObjectSummary> listObjectSummary;
-    private S3ObjectSummary object1, object2, object3;
+    private S3ObjectSummary object1;
+    private S3ObjectSummary object2;
+    private S3ObjectSummary object3;
 
     @BeforeEach
     void setUp(){
