@@ -48,6 +48,7 @@ class CameraController {
             cam = service.createCamera(cameraDTO);
             return new ResponseEntity<>(cam, HttpStatus.CREATED);
         } catch (CameraAlreadyExistsException | PropertyDoesNotExistException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -57,6 +58,7 @@ class CameraController {
         log.info("GET Request -> get a Camera");
         Camera cam = service.getCamera(id);
         if (cam == null){
+            log.error("Alarm -> This Alarm doesn't exist");
             return new ResponseEntity<>(cam, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(cam, HttpStatus.OK);
@@ -70,6 +72,7 @@ class CameraController {
             cam = service.updateCamera(id, cameraDTO);
             return new ResponseEntity<>(cam, HttpStatus.OK);
         } catch (PropertyDoesNotExistException | CameraDoesNotExistException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
     }
@@ -80,6 +83,7 @@ class CameraController {
 
         int resp = service.deleteCamera(id);
         if (resp == 1){
+            log.error("Camera -> This Camera doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);

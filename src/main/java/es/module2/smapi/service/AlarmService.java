@@ -68,19 +68,19 @@ public class AlarmService {
 
     }
 
-    public Alarm updateAlarm(long id, AlarmDTO alarmDTO) {
+    public Alarm updateAlarm(long id, AlarmDTO alarmDTO) throws AlarmAlreadyExistsException, PropertyDoesNotExistException{
         log.info("Updating Alarm");
 
         Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
 
         if (p1==null){
-            return null;
+            throw new PropertyDoesNotExistException("Property does not exist: " + p1);
         }
 
         Alarm alarm = alarmRepository.findById(id).orElse(null);
 
         if (alarm== null){
-            return null;
+            throw new AlarmAlreadyExistsException("Alarm already exists: " + alarm);
         }
 
         alarm.getProperty().getAlarms().remove(alarm);
