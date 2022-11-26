@@ -63,13 +63,13 @@ public class PropertyService {
 
     }
 
-    public Property updateProperty(long id, PropertyDTO propDTO) {
+    public Property updateProperty(long id, PropertyDTO propDTO) throws PropertyAlreadyExistsException, OwnerDoesNotExistException{
         log.info("Updating Property");
 
         Property prop = propRepository.findById(id).orElse(null);
 
         if (prop== null){
-            return null;
+            throw new PropertyAlreadyExistsException("Property already exists: " + prop);
         }
 
         Owner oldOwner = owRepository.findByProperties(prop).orElse(null);
@@ -84,7 +84,8 @@ public class PropertyService {
         Owner ow1 = owRepository.findByUsername(propDTO.getOwnerUsername()).orElse(null);
 
         if (ow1==null){
-            return null;
+            throw new OwnerDoesNotExistException("Owner does not exist: " + propDTO.getOwnerUsername());
+
         }
 
         prop.setOwner(ow1);

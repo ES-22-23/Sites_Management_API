@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="OWNER")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.OwnerGenerator.class, owner = "username")
 public class Owner implements Serializable{
 
   @Id

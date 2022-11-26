@@ -41,11 +41,12 @@ public class AlarmController {
     @PostMapping()
     public ResponseEntity<Alarm> createAlarm(@RequestBody AlarmDTO alarmDTO) {
         log.info("POST Request -> Store a new Alarm");
-        Alarm al = null;
         try {
-            al = service.createAlarm(alarmDTO);
+            Alarm al = service.createAlarm(alarmDTO);
+            log.info(al.toString());
             return new ResponseEntity<>(al, HttpStatus.CREATED);
         } catch (AlarmAlreadyExistsException | PropertyDoesNotExistException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -55,19 +56,25 @@ public class AlarmController {
         log.info("GET Request -> get a Alarm");
         Alarm al = service.getAlarm(id);
         if (al == null){
+            log.error("Alarm -> This Alarm doesn't exist");
             return new ResponseEntity<>(al, HttpStatus.NOT_FOUND);
         }
+        log.info(al.toString());
         return new ResponseEntity<>(al, HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<Alarm> updateAlarm(@PathVariable long id, @RequestBody AlarmDTO alarmDTO) {
         log.info("POST Request -> Update a new Alarm");
-        Alarm al = service.updateAlarm(id, alarmDTO);
-        if (al == null){
+        try {
+            Alarm al= service.updateAlarm(id, alarmDTO);
+            log.info(al.toString());
+            return new ResponseEntity<>(al, HttpStatus.OK);
+
+        } catch (AlarmAlreadyExistsException | PropertyDoesNotExistException e){
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
-        return new ResponseEntity<>(al, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -76,6 +83,7 @@ public class AlarmController {
 
         int resp = service.deleteAlarm(id);
         if (resp == 1){
+            log.error("Alarm -> This Alarm doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);

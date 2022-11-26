@@ -70,23 +70,23 @@ class AlarmRepositoryTests {
     }
 
     @Test
-	void whenFindAlarmByPropAndPrivateIDThenReturnProp() {
+	void whenFindAlarmByPropAndIDThenReturnProp() {
 
         // test the query method of interest
-        Optional<Alarm> result = repository.findByPropertyAndPrivateId(prop1,alDTO1.getPrivateId());
+        Optional<Alarm> result = repository.findByPropertyAndId(prop1,alDTO1.getId());
         assertTrue(result.isPresent());
 	}
 
     Alarm buildAlarmObject(long id){
         Alarm al = new Alarm();
         al.setId(id);
-        al.setPrivateId( id);
+        al.setId( id);
         return al;
     }
 
     AlarmDTO buildAlarmDTO(long id){
         AlarmDTO al = new AlarmDTO();
-        al.setPrivateId( id);
+        al.setId( id);
         al.setPropertyAddress("Address"+id);
         al.setPropertyName("name"+id);
         return al;

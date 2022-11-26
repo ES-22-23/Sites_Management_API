@@ -71,7 +71,7 @@ class AlarmServiceTest {
         alDTO3 = buildAlarmDTO(3);
         alDTO4 = buildAlarmDTO(4);
 
-        Mockito.when(repository.findByPropertyAndPrivateId(any(), eq(alDTO1.getPrivateId()))).thenReturn(Optional.of(al1));
+        Mockito.when(repository.findByPropertyAndId(any(), eq(alDTO1.getId()))).thenReturn(Optional.of(al1));
     }
         
     @Test
@@ -110,13 +110,13 @@ class AlarmServiceTest {
     Alarm buildAlarmObject(long id){
         Alarm al = new Alarm();
         al.setId(id);
-        al.setPrivateId( id);
+        al.setId( id);
         return al;
     }
 
     AlarmDTO buildAlarmDTO(long id){
         AlarmDTO al = new AlarmDTO();
-        al.setPrivateId( id);
+        al.setId( id);
         al.setPropertyAddress("Address"+id);
         al.setPropertyName("name"+id);
         return al;

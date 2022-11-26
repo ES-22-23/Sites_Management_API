@@ -69,7 +69,7 @@ public class CameraServiceTest {
         camDTO3 = buildCameraDTO(3);
         camDTO4 = buildCameraDTO(4);
 
-        Mockito.when(repository.findByPropertyAndPrivateId(any(), eq(camDTO1.getPrivateId()))).thenReturn(Optional.of(cam1));
+        Mockito.when(repository.findByPropertyAndId(any(), eq(camDTO1.getId()))).thenReturn(Optional.of(cam1));
     }
 
     @Test
@@ -107,13 +107,13 @@ public class CameraServiceTest {
     Camera buildCameraObject(long id){
         Camera cam = new Camera();
         cam.setId(id);
-        cam.setPrivateId( id);
+        cam.setId( id);
         return cam;
     }
 
     CameraDTO buildCameraDTO(long id){
         CameraDTO cam = new CameraDTO();
-        cam.setPrivateId(id);
+        cam.setId(id);
         cam.setPropertyAddress("Address"+id);
         cam.setPropertyName("name"+id);
         return cam;

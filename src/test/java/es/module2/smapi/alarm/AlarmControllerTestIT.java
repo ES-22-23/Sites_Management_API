@@ -102,7 +102,7 @@ class AlarmControllerTestIT {
         .then().log().body().assertThat()
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
-        .body("privateId", is((int) alDTO4.getPrivateId()));
+        .body("id", is((int) alDTO4.getId()));
         
     }
     @Test
@@ -148,13 +148,13 @@ class AlarmControllerTestIT {
     Alarm buildAlarmObject(long id){
         Alarm al = new Alarm();
         al.setId(id);
-        al.setPrivateId( id);
+        al.setId( id);
         return al;
     }
 
     AlarmDTO buildAlarmDTO(long id){
         AlarmDTO al = new AlarmDTO();
-        al.setPrivateId( id);
+        al.setId( id);
         al.setPropertyAddress("address"+id);
         al.setPropertyName("name"+id);
         return al;

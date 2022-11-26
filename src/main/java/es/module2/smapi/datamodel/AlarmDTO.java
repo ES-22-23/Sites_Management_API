@@ -9,8 +9,9 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AlarmDTO {
-
-    private long privateId;
+    
+    @NonNull
+    private long id;
 
     @NonNull
     private String propertyName;
