@@ -103,4 +103,18 @@ public class EventControllerTest {
         .body("[1]", is(videoKeys.get(1))).and()
         .body("[2]", is(videoKeys.get(2)));
     }
+
+    @Test
+     void testgetVideo() throws IOException, Exception {
+       
+        byte[] video = "hello".getBytes();
+
+        Mockito.when(eventService.getVideoFile(any(String.class))).thenReturn(video);
+
+        given().get("/events/videoKey")
+        .then().log().body().assertThat()
+        .status(HttpStatus.OK).and()
+        .header("Content-type", is("application/octet-stream")).and()
+        .header("Content-disposition",is("attachment; filename=\"" + "videoKey" + "\""));
+    }
 }
