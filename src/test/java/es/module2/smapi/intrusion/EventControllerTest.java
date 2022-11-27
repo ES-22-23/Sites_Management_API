@@ -79,7 +79,7 @@ public class EventControllerTest {
     @Test
      void testgetAllVideosFromProperty() throws IOException, Exception {
        
-        Mockito.when(eventService.getVideoKeysFromProperty(any(String.class))).thenReturn(videoKeys);
+        Mockito.when(eventService.getVideoKeysFromProperty(any(long.class))).thenReturn(videoKeys);
 
         given().get("/events/property/1")
         .then().log().body().assertThat()

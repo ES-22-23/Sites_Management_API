@@ -40,7 +40,7 @@ public class Camera implements Serializable{
 
 
   @Id 
-  @Column(name = "camera_id", nullable = false, unique=true)
+  @Column(name = "camera_id", nullable = false, unique=true, length = 50)
   private String id;
 
 

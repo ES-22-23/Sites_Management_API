@@ -94,7 +94,7 @@ public class EventService {
         return objectKeys;
     }
 
-    public List<String> getVideoKeysFromProperty(String propertyId){
+    public List<String> getVideoKeysFromProperty(long propertyId){
         
         List<String> objectKeys = new ArrayList<>();
 
@@ -120,7 +120,7 @@ public class EventService {
         
         List<String> objectKeys = new ArrayList<>();
 
-        String propertyId = cameraRepository.findById(cameraId).get().getProperty().getId();
+        long propertyId = cameraRepository.findById(cameraId).get().getProperty().getId();
 
         ListObjectsRequest objectsRequest = new ListObjectsRequest();
         objectsRequest.setBucketName(bucketName);

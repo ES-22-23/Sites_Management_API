@@ -12,8 +12,6 @@ import lombok.NonNull;
 public class PropertyDTO {
 
 
-    @NonNull
-    private String id;
 
     @NonNull
     private String name;
@@ -23,5 +21,32 @@ public class PropertyDTO {
 
     @NonNull
     private String ownerUsername;
+
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getOwnerUsername() {
+        return this.ownerUsername;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
+    }
+
+
 
 }

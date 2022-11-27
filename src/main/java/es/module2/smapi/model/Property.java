@@ -38,7 +38,8 @@ public class Property implements Serializable{
 
   @Id 
   @Column(name = "property_id", nullable = false, unique=true)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY) 
+  private long id;
 
   @Column(name = "name", nullable = false)
   private String name;
@@ -75,11 +76,11 @@ public class Property implements Serializable{
     this.owner=owner;
   }
 
-  public String getId() {
+  public long getId() {
     return this.id;
   }
 
-  public void setId(String id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -127,7 +128,6 @@ public class Property implements Serializable{
     public void convertDTOtoObject(PropertyDTO dto){
         this.setAddress(dto.getAddress());
         this.setName(dto.getName());
-        this.setId(dto.getId());
     }
 
   @Override
@@ -139,7 +139,7 @@ public class Property implements Serializable{
         }
         Property property = (Property) o;
         // return id == property.id && Objects.equals(name, property.name) && Objects.equals(address, property.address) && Objects.equals(owner, property.owner);
-        return id.equals(property.id);
+        return id ==property.id;
   }
 
   @Override

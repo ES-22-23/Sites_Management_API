@@ -10,7 +10,7 @@ import es.module2.smapi.model.Property;
 
 
 @Repository
-public interface PropertyRepository extends JpaRepository<Property, String> {
+public interface PropertyRepository extends JpaRepository<Property, Long> {
     Optional<Property> findByName(String name);
     Optional<Property> findByAddress(String address);
     Optional<Property> findByNameAndAddress(String name, String address);
