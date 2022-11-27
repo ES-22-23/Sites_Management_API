@@ -4,9 +4,7 @@ COPY . /app
 WORKDIR /app
 
 RUN mvn package -DskipTests=true
-
-ARG JAR_FILE=target/*.jar
-ADD ${JAR_FILE} sites-management-API.jar
+RUN mv target/smapi*.jar sites-management-API.jar
 
 EXPOSE 8082
 
