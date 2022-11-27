@@ -37,7 +37,7 @@ public class Alarm implements Serializable{
 
 
   @Id 
-  @Column(name = "alarm_id", nullable = false, unique=true)
+  @Column(name = "alarm_id", nullable = false, unique=true, length = 50)
   private String id;
 
 
