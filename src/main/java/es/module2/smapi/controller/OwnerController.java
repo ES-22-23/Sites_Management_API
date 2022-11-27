@@ -25,7 +25,7 @@ import es.module2.smapi.service.OwnerService;
 @RestController
 @RequestMapping("/owners")
 @Validated
-class OwnerController {
+public class OwnerController {
     private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
 
     @Autowired
@@ -41,11 +41,12 @@ class OwnerController {
     @PostMapping()
     public ResponseEntity<Owner> createOwner(@RequestBody OwnerDTO ownerDTO) {
         log.info("POST Request -> Store a new Owner");
-        Owner ow = null;
         try {
-            ow = service.createOwner(ownerDTO);
+            Owner ow = service.createOwner(ownerDTO);
+            log.info(ow.toString());
             return new ResponseEntity<>(ow, HttpStatus.CREATED);
         } catch (OwnerAlreadyExistsException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -55,19 +56,24 @@ class OwnerController {
         log.info("GET Request -> get an Owner");
         Owner ow = service.getOwner(username);
         if (ow == null){
-            return new ResponseEntity<>(ow, HttpStatus.NOT_FOUND);
+            log.error("Owner -> This Owner doesn't exist");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        log.info(ow.toString());
         return new ResponseEntity<>(ow, HttpStatus.OK);
     }
 
     @PutMapping("/{username}")
     public ResponseEntity<Owner> updateOwner(@PathVariable String username, @RequestBody OwnerDTO ownerDTO) {
         log.info("POST Request -> Update an Owner");
-        Owner ow = service.updateOwner(username, ownerDTO);
-        if (ow == null){
-            return new ResponseEntity<>(ow, HttpStatus.NOT_MODIFIED);
+        try {
+            Owner ow  = service.updateOwner(username, ownerDTO);
+            log.info(ow.toString());
+            return new ResponseEntity<>(ow, HttpStatus.OK);
+        }catch (OwnerAlreadyExistsException e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
-        return new ResponseEntity<>(ow, HttpStatus.OK);
     }
 
     @DeleteMapping("/{username}")
@@ -76,6 +82,7 @@ class OwnerController {
 
         int resp = service.deleteOwner(username);
         if (resp == 1){
+            log.error("Owner -> This Owner doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);

@@ -11,6 +11,10 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class PropertyDTO {
 
+
+    @NonNull
+    private long id;
+
     @NonNull
     private String name;
 

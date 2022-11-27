@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 public interface CameraRepository extends JpaRepository<Camera, Long> {
-    Optional<Camera> findByPropertyAndPrivateId(Property prop, long id);
+    Optional<Camera> findByPropertyAndId(Property prop, long id);
     @Transactional 
-    int deleteByPrivateId(long id);
+    int deleteByPropertyAndId(Property prop, long id);
 }

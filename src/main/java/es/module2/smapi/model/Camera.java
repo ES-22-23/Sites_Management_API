@@ -26,6 +26,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import es.module2.smapi.datamodel.CameraDTO;
 
 @Entity
 @Data
@@ -39,12 +40,9 @@ public class Camera implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.IDENTITY) 
-  @Column(name = "camera_id", nullable = false)
+  @Column(name = "camera_id", nullable = false, unique=true)
   private long id;
 
-  @Column(name = "private_id",nullable = false)
-  private long privateId;
 
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @JoinColumn(name = "property_id", nullable = false)
@@ -53,10 +51,10 @@ public class Camera implements Serializable{
   //@JsonIgnore
   private Property property;
 
-  public Camera(long privateId, Property property) {
-    this.property=property;
-    this.privateId=privateId;
-  }
+  // public Camera(long id , Property property) {
+  //   this.property=property;
+  //   this.id=id;
+  // }
 
   public long getId() {
     return this.id;
@@ -66,12 +64,8 @@ public class Camera implements Serializable{
     this.id = id;
   }
 
-  public long getPrivateId() {
-    return this.privateId;
-  }
-
-  public void setPrivateId(long privateId) {
-    this.privateId = privateId;
+  public void convertDTOtoObject(CameraDTO dto){
+      this.setId(dto.getId());
   }
 
   public Property getProperty() {
@@ -90,19 +84,18 @@ public class Camera implements Serializable{
             return false;
         }
         Camera camera = (Camera) o;
-        return id == camera.id && privateId == camera.privateId && Objects.equals(property, camera.property);
+        return id == camera.getId()  && Objects.equals(property, camera.getProperty());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, privateId, property);
+    return Objects.hash(id,  property);
   }
 
   @Override
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
-      ", privateId='" + getPrivateId() + "'" +
       ", property='" + getProperty() + "'" +
       "}";
   }

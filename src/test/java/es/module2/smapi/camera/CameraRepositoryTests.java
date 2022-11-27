@@ -69,21 +69,21 @@ class CameraRepositoryTests {
     }
 
     @Test
-	void whenFindCameraByPropAndPrivateIDThenReturnProp() {
+	void whenFindCameraByPropAndIdThenReturnProp() {
 
-        Optional<Camera> result = repository.findByPropertyAndPrivateId(prop1,camDTO1.getPrivateId());
+        Optional<Camera> result = repository.findByPropertyAndId(prop1,camDTO1.getId());
         assertTrue(result.isPresent());
 	}
 
     Camera buildCameraObject(long id){
         Camera al = new Camera();
-        al.setPrivateId( id);
+        al.setId( id);
         return al;
     }
 
     CameraDTO buildCameraDTO(long id){
         CameraDTO al = new CameraDTO();
-        al.setPrivateId(id);
+        al.setId(id);
         al.setPropertyAddress("Address"+id);
         al.setPropertyName("name"+id);
         return al;

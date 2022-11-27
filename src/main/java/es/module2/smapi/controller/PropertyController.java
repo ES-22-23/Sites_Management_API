@@ -26,7 +26,7 @@ import es.module2.smapi.service.PropertyService;
 @RestController
 @RequestMapping("/properties")
 @Validated
-class PropertyController {
+public class PropertyController {
     private static final Logger log = LoggerFactory.getLogger(PropertyController.class);
 
     @Autowired
@@ -42,11 +42,12 @@ class PropertyController {
     @PostMapping()
     public ResponseEntity<Property> createProperty(@RequestBody PropertyDTO propertyDTO) {
         log.info("POST Request -> Store a new Property");
-        Property prop = null;
         try {
-            prop = service.createProperty(propertyDTO);
+            Property prop = service.createProperty(propertyDTO);
+            log.info(prop.toString());
             return new ResponseEntity<>(prop, HttpStatus.CREATED);
         } catch (PropertyAlreadyExistsException | OwnerDoesNotExistException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -56,19 +57,24 @@ class PropertyController {
         log.info("GET Request -> get a property");
         Property prop = service.getProperty(id);
         if (prop == null){
-            return new ResponseEntity<>(prop, HttpStatus.NOT_FOUND);
+            log.error("Property -> This Property doesn't exist");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        log.info(prop.toString());
         return new ResponseEntity<>(prop, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Property> updateProperty(@PathVariable long id, @RequestBody PropertyDTO propertyDTO) {
         log.info("POST Request -> Update a new Property");
-        Property prop = service.updateProperty(id, propertyDTO);
-        if (prop == null){
-            return new ResponseEntity<>(prop, HttpStatus.NOT_MODIFIED);
+        try {
+            Property prop = service.updateProperty(id, propertyDTO);
+            log.info(prop.toString());
+            return new ResponseEntity<>(prop, HttpStatus.OK);
+        } catch (PropertyAlreadyExistsException | OwnerDoesNotExistException e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
-        return new ResponseEntity<>(prop, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -77,6 +83,7 @@ class PropertyController {
 
         int resp = service.deleteProperty(id);
         if (resp == 1){
+            log.error("Property -> This Property doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);

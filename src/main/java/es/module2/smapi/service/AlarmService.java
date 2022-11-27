@@ -46,7 +46,7 @@ public class AlarmService {
             throw new PropertyDoesNotExistException("Property does not exist: " + p1);
         }
 
-        Alarm alarm = alarmRepository.findByPropertyAndPrivateId(p1, alarmDTO.getPrivateId()).orElse(null);
+        Alarm alarm = alarmRepository.findByPropertyAndId(p1, alarmDTO.getId()).orElse(null);
 
         if (alarm!=null){
             throw new AlarmAlreadyExistsException("Alarm already exists: " + alarm);
@@ -55,7 +55,7 @@ public class AlarmService {
         Alarm alarm2 = new Alarm();
 
         alarm2.setProperty(p1);
-        alarm2.setPrivateId(alarmDTO.getPrivateId());
+        alarm2.setId(alarmDTO.getId());
         p1.getAlarms().add(alarm2);
         alarm2 = alarmRepository.saveAndFlush(alarm2);
         return alarm2;
@@ -68,19 +68,19 @@ public class AlarmService {
 
     }
 
-    public Alarm updateAlarm(long id, AlarmDTO alarmDTO) {
+    public Alarm updateAlarm(long id, AlarmDTO alarmDTO) throws AlarmAlreadyExistsException, PropertyDoesNotExistException{
         log.info("Updating Alarm");
 
         Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
 
         if (p1==null){
-            return null;
+            throw new PropertyDoesNotExistException("Property does not exist: " + p1);
         }
 
         Alarm alarm = alarmRepository.findById(id).orElse(null);
 
         if (alarm== null){
-            return null;
+            throw new AlarmAlreadyExistsException("Alarm already exists: " + alarm);
         }
 
         alarm.getProperty().getAlarms().remove(alarm);

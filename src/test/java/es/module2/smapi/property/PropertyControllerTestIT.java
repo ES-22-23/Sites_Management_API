@@ -173,6 +173,7 @@ class PropertyControllerTestIT {
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);
         prop.setOwnerUsername("username"+id);
+        prop.setId(id);
         return prop;
     }
 

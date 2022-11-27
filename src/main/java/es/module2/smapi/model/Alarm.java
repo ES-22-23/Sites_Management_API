@@ -24,6 +24,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import es.module2.smapi.datamodel.AlarmDTO;
+
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -34,12 +37,9 @@ public class Alarm implements Serializable{
 
 
   @Id 
-  @GeneratedValue(strategy = GenerationType.IDENTITY) 
-  @Column(name = "alarm_id", nullable = false)
+  @Column(name = "alarm_id", nullable = false, unique=true)
   private long id;
 
-  @Column(name = "private_id",nullable = false)
-  private long privateId;
 
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
   @JoinColumn(name = "property_id", nullable = false)
@@ -48,14 +48,14 @@ public class Alarm implements Serializable{
   //@JsonIgnore
   private Property property;
 
-  public Alarm(long private_id, Property property) {
-    this.property = property;
-    this.privateId = private_id;
-  }
+  // public Alarm(long id, Property property) {
+  //   this.property = property;
+  //   this.id = id;
+  // }
 
-    public void convertDTOtoObject(AlarmDTO dto){
-        this.setPrivateId(dto.getPrivateId());
-    }
+  public void convertDTOtoObject(AlarmDTO dto){
+      this.setId(dto.getId());
+  }
 
   public long getId() {
     return this.id;
@@ -65,13 +65,6 @@ public class Alarm implements Serializable{
     this.id = id;
   }
 
-  public long getPrivateId() {
-    return this.privateId;
-  }
-
-  public void setPrivateId(long privateId) {
-    this.privateId = privateId;
-  }
 
   public Property getProperty() {
     return this.property;
@@ -91,12 +84,12 @@ public class Alarm implements Serializable{
             return false;
         }
         Alarm alarm = (Alarm) o;
-        return id == alarm.id && Objects.equals(privateId, alarm.privateId) && Objects.equals(property, alarm.property);
+        return id == alarm.getId()  && Objects.equals(property, alarm.getProperty());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, privateId, property);
+    return Objects.hash(id, property);
   }
 
 
@@ -104,7 +97,6 @@ public class Alarm implements Serializable{
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
-      ", private_id='" + getPrivateId() + "'" +
       ", property='" + getProperty() + "'" +
       "}";
   }
