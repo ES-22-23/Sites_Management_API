@@ -4,7 +4,8 @@ COPY . /app
 WORKDIR /app
 
 RUN mvn package -DskipTests=true
-ADD target/*.jar sites-management-API.jar
+RUN ls
+ADD ./target/*.jar sites-management-API.jar
 
 EXPOSE 8082
 
