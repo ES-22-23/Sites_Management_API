@@ -25,7 +25,7 @@ import es.module2.smapi.service.AlarmService;
 @RestController
 @RequestMapping("/alarms")
 @Validated
-class AlarmController {
+public class AlarmController {
     private static final Logger log = LoggerFactory.getLogger(AlarmController.class);
 
     @Autowired

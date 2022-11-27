@@ -27,7 +27,7 @@ import es.module2.smapi.service.CameraService;
 @RestController
 @RequestMapping("/cameras")
 @Validated
-class CameraController {
+public class CameraController {
     private static final Logger log = LoggerFactory.getLogger(CameraController.class);
 
     @Autowired

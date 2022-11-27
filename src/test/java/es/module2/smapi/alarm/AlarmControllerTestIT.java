@@ -84,7 +84,6 @@ class AlarmControllerTestIT {
         propertyRepository.deleteAll();
     }
 
-
     @Test
      void whenGetAllAlarmsThenReturnAllAlarms() throws IOException, Exception {
         given().get("/alarms")
