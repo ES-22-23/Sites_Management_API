@@ -61,14 +61,14 @@ public class AlarmService {
         return alarm2;
     }
 
-    public Alarm getAlarm(long id) {
+    public Alarm getAlarm(String id) {
         log.info("Getting Alarm");
 
         return alarmRepository.findById(id).orElse(null);
 
     }
 
-    public Alarm updateAlarm(long id, AlarmDTO alarmDTO) throws AlarmAlreadyExistsException, PropertyDoesNotExistException{
+    public Alarm updateAlarm(String id, AlarmDTO alarmDTO) throws AlarmAlreadyExistsException, PropertyDoesNotExistException{
         log.info("Updating Alarm");
 
         Property p1 = propRepository.findByNameAndAddress(alarmDTO.getPropertyName(), alarmDTO.getPropertyAddress()).orElse(null);
@@ -91,7 +91,7 @@ public class AlarmService {
         return alarmRepository.saveAndFlush(alarm);
     }
 
-    public int deleteAlarm(long id) {
+    public int deleteAlarm(String id) {
         log.info("Deleting Alarm");
 
         Optional<Alarm> alarm = alarmRepository.findById(id);

@@ -39,15 +39,15 @@ class AlarmRepositoryTests {
         
     @BeforeEach
     void setUp() throws JsonProcessingException{
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
 
-        al1 = buildAlarmObject(1);
-        al2 = buildAlarmObject(2);
-        al3 = buildAlarmObject(3);
-        al4 = buildAlarmObject(4);
+        al1 = buildAlarmObject("1");
+        al2 = buildAlarmObject("2");
+        al3 = buildAlarmObject("3");
+        al4 = buildAlarmObject("4");
 
         al1.setProperty(prop1);
         al2.setProperty(prop2);
@@ -58,10 +58,10 @@ class AlarmRepositoryTests {
         repository.saveAndFlush(al2);
         repository.saveAndFlush(al3);
 
-        alDTO1 = buildAlarmDTO(1);
-        alDTO2 = buildAlarmDTO(2);
-        alDTO3 = buildAlarmDTO(3);
-        alDTO4 = buildAlarmDTO(4);
+        alDTO1 = buildAlarmDTO("1");
+        alDTO2 = buildAlarmDTO("2");
+        alDTO3 = buildAlarmDTO("3");
+        alDTO4 = buildAlarmDTO("4");
     }
 
     @AfterEach
@@ -77,14 +77,14 @@ class AlarmRepositoryTests {
         assertTrue(result.isPresent());
 	}
 
-    Alarm buildAlarmObject(long id){
+    Alarm buildAlarmObject(String id){
         Alarm al = new Alarm();
         al.setId(id);
         al.setId( id);
         return al;
     }
 
-    AlarmDTO buildAlarmDTO(long id){
+    AlarmDTO buildAlarmDTO(String id){
         AlarmDTO al = new AlarmDTO();
         al.setId( id);
         al.setPropertyAddress("Address"+id);
@@ -92,7 +92,7 @@ class AlarmRepositoryTests {
         return al;
     }
 	
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         ow = ownerRepository.saveAndFlush(ow);

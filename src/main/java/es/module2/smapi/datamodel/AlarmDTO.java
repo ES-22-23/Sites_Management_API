@@ -11,7 +11,7 @@ import lombok.NonNull;
 public class AlarmDTO {
     
     @NonNull
-    private long id;
+    private String id;
 
     @NonNull
     private String propertyName;

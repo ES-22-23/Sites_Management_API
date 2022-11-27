@@ -52,7 +52,7 @@ public class AlarmController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Alarm> getAlarm(@PathVariable long id) {
+    public ResponseEntity<Alarm> getAlarm(@PathVariable String id) {
         log.info("GET Request -> get a Alarm");
         Alarm al = service.getAlarm(id);
         if (al == null){
@@ -64,7 +64,7 @@ public class AlarmController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Alarm> updateAlarm(@PathVariable long id, @RequestBody AlarmDTO alarmDTO) {
+    public ResponseEntity<Alarm> updateAlarm(@PathVariable String id, @RequestBody AlarmDTO alarmDTO) {
         log.info("POST Request -> Update a new Alarm");
         try {
             Alarm al= service.updateAlarm(id, alarmDTO);
@@ -78,7 +78,7 @@ public class AlarmController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> deleteAlarm(@PathVariable long id) {
+    public ResponseEntity<Integer> deleteAlarm(@PathVariable String id) {
         log.info("DELETE Request -> Delete a new Alarm");
 
         int resp = service.deleteAlarm(id);

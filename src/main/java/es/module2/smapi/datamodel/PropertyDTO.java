@@ -13,7 +13,7 @@ public class PropertyDTO {
 
 
     @NonNull
-    private long id;
+    private String id;
 
     @NonNull
     private String name;

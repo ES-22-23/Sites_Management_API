@@ -96,7 +96,7 @@ public class EventServiceTest {
         Mockito.when(s3Client.listObjects(any(ListObjectsRequest.class))).thenReturn(listingMock);
         Mockito.when(listingMock.getObjectSummaries()).thenReturn(listObjectSummary);
 
-        List<String> result = service.getVideoKeysFromProperty(1);
+        List<String> result = service.getVideoKeysFromProperty("1");
 
         assertEquals(listObjectSummary.size(), result.size());
         assertTrue(result.contains(object1.getKey()));
@@ -122,17 +122,17 @@ public class EventServiceTest {
     void testGetVideoKeysFromCamera(){
 
         Camera cam1 = new Camera();
-        cam1.setId(1);
+        cam1.setId("1");
         Property prop1 = new Property();
-        prop1.setId(1);
+        prop1.setId("1");
         cam1.setProperty(prop1);
 
-        Mockito.when(cameraRepository.findById((long) 1)).thenReturn(Optional.of(cam1));
+        Mockito.when(cameraRepository.findById("1")).thenReturn(Optional.of(cam1));
 
         Mockito.when(s3Client.listObjects(any(ListObjectsRequest.class))).thenReturn(listingMock);
         Mockito.when(listingMock.getObjectSummaries()).thenReturn(listObjectSummary);
 
-        List<String> result = service.getVideoKeysFromCamera(1);
+        List<String> result = service.getVideoKeysFromCamera("1");
 
         assertEquals(listObjectSummary.size(), result.size());
         assertTrue(result.contains(object1.getKey()));

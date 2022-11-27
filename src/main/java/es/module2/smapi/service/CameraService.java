@@ -60,13 +60,13 @@ public class CameraService {
         return camRepository.saveAndFlush(cam2);
     }
 
-    public Camera getCamera(long id) {
+    public Camera getCamera(String id) {
         log.info("Getting Camera");
 
         return camRepository.findById(id).orElse(null);
     }
 
-    public Camera updateCamera(long id, CameraDTO camDTO) throws PropertyDoesNotExistException, CameraDoesNotExistException {
+    public Camera updateCamera(String id, CameraDTO camDTO) throws PropertyDoesNotExistException, CameraDoesNotExistException {
         log.info("Updating Camera");
         
         Property p1 = propRepository.findByNameAndAddress(camDTO.getPropertyName(), camDTO.getPropertyAddress()).orElse(null);
@@ -90,7 +90,7 @@ public class CameraService {
         return camRepository.saveAndFlush(cam);
     }
 
-    public int deleteCamera(long id) {
+    public int deleteCamera(String id) {
         log.info("Deleting Camera");
 
         Optional<Camera> camera = camRepository.findById(id);
