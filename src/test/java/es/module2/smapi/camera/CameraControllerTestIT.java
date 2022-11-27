@@ -55,14 +55,14 @@ public class CameraControllerTestIT {
 
         RestAssuredMockMvc.mockMvc( mvc );
 
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
 
-        cam1 = buildCameraObject(1);
-        cam2 = buildCameraObject(2);
-        cam3 = buildCameraObject(3);
+        cam1 = buildCameraObject("1");
+        cam2 = buildCameraObject("2");
+        cam3 = buildCameraObject("3");
 
         cam1.setProperty(prop1);
         cam2.setProperty(prop2);
@@ -72,10 +72,10 @@ public class CameraControllerTestIT {
         cam2 = repository.saveAndFlush(cam2);
         cam3 = repository.saveAndFlush(cam3);
 
-        camDTO1 = buildCameraDTO(1);
-        camDTO2 = buildCameraDTO(2);
-        camDTO3 = buildCameraDTO(3);
-        camDTO4 = buildCameraDTO(4);
+        camDTO1 = buildCameraDTO("1");
+        camDTO2 = buildCameraDTO("2");
+        camDTO3 = buildCameraDTO("3");
+        camDTO4 = buildCameraDTO("4");
     }
 
     @AfterEach
@@ -92,9 +92,9 @@ public class CameraControllerTestIT {
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
-        .body("[0].id", is((int)cam1.getId())).and()
-        .body("[1].id", is((int)cam2.getId())).and()
-        .body("[2].id", is((int)cam3.getId()));
+        .body("[0].id", is(cam1.getId())).and()
+        .body("[1].id", is(cam2.getId())).and()
+        .body("[2].id", is(cam3.getId()));
 
     }
 
@@ -105,7 +105,7 @@ public class CameraControllerTestIT {
         .then().log().body().assertThat()
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
-        .body("id", is((int) camDTO4.getId()));
+        .body("id", is( camDTO4.getId()));
         
     }
     @Test
@@ -131,7 +131,7 @@ public class CameraControllerTestIT {
     void whenInvalidInputThenNotFound() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .get("/cameras/"+1000)
+        .get("/cameras/1000")
         .then().log().body().assertThat()
         .status(HttpStatus.NOT_FOUND);
 
@@ -144,18 +144,18 @@ public class CameraControllerTestIT {
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
-        .body("id", is((int)cam1.getId()));
+        .body("id", is(cam1.getId()));
 
     }
 
-    Camera buildCameraObject(long id){
+    Camera buildCameraObject(String id){
         Camera cam = new Camera();
         cam.setId(id);
         cam.setId( id);
         return cam;
     }
 
-    CameraDTO buildCameraDTO(long id){
+    CameraDTO buildCameraDTO(String id){
         CameraDTO cam = new CameraDTO();
         cam.setId( id);
         cam.setPropertyAddress("address"+id);
@@ -163,7 +163,7 @@ public class CameraControllerTestIT {
         return cam;
     }
 	
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email" + id, "name"+id);
         ow = ownerRepository.saveAndFlush(ow);

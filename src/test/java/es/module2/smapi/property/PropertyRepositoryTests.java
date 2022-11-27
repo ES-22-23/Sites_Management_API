@@ -36,19 +36,19 @@ class PropertyRepositoryTests {
     @BeforeEach
     void setUp() throws JsonProcessingException{
 
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
 
         prop1 = propRepository.saveAndFlush(prop1);
         prop2 = propRepository.saveAndFlush(prop2);
         prop3 = propRepository.saveAndFlush(prop3);
 
-        propDTO1 = buildPropertyDTO(1);
-        propDTO2 = buildPropertyDTO(2);
-        propDTO3 = buildPropertyDTO(3);
-        propDTO4 = buildPropertyDTO(4);
+        propDTO1 = buildPropertyDTO("1");
+        propDTO2 = buildPropertyDTO("2");
+        propDTO3 = buildPropertyDTO("3");
+        propDTO4 = buildPropertyDTO("4");
     }
 
     @AfterEach
@@ -93,7 +93,7 @@ class PropertyRepositoryTests {
         assertTrue(result==0);
 	}
 
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         prop.setId(id);
@@ -103,7 +103,7 @@ class PropertyRepositoryTests {
         return prop;
     }
 
-    PropertyDTO buildPropertyDTO(long id){
+    PropertyDTO buildPropertyDTO(String id){
         PropertyDTO prop = new PropertyDTO();
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);

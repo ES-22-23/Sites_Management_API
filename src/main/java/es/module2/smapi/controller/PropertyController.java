@@ -53,7 +53,7 @@ class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Property> getProperty(@PathVariable long id) {
+    public ResponseEntity<Property> getProperty(@PathVariable String id) {
         log.info("GET Request -> get a property");
         Property prop = service.getProperty(id);
         if (prop == null){
@@ -65,7 +65,7 @@ class PropertyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Property> updateProperty(@PathVariable long id, @RequestBody PropertyDTO propertyDTO) {
+    public ResponseEntity<Property> updateProperty(@PathVariable String id, @RequestBody PropertyDTO propertyDTO) {
         log.info("POST Request -> Update a new Property");
         try {
             Property prop = service.updateProperty(id, propertyDTO);
@@ -78,7 +78,7 @@ class PropertyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> deleteProperty(@PathVariable long id) {
+    public ResponseEntity<Integer> deleteProperty(@PathVariable String id) {
         log.info("DELETE Request -> Delete a new Property");
 
         int resp = service.deleteProperty(id);

@@ -55,7 +55,7 @@ class CameraController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Camera> getCamera(@PathVariable long id) {
+    public ResponseEntity<Camera> getCamera(@PathVariable String id) {
         log.info("GET Request -> get a Camera");
         Camera cam = service.getCamera(id);
         if (cam == null){
@@ -67,7 +67,7 @@ class CameraController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Camera> updateCamera(@PathVariable long id,@RequestBody CameraDTO cameraDTO) {
+    public ResponseEntity<Camera> updateCamera(@PathVariable String id,@RequestBody CameraDTO cameraDTO) {
         log.info("POST Request -> Update a new Camera");
         Camera cam;
         try {
@@ -81,7 +81,7 @@ class CameraController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> deleteCamera(@PathVariable long id) {
+    public ResponseEntity<Integer> deleteCamera(@PathVariable String id) {
         log.info("DELETE Request -> Delete a new Camera");
 
         int resp = service.deleteCamera(id);

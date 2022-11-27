@@ -51,25 +51,25 @@ class AlarmServiceTest {
     @BeforeEach
     void setUp() throws JsonProcessingException{
 
-        al1 = buildAlarmObject(1);
-        al2 = buildAlarmObject(2);
-        al3 = buildAlarmObject(3);
-        al4 = buildAlarmObject(4);
+        al1 = buildAlarmObject("1");
+        al2 = buildAlarmObject("2");
+        al3 = buildAlarmObject("3");
+        al4 = buildAlarmObject("4");
 
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
         
         al1.setProperty(prop1);
         al2.setProperty(prop2);
         al3.setProperty(prop3);
         al4.setProperty(prop4);
 
-        alDTO1 = buildAlarmDTO(1);
-        alDTO2 = buildAlarmDTO(2);
-        alDTO3 = buildAlarmDTO(3);
-        alDTO4 = buildAlarmDTO(4);
+        alDTO1 = buildAlarmDTO("1");
+        alDTO2 = buildAlarmDTO("2");
+        alDTO3 = buildAlarmDTO("3");
+        alDTO4 = buildAlarmDTO("4");
 
         Mockito.when(repository.findByPropertyAndId(any(), eq(alDTO1.getId()))).thenReturn(Optional.of(al1));
     }
@@ -91,7 +91,7 @@ class AlarmServiceTest {
         Mockito.when(repository.findById(any())).thenReturn(Optional.of(al1));
         Mockito.when(repository.saveAndFlush(any(Alarm.class))).thenReturn(al1);
 
-        Alarm result = service.updateAlarm(1, alDTO1);
+        Alarm result = service.updateAlarm("1", alDTO1);
         System.out.println(result);
         assertTrue(al1.equals(result));
     }
@@ -107,14 +107,14 @@ class AlarmServiceTest {
         assertTrue(found.equals(al1));
     }
 
-    Alarm buildAlarmObject(long id){
+    Alarm buildAlarmObject(String id){
         Alarm al = new Alarm();
         al.setId(id);
         al.setId( id);
         return al;
     }
 
-    AlarmDTO buildAlarmDTO(long id){
+    AlarmDTO buildAlarmDTO(String id){
         AlarmDTO al = new AlarmDTO();
         al.setId( id);
         al.setPropertyAddress("Address"+id);
@@ -122,7 +122,7 @@ class AlarmServiceTest {
         return al;
     }
 
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id, "email"+id, "name"+id);
         prop.setId(id);

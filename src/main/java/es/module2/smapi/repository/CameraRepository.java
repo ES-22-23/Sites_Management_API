@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 
-public interface CameraRepository extends JpaRepository<Camera, Long> {
-    Optional<Camera> findByPropertyAndId(Property prop, long id);
+public interface CameraRepository extends JpaRepository<Camera, String> {
+    Optional<Camera> findByPropertyAndId(Property prop, String id);
     @Transactional 
-    int deleteByPropertyAndId(Property prop, long id);
+    int deleteByPropertyAndId(Property prop, String id);
 }

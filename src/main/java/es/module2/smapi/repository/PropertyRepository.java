@@ -10,15 +10,15 @@ import es.module2.smapi.model.Property;
 
 
 @Repository
-public interface PropertyRepository extends JpaRepository<Property, Long> {
+public interface PropertyRepository extends JpaRepository<Property, String> {
     Optional<Property> findByName(String name);
     Optional<Property> findByAddress(String address);
     Optional<Property> findByNameAndAddress(String name, String address);
     @Transactional 
     int deleteByNameAndAddress(String name, String address);
     
-    Optional<Property> findByCameras(long cam);
-    Optional<Property> findByAlarms(long al);
+    Optional<Property> findByCameras(String cam);
+    Optional<Property> findByAlarms(String al);
 
 
     // find property by alarm id

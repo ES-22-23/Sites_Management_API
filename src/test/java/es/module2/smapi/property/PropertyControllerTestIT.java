@@ -50,19 +50,19 @@ class PropertyControllerTestIT {
 
         RestAssuredMockMvc.mockMvc( mvc );
 
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
 
         prop1 = repository.saveAndFlush(prop1);
         prop2 = repository.saveAndFlush(prop2);
         prop3 = repository.saveAndFlush(prop3);
 
-        propDTO1 = buildPropertyDTO(1);
-        propDTO2 = buildPropertyDTO(2);
-        propDTO3 = buildPropertyDTO(3);
-        propDTO4 = buildPropertyDTO(4);
+        propDTO1 = buildPropertyDTO("1");
+        propDTO2 = buildPropertyDTO("2");
+        propDTO3 = buildPropertyDTO("3");
+        propDTO4 = buildPropertyDTO("4");
     }
 
     @AfterEach
@@ -138,7 +138,7 @@ class PropertyControllerTestIT {
     void whenDeleteInValidInputThenNotFOund() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .delete("/properties/"+1000)
+        .delete("/properties/10000")
         .then().log().body().assertThat()
         .status(HttpStatus.NOT_FOUND);
 
@@ -157,7 +157,7 @@ class PropertyControllerTestIT {
 
 
 
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         prop.setId(id);
@@ -168,7 +168,7 @@ class PropertyControllerTestIT {
         return prop;
     }
 
-    PropertyDTO buildPropertyDTO(long id){
+    PropertyDTO buildPropertyDTO(String id){
         PropertyDTO prop = new PropertyDTO();
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);

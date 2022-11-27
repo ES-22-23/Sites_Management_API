@@ -49,25 +49,25 @@ public class CameraServiceTest {
     @BeforeEach
     void setUp() throws JsonProcessingException{
 
-        cam1 = buildCameraObject(1);
-        cam2 = buildCameraObject(2);
-        cam3 = buildCameraObject(3);
-        cam4 = buildCameraObject(4);
+        cam1 = buildCameraObject("1");
+        cam2 = buildCameraObject("2");
+        cam3 = buildCameraObject("3");
+        cam4 = buildCameraObject("4");
 
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
         
         cam1.setProperty(prop1);
         cam2.setProperty(prop2);
         cam3.setProperty(prop3);
         cam4.setProperty(prop4);
 
-        camDTO1 = buildCameraDTO(1);
-        camDTO2 = buildCameraDTO(2);
-        camDTO3 = buildCameraDTO(3);
-        camDTO4 = buildCameraDTO(4);
+        camDTO1 = buildCameraDTO("1");
+        camDTO2 = buildCameraDTO("2");
+        camDTO3 = buildCameraDTO("3");
+        camDTO4 = buildCameraDTO("4");
 
         Mockito.when(repository.findByPropertyAndId(any(), eq(camDTO1.getId()))).thenReturn(Optional.of(cam1));
     }
@@ -89,7 +89,7 @@ public class CameraServiceTest {
         Mockito.when(repository.findById(any())).thenReturn(Optional.of(cam1));
         Mockito.when(repository.saveAndFlush(any(Camera.class))).thenReturn(cam1);
 
-        Camera result = service.updateCamera(1, camDTO1);
+        Camera result = service.updateCamera("1", camDTO1);
         assertTrue(cam1.equals(result));
     }
 
@@ -104,14 +104,14 @@ public class CameraServiceTest {
         assertEquals(cam1,found);
     }
 
-    Camera buildCameraObject(long id){
+    Camera buildCameraObject(String id){
         Camera cam = new Camera();
         cam.setId(id);
         cam.setId( id);
         return cam;
     }
 
-    CameraDTO buildCameraDTO(long id){
+    CameraDTO buildCameraDTO(String id){
         CameraDTO cam = new CameraDTO();
         cam.setId(id);
         cam.setPropertyAddress("Address"+id);
@@ -119,7 +119,7 @@ public class CameraServiceTest {
         return cam;
     }
 
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id, "email"+id, "name"+id);
         prop.setId(id);

@@ -49,16 +49,16 @@ class PropertyServiceTest {
     @BeforeEach
     void setUp() throws JsonProcessingException{
 
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
 
 
-        propDTO1 = buildPropertyDTO(1);
-        propDTO2 = buildPropertyDTO(2);
-        propDTO3 = buildPropertyDTO(3);
-        propDTO4 = buildPropertyDTO(4);
+        propDTO1 = buildPropertyDTO("1");
+        propDTO2 = buildPropertyDTO("2");
+        propDTO3 = buildPropertyDTO("3");
+        propDTO4 = buildPropertyDTO("4");
 
         Mockito.when(repository.findByNameAndAddress(propDTO1.getName(), propDTO1.getAddress())).thenReturn(Optional.of(prop1));
         Mockito.when(owRepository.findByUsername(any())).thenReturn(Optional.of(new Owner("username","email", "name")));
@@ -81,7 +81,7 @@ class PropertyServiceTest {
         Mockito.when(repository.saveAndFlush(any(Property.class))).thenReturn(prop1);
         Mockito.when(repository.findById(any())).thenReturn(Optional.of(prop1));
 
-        Property result = service.updateProperty(1,propDTO1);
+        Property result = service.updateProperty("1",propDTO1);
 
         assertTrue(prop1.equals(result));
     }
@@ -89,15 +89,15 @@ class PropertyServiceTest {
     @Test
      void whenValidInputThenGetProperty() throws IOException, Exception, PropertyAlreadyExistsException {
    
-        Mockito.when(repository.findById((long) 1)).thenReturn(Optional.of(prop1));
+        Mockito.when(repository.findById("1")).thenReturn(Optional.of(prop1));
 
-        Property found= service.getProperty(1);
+        Property found= service.getProperty("1");
 
         assertThat(found).isNotNull();
         assertThat(found.equals(prop1));
     }
 
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         prop.setId(id);
@@ -108,7 +108,7 @@ class PropertyServiceTest {
         return prop;
     }
 
-    PropertyDTO buildPropertyDTO(long id){
+    PropertyDTO buildPropertyDTO(String id){
         PropertyDTO prop = new PropertyDTO();
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);

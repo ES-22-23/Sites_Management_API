@@ -12,7 +12,7 @@ import lombok.NonNull;
 public class CameraDTO {
 
     @NonNull
-    private long id;
+    private String id;
 
     @NonNull
     private String propertyName;

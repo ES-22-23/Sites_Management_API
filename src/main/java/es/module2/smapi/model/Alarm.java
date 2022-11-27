@@ -38,7 +38,7 @@ public class Alarm implements Serializable{
 
   @Id 
   @Column(name = "alarm_id", nullable = false, unique=true)
-  private long id;
+  private String id;
 
 
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -57,11 +57,11 @@ public class Alarm implements Serializable{
       this.setId(dto.getId());
   }
 
-  public long getId() {
+  public String getId() {
     return this.id;
   }
 
-  public void setId(long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -84,7 +84,7 @@ public class Alarm implements Serializable{
             return false;
         }
         Alarm alarm = (Alarm) o;
-        return id == alarm.getId()  && Objects.equals(property, alarm.getProperty());
+        return id.equals(alarm.getId())  && Objects.equals(property, alarm.getProperty());
   }
 
   @Override

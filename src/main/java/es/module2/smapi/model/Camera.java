@@ -41,7 +41,7 @@ public class Camera implements Serializable{
 
   @Id 
   @Column(name = "camera_id", nullable = false, unique=true)
-  private long id;
+  private String id;
 
 
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -51,16 +51,16 @@ public class Camera implements Serializable{
   //@JsonIgnore
   private Property property;
 
-  // public Camera(long id , Property property) {
+  // public Camera(String id , Property property) {
   //   this.property=property;
   //   this.id=id;
   // }
 
-  public long getId() {
+  public String getId() {
     return this.id;
   }
 
-  public void setId(long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -84,7 +84,7 @@ public class Camera implements Serializable{
             return false;
         }
         Camera camera = (Camera) o;
-        return id == camera.getId()  && Objects.equals(property, camera.getProperty());
+        return id.equals(camera.getId())  && Objects.equals(property, camera.getProperty());
   }
 
   @Override

@@ -56,14 +56,14 @@ public class PropertyService {
         return propRepository.saveAndFlush(prop2);
     }
 
-    public Property getProperty(long id) {
+    public Property getProperty(String id) {
         log.info("Getting Property");
 
         return propRepository.findById(id).orElse(null);
 
     }
 
-    public Property updateProperty(long id, PropertyDTO propDTO) throws PropertyAlreadyExistsException, OwnerDoesNotExistException{
+    public Property updateProperty(String id, PropertyDTO propDTO) throws PropertyAlreadyExistsException, OwnerDoesNotExistException{
         log.info("Updating Property");
 
         Property prop = propRepository.findById(id).orElse(null);
@@ -93,7 +93,7 @@ public class PropertyService {
 
         return propRepository.saveAndFlush(prop);
     }
-    public int deleteProperty(long id) {
+    public int deleteProperty(String id) {
         log.info("Deleting Property");
 
         Optional<Property> camera = propRepository.findById(id);
