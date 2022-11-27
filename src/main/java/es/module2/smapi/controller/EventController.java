@@ -40,7 +40,7 @@ public class EventController {
     }
 
     @GetMapping("/property/{propertyId}")
-    public ResponseEntity<List<String>> getVideosFromProperty(@PathVariable String propertyId) {
+    public ResponseEntity<List<String>> getVideosFromProperty(@PathVariable long propertyId) {
         log.info("GET Request -> Get videos from Property");
         
         return new ResponseEntity<>(service.getVideoKeysFromProperty(propertyId), HttpStatus.OK);

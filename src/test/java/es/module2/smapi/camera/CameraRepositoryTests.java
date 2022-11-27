@@ -93,7 +93,7 @@ class CameraRepositoryTests {
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         ow = ownerRepository.saveAndFlush(ow);
-        prop.setId(id);
+        prop.setId(Long.parseLong(id));
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);
         prop.setOwner(ow);
