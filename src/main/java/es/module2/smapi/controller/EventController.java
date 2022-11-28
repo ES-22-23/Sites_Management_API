@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.module2.smapi.service.EventService;
@@ -53,8 +54,8 @@ public class EventController {
         return new ResponseEntity<>(service.getVideoKeysFromCamera(cameraId), HttpStatus.OK);
     }
 
-    @GetMapping("/{videoKey}")
-    public ResponseEntity<ByteArrayResource> getVideoFile(@PathVariable String videoKey) {
+    @GetMapping("")
+    public ResponseEntity<ByteArrayResource> getVideoFile(@RequestParam String videoKey) {
         log.info("GET Request -> Get Video");
         
         byte[] video = service.getVideoFile(videoKey);
