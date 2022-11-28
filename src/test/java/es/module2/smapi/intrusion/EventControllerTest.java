@@ -111,7 +111,7 @@ public class EventControllerTest {
 
         Mockito.when(eventService.getVideoFile(any(String.class))).thenReturn(video);
 
-        given().get("/events/videoKey")
+        given().get("/events/"+"?videoKey=" + "videoKey")
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .header("Content-type", is("application/octet-stream")).and()

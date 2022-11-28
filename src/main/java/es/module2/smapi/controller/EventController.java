@@ -54,7 +54,7 @@ public class EventController {
         return new ResponseEntity<>(service.getVideoKeysFromCamera(cameraId), HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<ByteArrayResource> getVideoFile(@RequestParam String videoKey) {
         log.info("GET Request -> Get Video");
         
