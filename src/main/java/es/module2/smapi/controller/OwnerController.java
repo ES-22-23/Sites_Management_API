@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.module2.smapi.TokenAccess;
 import es.module2.smapi.datamodel.OwnerDTO;
 import es.module2.smapi.exceptions.OwnerAlreadyExistsException;
 import es.module2.smapi.model.Owner;
+import es.module2.smapi.service.ActionService;
 import es.module2.smapi.service.OwnerService;
 
 @RestController
@@ -30,6 +32,11 @@ public class OwnerController {
 
     @Autowired
     private OwnerService service;
+
+    @Autowired
+    private ActionService actionService;
+
+    private TokenAccess tokenAccess = new TokenAccess();
 
     @GetMapping()
     public ResponseEntity<List<Owner>> getAllOwners(){
@@ -44,6 +51,11 @@ public class OwnerController {
         try {
             Owner ow = service.createOwner(ownerDTO);
             log.info(ow.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "CREATE", "Owner", ow.getUsername());
+
             return new ResponseEntity<>(ow, HttpStatus.CREATED);
         } catch (OwnerAlreadyExistsException e) {
             log.error(e.getMessage());
@@ -69,6 +81,11 @@ public class OwnerController {
         try {
             Owner ow  = service.updateOwner(username, ownerDTO);
             log.info(ow.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "UPDATE", "Owner", ow.getUsername());
+
             return new ResponseEntity<>(ow, HttpStatus.OK);
         }catch (OwnerAlreadyExistsException e) {
             log.error(e.getMessage());
@@ -81,6 +98,10 @@ public class OwnerController {
         log.info("DELETE Request -> Delete an Owner");
 
         int resp = service.deleteOwner(username);
+
+        String admin = tokenAccess.getUsername();
+
+        actionService.createAction(admin, "DELETE", "Owner", username);
         if (resp == 1){
             log.error("Owner -> This Owner doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);

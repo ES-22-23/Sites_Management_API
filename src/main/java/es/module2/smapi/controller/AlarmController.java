@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.module2.smapi.TokenAccess;
 import es.module2.smapi.datamodel.AlarmDTO;
 import es.module2.smapi.exceptions.AlarmAlreadyExistsException;
 import es.module2.smapi.exceptions.PropertyDoesNotExistException;
 import es.module2.smapi.model.Alarm;
+import es.module2.smapi.service.ActionService;
 import es.module2.smapi.service.AlarmService;
 
 @RestController
@@ -30,6 +32,11 @@ public class AlarmController {
 
     @Autowired
     private AlarmService service;
+
+    @Autowired
+    private ActionService actionService;
+
+    private TokenAccess tokenAccess = new TokenAccess();
 
     @GetMapping()
     public ResponseEntity<List<Alarm>> getAllAlarms(){
@@ -44,6 +51,11 @@ public class AlarmController {
         try {
             Alarm al = service.createAlarm(alarmDTO);
             log.info(al.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "CREATE", "Alarm", al.getId());
+
             return new ResponseEntity<>(al, HttpStatus.CREATED);
         } catch (AlarmAlreadyExistsException | PropertyDoesNotExistException e) {
             log.error(e.getMessage());
@@ -69,6 +81,11 @@ public class AlarmController {
         try {
             Alarm al= service.updateAlarm(id, alarmDTO);
             log.info(al.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "UPDATE", "Alarm", al.getId());
+
             return new ResponseEntity<>(al, HttpStatus.OK);
 
         } catch (AlarmAlreadyExistsException | PropertyDoesNotExistException e){
@@ -80,6 +97,10 @@ public class AlarmController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteAlarm(@PathVariable String id) {
         log.info("DELETE Request -> Delete a new Alarm");
+
+        String admin = tokenAccess.getUsername();
+
+        actionService.createAction(admin, "DELETE", "Alarm", id);
 
         int resp = service.deleteAlarm(id);
         if (resp == 1){

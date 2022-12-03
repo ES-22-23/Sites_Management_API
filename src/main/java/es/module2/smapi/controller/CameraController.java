@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.module2.smapi.TokenAccess;
 import es.module2.smapi.datamodel.CameraDTO;
 import es.module2.smapi.exceptions.CameraAlreadyExistsException;
 import es.module2.smapi.exceptions.CameraDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyDoesNotExistException;
 import es.module2.smapi.model.Camera;
+import es.module2.smapi.service.ActionService;
 import es.module2.smapi.service.CameraService;
 
 @RestController
@@ -32,6 +34,11 @@ public class CameraController {
 
     @Autowired
     private CameraService service;
+
+    @Autowired
+    private ActionService actionService;
+
+    private TokenAccess tokenAccess = new TokenAccess();
 
     @GetMapping()
     public ResponseEntity<List<Camera>> getAllCameras(){
@@ -47,6 +54,11 @@ public class CameraController {
         try {
             cam = service.createCamera(cameraDTO);
             log.info(cam.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "CREATE", "Camera", cam.getId());
+
             return new ResponseEntity<>(cam, HttpStatus.CREATED);
         } catch (CameraAlreadyExistsException | PropertyDoesNotExistException e) {
             log.error(e.getMessage());
@@ -73,6 +85,11 @@ public class CameraController {
         try {
             cam = service.updateCamera(id, cameraDTO);
             log.info(cam.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "UPDATE", "Camera", cam.getId());
+
             return new ResponseEntity<>(cam, HttpStatus.OK);
         } catch (PropertyDoesNotExistException | CameraDoesNotExistException e) {
             log.error(e.getMessage());
@@ -85,6 +102,11 @@ public class CameraController {
         log.info("DELETE Request -> Delete a new Camera");
 
         int resp = service.deleteCamera(id);
+
+        String admin = tokenAccess.getUsername();
+
+        actionService.createAction(admin, "DELETE", "Camera", id);
+
         if (resp == 1){
             log.error("Camera -> This Camera doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);
