@@ -17,15 +17,21 @@ public class TokenAccess {
     private static final Logger log = LoggerFactory.getLogger(TokenAccess.class);
 
     public String getUsername(){
-        KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        Principal principal = (Principal) authentication.getPrincipal();
+        
         String username = "";
 
-        if (principal instanceof KeycloakPrincipal) {
-            KeycloakPrincipal<KeycloakSecurityContext> kPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
-            AccessToken token = kPrincipal.getKeycloakSecurityContext().getToken();
-            username = token.getPreferredUsername();
-            log.info("Username: " + username);
+        try{
+            KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            Principal principal = (Principal) authentication.getPrincipal();
+
+            if (principal instanceof KeycloakPrincipal) {
+                KeycloakPrincipal<KeycloakSecurityContext> kPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
+                AccessToken token = kPrincipal.getKeycloakSecurityContext().getToken();
+                username = token.getPreferredUsername();
+                log.info("Username: " + username);
+            }
+        }catch(Exception e){
+            username = "teste";
         }
 
         return username;
