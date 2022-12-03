@@ -93,12 +93,22 @@ public class CameraService {
     public int deleteCamera(String id) {
         log.info("Deleting Camera");
 
-        Optional<Camera> camera = camRepository.findById(id);
+        Optional<Camera> cameraOptional = camRepository.findById(id);
 
-        if(camera.isEmpty()){
+        if(cameraOptional.isEmpty()){
             return 0;
         }
+
+        Camera camera = cameraOptional.get();
+        Property property = propRepository.findById(camera.getProperty().getId()).get();
+
+        property.getCameras().remove(camera);
+        camera.setProperty(null);
+
+        propRepository.save(property);
+        camRepository.saveAndFlush(camera);
+
         camRepository.deleteById(id);
-        return 1;
+        return  1;
     }
 }

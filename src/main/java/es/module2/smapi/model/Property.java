@@ -50,7 +50,7 @@ public class Property implements Serializable{
 
 
   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinColumn(name = "username", nullable = false)
+  @JoinColumn(name = "username", nullable = true)
   @JsonIdentityReference(alwaysAsId = true)
   private Owner owner;
 

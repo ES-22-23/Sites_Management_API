@@ -38,7 +38,7 @@ public class Alarm implements Serializable{
 
 
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-  @JoinColumn(name = "property_id", nullable = false)
+  @JoinColumn(name = "property_id", nullable = true)
   @JsonIgnoreProperties("alarms")
   @JsonIdentityReference(alwaysAsId = true)
   //@JsonIgnore
