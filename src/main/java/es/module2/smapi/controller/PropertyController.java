@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.module2.smapi.TokenAccess;
 import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.exceptions.OwnerDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
 import es.module2.smapi.model.Property;
+import es.module2.smapi.service.ActionService;
 import es.module2.smapi.service.PropertyService;
 
 @RestController
@@ -31,6 +33,11 @@ public class PropertyController {
 
     @Autowired
     private PropertyService service;
+
+    @Autowired
+    private ActionService actionService;
+
+    private TokenAccess tokenAccess = new TokenAccess();
 
     @GetMapping()
     public ResponseEntity<List<Property>> getAllProperties(){
@@ -45,6 +52,11 @@ public class PropertyController {
         try {
             Property prop = service.createProperty(propertyDTO);
             log.info(prop.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "CREATE", "Property", String.valueOf(prop.getId()));
+
             return new ResponseEntity<>(prop, HttpStatus.CREATED);
         } catch (PropertyAlreadyExistsException | OwnerDoesNotExistException e) {
             log.error(e.getMessage());
@@ -70,6 +82,11 @@ public class PropertyController {
         try {
             Property prop = service.updateProperty(id, propertyDTO);
             log.info(prop.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "UPDATE", "Property", String.valueOf(prop.getId()));
+
             return new ResponseEntity<>(prop, HttpStatus.OK);
         } catch (PropertyAlreadyExistsException | OwnerDoesNotExistException e) {
             log.error(e.getMessage());
@@ -82,6 +99,11 @@ public class PropertyController {
         log.info("DELETE Request -> Delete a new Property");
 
         int resp = service.deleteProperty(id);
+
+        String admin = tokenAccess.getUsername();
+
+        actionService.createAction(admin, "DELETE", "Property", String.valueOf(id));
+
         if (resp == 1){
             log.error("Property -> This Property doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);
