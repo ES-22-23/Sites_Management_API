@@ -18,7 +18,7 @@ public class ActionService {
     @Autowired
     private ActionRepository actionRepository;
 
-    public List<Action> getAllAlarms(){
+    public List<Action> getAllActions(){
         log.info("Getting All Actions");
 
         return actionRepository.findAll();
