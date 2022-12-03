@@ -92,10 +92,7 @@ class AlarmControllerTestIT {
         .contentType(ContentType.JSON).and()
         .body("[0].id", is(al1.getId())).and()
         .body("[1].id", is(al2.getId())).and()
-        .body("[2].id", is(al3.getId()));
-
-
-        
+        .body("[2].id", is(al3.getId()));  
     }
 
     @Test
@@ -106,8 +103,8 @@ class AlarmControllerTestIT {
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
         .body("id", is( alDTO4.getId()));
-        
     }
+
     @Test
      void whenInvalidInputThenNotCreateAlarm() throws IOException, Exception {
         given().contentType(ContentType.JSON).body(alDTO1)

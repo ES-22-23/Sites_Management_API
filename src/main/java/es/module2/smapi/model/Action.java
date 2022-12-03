@@ -38,4 +38,12 @@ public class Action implements Serializable{
     private String entity_type;
 
     private String entity_id;
+
+    public Action(String date, String admin, String action_type, String entity_type, String entity_id) {
+        this.date = date;
+        this.admin = admin;
+        this.action_type = action_type;
+        this.entity_type = entity_type;
+        this.entity_id = entity_id;
+    }
 }
