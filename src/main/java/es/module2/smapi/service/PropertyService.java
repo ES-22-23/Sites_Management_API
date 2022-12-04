@@ -87,7 +87,7 @@ public class PropertyService {
             throw new OwnerDoesNotExistException("Owner does not exist: " + propDTO.getOwnerUsername());
 
         }
-
+        
         prop.setOwner(ow1);
         ow1.getProperties().add(prop);
 
@@ -96,11 +96,21 @@ public class PropertyService {
     public int deleteProperty(long id) {
         log.info("Deleting Property");
 
-        Optional<Property> camera = propRepository.findById(id);
+        Optional<Property> propertyOptional = propRepository.findById(id);
 
-        if(camera.isEmpty()){
+        if(propertyOptional.isEmpty()){
             return 0;
         }
+
+        Property property = propertyOptional.get();
+        Owner owner = owRepository.findByUsername(property.getOwner().getUsername()).get();
+
+        owner.getProperties().remove(property);
+        property.setOwner(null);
+
+        owRepository.save(owner);
+        propRepository.saveAndFlush(property);
+
         propRepository.deleteById(id);
         return  1;
     }

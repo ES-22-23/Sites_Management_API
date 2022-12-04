@@ -19,7 +19,4 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     
     Optional<Property> findByCameras(String cam);
     Optional<Property> findByAlarms(String al);
-
-
-    // find property by alarm id
 }

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 
-public interface OwnerRepository extends JpaRepository<Owner, Long> {
+public interface OwnerRepository extends JpaRepository<Owner, String> {
     Optional<Owner> findByName(String name);
     Optional<Owner> findByUsername(String username);
     @Transactional 

@@ -94,13 +94,23 @@ public class AlarmService {
     public int deleteAlarm(String id) {
         log.info("Deleting Alarm");
 
-        Optional<Alarm> alarm = alarmRepository.findById(id);
+        Optional<Alarm> alarmOptional = alarmRepository.findById(id);
 
-        if(alarm.isEmpty()){
+        if(alarmOptional.isEmpty()){
             return 0;
         }
+
+        Alarm alarm = alarmOptional.get();
+        Property property = propRepository.findById(alarm.getProperty().getId()).get();
+
+        property.getAlarms().remove(alarm);
+        alarm.setProperty(null);
+
+        propRepository.save(property);
+        alarmRepository.saveAndFlush(alarm);
+
         alarmRepository.deleteById(id);
-        return 1;
+        return  1;
     }
 
 }

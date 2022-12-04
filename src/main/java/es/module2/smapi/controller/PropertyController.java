@@ -109,8 +109,5 @@ public class PropertyController {
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
-
-    }
-
-        
+    }        
 }
