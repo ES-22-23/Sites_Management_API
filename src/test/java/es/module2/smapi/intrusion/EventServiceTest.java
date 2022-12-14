@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,19 +74,14 @@ public class EventServiceTest {
     }
 
     @Test
-    void testGetVideoFile() throws IOException{
-        byte[] array = "hello".getBytes();
-        S3ObjectInputStream inputStream = new S3ObjectInputStream(new ByteArrayInputStream(array), new HttpGet("teste"));
-        S3Object object = new S3Object();
-        object.setObjectContent(inputStream);
-        String videoKey = "propId1/cam1/Video1";
-        object.setKey(videoKey);
-        object.setBucketName("hdm-bucket");
+    void testGetVideoUrl() throws IOException{
 
-        Mockito.when(s3Client.getObject("hdm-bucket", videoKey)).thenReturn(object);
+        String videoKey = "propId8/cam111cc11-165a-445a-b062-9b7a16195dd6/Video2022-11-21 20:46:12.66666.mp4";
 
-        String expected = new String(array);
-        String actual = new String(service.getVideoFile(videoKey));
+        Mockito.when(s3Client.generatePresignedUrl(any())).thenReturn(new URL("https://hdm-bucket.s3.eu-west-2.amazonaws.com/propId8/cam111cc11-165a-445a-b062-9b7a16195dd6/Video2022-11-21%2020%3A46%3A12.66666.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20221214T115939Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1799&X-Amz-Credential=AKIA3QKXUEUECZE33MP4%2F20221214%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e96b2dee730857ae1585b053a8e059e92a95b0694701adf651f8f5db66b9a132"));
+
+        String expected = new String("https://hdm-bucket.s3.eu-west-2.amazonaws.com/propId8/cam111cc11-165a-445a-b062-9b7a16195dd6/Video2022-11-21%2020%3A46%3A12.66666.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20221214T115939Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1799&X-Amz-Credential=AKIA3QKXUEUECZE33MP4%2F20221214%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e96b2dee730857ae1585b053a8e059e92a95b0694701adf651f8f5db66b9a132");
+        String actual = new String(service.getVideoUrl(videoKey));
 
         assertEquals(expected, actual);
     }

@@ -1,6 +1,8 @@
 package es.module2.smapi.service;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.HttpMethod;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
@@ -45,15 +51,31 @@ public class EventService {
         this.bucketName = bucketName;
     } 
 
-    public byte[] getVideoFile(String videoKey){
+    public String getVideoUrl(String videoKey){
 
-        S3Object s3Object = s3Client.getObject(bucketName, videoKey);
-        S3ObjectInputStream inputStream = s3Object.getObjectContent();
-        byte[] content;
         try {
-            content = IoUtils.toByteArray(inputStream);
-            return content;
-        } catch (IOException e) {
+            // Set the presigned URL to expire after half an  hour.
+            java.util.Date expiration = new java.util.Date();
+            long expTimeMillis = Instant.now().toEpochMilli();
+            expTimeMillis += 1000 * 30 * 60;
+            expiration.setTime(expTimeMillis);
+
+            // Generate the presigned URL.
+            GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                    new GeneratePresignedUrlRequest(bucketName, videoKey)
+                            .withMethod(HttpMethod.GET)
+                            .withExpiration(expiration);
+            URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
+            
+            return url.toString();
+        } catch (AmazonServiceException e) {
+            // The call was transmitted successfully, but Amazon S3 couldn't process 
+            // it, so it returned an error response.
+            e.printStackTrace();
+            return null;
+        } catch (SdkClientException e) {
+            // Amazon S3 couldn't be contacted for a response, or the client
+            // couldn't parse the response from Amazon S3.
             e.printStackTrace();
             return null;
         }

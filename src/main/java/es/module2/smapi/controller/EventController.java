@@ -55,19 +55,15 @@ public class EventController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<ByteArrayResource> getVideoFile(@RequestParam String videoKey) {
+    public ResponseEntity<String> getVideoUrl(@RequestParam String videoKey) {
         log.info("GET Request -> Get Video");
-        
-        byte[] video = service.getVideoFile(videoKey);
-        ByteArrayResource response = new ByteArrayResource(video);
-        if (video == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        String videoUrl = service.getVideoUrl(videoKey);
+        if (videoUrl == null){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return ResponseEntity
-                    .ok()
-                    .contentLength(video.length)
-                    .header("Content-type","application/octet-stream")
-                    .header("Content-disposition", "attachment; filename=\"" + videoKey + "\"")
-                    .body(response);
+
+        log.info("Generated URL: " + videoUrl);
+        return new ResponseEntity<>(videoUrl, HttpStatus.OK);
+
     }
 }

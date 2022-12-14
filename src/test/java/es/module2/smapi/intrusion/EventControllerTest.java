@@ -105,16 +105,15 @@ public class EventControllerTest {
     }
 
     @Test
-     void testgetVideo() throws IOException, Exception {
+     void testGetVideoUrl() throws IOException, Exception {
        
-        byte[] video = "hello".getBytes();
+        String video = "https://hdm-bucket.s3.eu-west-2.amazonaws.com/propId8/cam111cc11-165a-445a-b062-9b7a16195dd6/Video2022-11-21%2020%3A46%3A12.66666.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20221214T115939Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1799&X-Amz-Credential=AKIA3QKXUEUECZE33MP4%2F20221214%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e96b2dee730857ae1585b053a8e059e92a95b0694701adf651f8f5db66b9a132";
 
-        Mockito.when(eventService.getVideoFile(any(String.class))).thenReturn(video);
+        Mockito.when(eventService.getVideoUrl(any(String.class))).thenReturn(video);
 
         given().get("/events/"+"?videoKey=" + "videoKey")
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
-        .header("Content-type", is("application/octet-stream")).and()
-        .header("Content-disposition",is("attachment; filename=\"" + "videoKey" + "\""));
+        .body(is("https://hdm-bucket.s3.eu-west-2.amazonaws.com/propId8/cam111cc11-165a-445a-b062-9b7a16195dd6/Video2022-11-21%2020%3A46%3A12.66666.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20221214T115939Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1799&X-Amz-Credential=AKIA3QKXUEUECZE33MP4%2F20221214%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e96b2dee730857ae1585b053a8e059e92a95b0694701adf651f8f5db66b9a132"));
     }
 }
