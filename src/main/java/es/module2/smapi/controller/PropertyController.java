@@ -37,13 +37,15 @@ public class PropertyController {
     @Autowired
     private ActionService actionService;
 
-    private TokenAccess tokenAccess = new TokenAccess();
+    private final TokenAccess tokenAccess = new TokenAccess();
 
     @GetMapping()
     public ResponseEntity<List<Property>> getAllProperties(){
+
         log.info("GET Request -> Get all properties");
 
         return new ResponseEntity<>(service.getAllProperties(), HttpStatus.OK);
+
     }
 
     @PostMapping()
