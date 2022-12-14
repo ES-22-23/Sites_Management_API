@@ -15,7 +15,9 @@ public class AuthHandler {
 
     @SuppressWarnings("unchecked")
     public KeycloakPrincipal<RefreshableKeycloakSecurityContext> getPrincipal() {
-        return (KeycloakPrincipal<RefreshableKeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof KeycloakPrincipal)
+            return (KeycloakPrincipal<RefreshableKeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return null;
     }
 
     /**
@@ -23,7 +25,9 @@ public class AuthHandler {
      * @return AccessToken instance
      */
     public AccessToken getUserAccessToken() {
-        return getPrincipal().getKeycloakSecurityContext().getToken();
+        if (getPrincipal() != null)
+            return getPrincipal().getKeycloakSecurityContext().getToken();
+        return null;
     }
 
     /**
@@ -31,7 +35,9 @@ public class AuthHandler {
      * @return username as String
      */
     public String getUsername() {
-        return getUserAccessToken().getPreferredUsername();
+        if (getUserAccessToken() != null)
+            return getUserAccessToken().getPreferredUsername();
+        return null;
     }
 
     /**
@@ -39,9 +45,9 @@ public class AuthHandler {
      * @return true if the user is an Admin, false otherwise
      */
     public boolean isAdmin() {
-        return getUserAccessToken().getResourceAccess(keycloakClientId)
-                .getRoles()
-                .contains("admin");
+        if (getUserAccessToken() != null)
+            return getUserAccessToken().getResourceAccess(keycloakClientId).getRoles().contains("admin");
+        return false;
     }
 
     /**
@@ -49,9 +55,9 @@ public class AuthHandler {
      * @return true if the user is a User, false otherwise
      */
     public boolean isUser() {
-        return getUserAccessToken().getResourceAccess(keycloakClientId)
-                .getRoles()
-                .contains("user");
+        if (getUserAccessToken() != null)
+            return getUserAccessToken().getResourceAccess(keycloakClientId).getRoles().contains("user");
+        return false;
     }
 
 }
