@@ -5,6 +5,8 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,10 +37,14 @@ public class ActionControllerTestIT {
     @Autowired
     private ActionRepository repository;
 
+    @Autowired
+    private EntityManager entityManager;
+
     Action action1, action2, action3;
 
     @BeforeEach
     void setUp() throws JsonProcessingException{
+        entityManager.clear();
 
         RestAssuredMockMvc.mockMvc( mvc );
 
@@ -56,6 +62,7 @@ public class ActionControllerTestIT {
     @AfterEach
     void cleanUp(){
         repository.deleteAll();
+        entityManager.clear();
     }
 
     @Test
