@@ -1,17 +1,5 @@
 package es.module2.smapi.service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import es.module2.smapi.security.AuthHandler;
-import org.keycloak.representations.AccessToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.exceptions.OwnerDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
@@ -19,6 +7,15 @@ import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
+import es.module2.smapi.security.AuthHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PropertyService {
