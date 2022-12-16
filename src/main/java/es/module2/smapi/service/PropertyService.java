@@ -1,13 +1,5 @@
 package es.module2.smapi.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import es.module2.smapi.datamodel.PropertyDTO;
 import es.module2.smapi.exceptions.OwnerDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyAlreadyExistsException;
@@ -15,21 +7,45 @@ import es.module2.smapi.model.Owner;
 import es.module2.smapi.model.Property;
 import es.module2.smapi.repository.OwnerRepository;
 import es.module2.smapi.repository.PropertyRepository;
+import es.module2.smapi.security.AuthHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PropertyService {
+
     private static final Logger log = LoggerFactory.getLogger(PropertyService.class);
 
-    @Autowired
-    private PropertyRepository propRepository;
+    private final PropertyRepository propRepository;
+    private final OwnerRepository owRepository;
+    private final AuthHandler authHandler;
 
     @Autowired
-    private OwnerRepository owRepository;
-    
+    public PropertyService(PropertyRepository propRepository, OwnerRepository owRepository, AuthHandler authHandler) {
+        this.propRepository = propRepository;
+        this.owRepository = owRepository;
+        this.authHandler = authHandler;
+    }
+
     public List<Property> getAllProperties(){
+
         log.info("Getting All Properties");
 
-        return propRepository.findAll();
+        if (authHandler.isAdmin()) {
+            return propRepository.findAll();
+        } else if (authHandler.isUser()) {
+            return propRepository.findAllByOwnerUsername(authHandler.getUsername());
+        }
+
+        log.warn("[GET /properties] Unauthorized attempt to access properties");
+        return Collections.emptyList();
+
     }
 
     public Property createProperty(PropertyDTO propDTO) throws PropertyAlreadyExistsException, OwnerDoesNotExistException{

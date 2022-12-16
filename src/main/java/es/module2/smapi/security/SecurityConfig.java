@@ -52,6 +52,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/alarms/**").hasAnyRole("user", "admin", "service")
                 .antMatchers(HttpMethod.GET, "/cameras/**").hasAnyRole("user", "admin", "service")
                 .antMatchers(HttpMethod.GET, "/owners/**").hasAnyRole("admin")
+                .antMatchers(HttpMethod.GET, "/properties").hasAnyRole("user", "admin")
                 .antMatchers(HttpMethod.GET, "/properties/**").hasAnyRole("admin")
                 .antMatchers(HttpMethod.GET, "/events").hasAnyRole("admin")
                 .antMatchers(HttpMethod.GET, "/actions").hasAnyRole("admin")
@@ -71,7 +72,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
         final CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://admin.scss.hgsoft.me", "http://client.scss.hgsoft.me"));
+        config.setAllowedOrigins(List.of("http://admin.scss.hgsoft.me", "http://client.scss.hgsoft.me", "http://localhost:3001", "http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
         config.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
 
