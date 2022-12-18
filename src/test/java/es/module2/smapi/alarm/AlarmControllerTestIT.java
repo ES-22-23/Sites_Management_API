@@ -55,14 +55,14 @@ class AlarmControllerTestIT {
 
         RestAssuredMockMvc.mockMvc( mvc );
 
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
 
-        al1 = buildAlarmObject(1);
-        al2 = buildAlarmObject(2);
-        al3 = buildAlarmObject(3);
+        al1 = buildAlarmObject("1");
+        al2 = buildAlarmObject("2");
+        al3 = buildAlarmObject("3");
 
         al1.setProperty(prop1);
         al2.setProperty(prop2);
@@ -72,10 +72,10 @@ class AlarmControllerTestIT {
         al2 = repository.saveAndFlush(al2);
         al3 = repository.saveAndFlush(al3);
 
-        alDTO1 = buildAlarmDTO(1);
-        alDTO2 = buildAlarmDTO(2);
-        alDTO3 = buildAlarmDTO(3);
-        alDTO4 = buildAlarmDTO(4);
+        alDTO1 = buildAlarmDTO("1");
+        alDTO2 = buildAlarmDTO("2");
+        alDTO3 = buildAlarmDTO("3");
+        alDTO4 = buildAlarmDTO("4");
     }
 
     @AfterEach
@@ -84,19 +84,15 @@ class AlarmControllerTestIT {
         propertyRepository.deleteAll();
     }
 
-
     @Test
      void whenGetAllAlarmsThenReturnAllAlarms() throws IOException, Exception {
         given().get("/alarms")
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
-        .body("[0].id", is((int)al1.getId())).and()
-        .body("[1].id", is((int)al2.getId())).and()
-        .body("[2].id", is((int)al3.getId()));
-
-
-        
+        .body("[0].id", is(al1.getId())).and()
+        .body("[1].id", is(al2.getId())).and()
+        .body("[2].id", is(al3.getId()));  
     }
 
     @Test
@@ -106,9 +102,9 @@ class AlarmControllerTestIT {
         .then().log().body().assertThat()
         .status(HttpStatus.CREATED).and()
         .contentType(ContentType.JSON).and()
-        .body("privateId", is((int) alDTO4.getPrivateId()));
-        
+        .body("id", is( alDTO4.getId()));
     }
+
     @Test
      void whenInvalidInputThenNotCreateAlarm() throws IOException, Exception {
         given().contentType(ContentType.JSON).body(alDTO1)
@@ -132,7 +128,7 @@ class AlarmControllerTestIT {
     void whenInvalidInputThenNotFound() throws IOException, Exception {
 
         given().contentType(ContentType.JSON)
-        .get("/alarms/"+1000)
+        .get("/alarms/1000")
         .then().log().body().assertThat()
         .status(HttpStatus.NOT_FOUND);
 
@@ -145,30 +141,30 @@ class AlarmControllerTestIT {
         .then().log().body().assertThat()
         .status(HttpStatus.OK).and()
         .contentType(ContentType.JSON).and()
-        .body("id", is((int)al1.getId()));
+        .body("id", is(al1.getId()));
 
     }
 
-    Alarm buildAlarmObject(long id){
+    Alarm buildAlarmObject(String id){
         Alarm al = new Alarm();
         al.setId(id);
-        al.setPrivateId( id);
+        al.setId( id);
         return al;
     }
 
-    AlarmDTO buildAlarmDTO(long id){
+    AlarmDTO buildAlarmDTO(String id){
         AlarmDTO al = new AlarmDTO();
-        al.setPrivateId( id);
+        al.setId( id);
         al.setPropertyAddress("address"+id);
         al.setPropertyName("name"+id);
         return al;
     }
 	
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email" + id, "name"+id);
         ow = ownerRepository.saveAndFlush(ow);
-        prop.setId(id);
+        prop.setId(Long.parseLong(id));
         prop.setName("name" + id);
         prop.setAddress("address"  + id);
         prop.setOwner(ow);

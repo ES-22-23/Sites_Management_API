@@ -17,21 +17,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.module2.smapi.TokenAccess;
 import es.module2.smapi.datamodel.CameraDTO;
 import es.module2.smapi.exceptions.CameraAlreadyExistsException;
 import es.module2.smapi.exceptions.CameraDoesNotExistException;
 import es.module2.smapi.exceptions.PropertyDoesNotExistException;
 import es.module2.smapi.model.Camera;
+import es.module2.smapi.service.ActionService;
 import es.module2.smapi.service.CameraService;
 
 @RestController
 @RequestMapping("/cameras")
 @Validated
-class CameraController {
+public class CameraController {
     private static final Logger log = LoggerFactory.getLogger(CameraController.class);
 
     @Autowired
     private CameraService service;
+
+    @Autowired
+    private ActionService actionService;
+
+    private TokenAccess tokenAccess = new TokenAccess();
 
     @GetMapping()
     public ResponseEntity<List<Camera>> getAllCameras(){
@@ -46,40 +53,62 @@ class CameraController {
         Camera cam = null;
         try {
             cam = service.createCamera(cameraDTO);
+            log.info(cam.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "CREATE", "Camera", cam.getId());
+
             return new ResponseEntity<>(cam, HttpStatus.CREATED);
         } catch (CameraAlreadyExistsException | PropertyDoesNotExistException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Camera> getCamera(@PathVariable long id) {
+    public ResponseEntity<Camera> getCamera(@PathVariable String id) {
         log.info("GET Request -> get a Camera");
         Camera cam = service.getCamera(id);
         if (cam == null){
+            log.error("Alarm -> This Alarm doesn't exist");
             return new ResponseEntity<>(cam, HttpStatus.NOT_FOUND);
         }
+        log.info(cam.toString());
         return new ResponseEntity<>(cam, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Camera> updateCamera(@PathVariable long id,@RequestBody CameraDTO cameraDTO) {
+    public ResponseEntity<Camera> updateCamera(@PathVariable String id,@RequestBody CameraDTO cameraDTO) {
         log.info("POST Request -> Update a new Camera");
         Camera cam;
         try {
             cam = service.updateCamera(id, cameraDTO);
+            log.info(cam.toString());
+
+            String admin = tokenAccess.getUsername();
+
+            actionService.createAction(admin, "UPDATE", "Camera", cam.getId());
+
             return new ResponseEntity<>(cam, HttpStatus.OK);
         } catch (PropertyDoesNotExistException | CameraDoesNotExistException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> deleteCamera(@PathVariable long id) {
+    public ResponseEntity<Integer> deleteCamera(@PathVariable String id) {
         log.info("DELETE Request -> Delete a new Camera");
 
         int resp = service.deleteCamera(id);
+
+        String admin = tokenAccess.getUsername();
+
+        actionService.createAction(admin, "DELETE", "Camera", id);
+
         if (resp == 1){
+            log.error("Camera -> This Camera doesn't exist");
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);

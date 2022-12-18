@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 
-public interface AlarmRepository extends JpaRepository<Alarm, Long> {
-    Optional<Alarm> findByPropertyAndPrivateId(Property prop, long id);
+public interface AlarmRepository extends JpaRepository<Alarm, String> {
+    Optional<Alarm> findByPropertyAndId(Property prop, String id);
     @Transactional 
-    int deleteByPropertyAndPrivateId(Property prop, long id);
+    int deleteByPropertyAndId(Property prop, String id);
 }

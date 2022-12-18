@@ -47,13 +47,14 @@ public class OwnerService {
         return owner;
     }
 
-    public Owner updateOwner(String username, OwnerDTO ownerDTO) {
+    public Owner updateOwner(String username, OwnerDTO ownerDTO) throws OwnerAlreadyExistsException{
         log.info("Updating Owner");
 
         Owner owner = ownerRepository.findByUsername(username).orElse(null);
 
         if (owner==null){
-            return null;
+            throw new OwnerAlreadyExistsException("Owner already exists: " + owner);
+
         }
 
         owner.setEmail(ownerDTO.getEmail());

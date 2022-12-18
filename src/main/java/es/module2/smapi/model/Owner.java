@@ -12,9 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import es.module2.smapi.datamodel.OwnerDTO;
 import lombok.AllArgsConstructor;
@@ -27,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="OWNER")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.OwnerGenerator.class, owner = "username")
 public class Owner implements Serializable{
 
   @Id
@@ -58,6 +56,38 @@ public class Owner implements Serializable{
       this.setName(dto.getName());
   }
 
+
+  public String getUsername() {
+    return this.username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<Property> getProperties() {
+    return this.properties;
+  }
+
+  public void setProperties(List<Property> properties) {
+    this.properties = properties;
+  }
 
   @Override
   public String toString() {

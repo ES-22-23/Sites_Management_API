@@ -89,7 +89,7 @@ class PropertyServiceTest {
     @Test
      void whenValidInputThenGetProperty() throws IOException, Exception, PropertyAlreadyExistsException {
    
-        Mockito.when(repository.findById((long) 1)).thenReturn(Optional.of(prop1));
+        Mockito.when(repository.findById((long)1)).thenReturn(Optional.of(prop1));
 
         Property found= service.getProperty(1);
 

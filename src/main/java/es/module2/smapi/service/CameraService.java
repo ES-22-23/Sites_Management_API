@@ -46,27 +46,27 @@ public class CameraService {
             throw new PropertyDoesNotExistException("Property does not exist: " + p1);
         }
         
-        Camera cam = camRepository.findByPropertyAndPrivateId(p1, camDTO.getPrivateId()).orElse(null);
+        Camera cam = camRepository.findByPropertyAndId(p1, camDTO.getId()).orElse(null);
 
         if (cam != null){
             throw new CameraAlreadyExistsException("Camera already exists: " + cam);
         }
 
         Camera cam2 = new Camera();
-        cam2.setPrivateId(camDTO.getPrivateId());
+        cam2.setId(camDTO.getId());
         cam2.setProperty(p1);
         p1.getCameras().add(cam2);
 
         return camRepository.saveAndFlush(cam2);
     }
 
-    public Camera getCamera(long id) {
+    public Camera getCamera(String id) {
         log.info("Getting Camera");
 
         return camRepository.findById(id).orElse(null);
     }
 
-    public Camera updateCamera(long id, CameraDTO camDTO) throws PropertyDoesNotExistException, CameraDoesNotExistException {
+    public Camera updateCamera(String id, CameraDTO camDTO) throws PropertyDoesNotExistException, CameraDoesNotExistException {
         log.info("Updating Camera");
         
         Property p1 = propRepository.findByNameAndAddress(camDTO.getPropertyName(), camDTO.getPropertyAddress()).orElse(null);
@@ -83,22 +83,32 @@ public class CameraService {
 
         cam.getProperty().getCameras().remove(cam);
 
-        cam.setPrivateId(camDTO.getPrivateId());
+        cam.setId(camDTO.getId());
         cam.setProperty(p1);
         p1.getCameras().add(cam);
 
         return camRepository.saveAndFlush(cam);
     }
 
-    public int deleteCamera(long id) {
+    public int deleteCamera(String id) {
         log.info("Deleting Camera");
 
-        Optional<Camera> camera = camRepository.findById(id);
+        Optional<Camera> cameraOptional = camRepository.findById(id);
 
-        if(camera.isEmpty()){
+        if(cameraOptional.isEmpty()){
             return 0;
         }
+
+        Camera camera = cameraOptional.get();
+        Property property = propRepository.findById(camera.getProperty().getId()).get();
+
+        property.getCameras().remove(camera);
+        camera.setProperty(null);
+
+        propRepository.save(property);
+        camRepository.saveAndFlush(camera);
+
         camRepository.deleteById(id);
-        return 1;
+        return  1;
     }
 }

@@ -38,15 +38,15 @@ class CameraRepositoryTests {
         
     @BeforeEach
     void setUp() throws JsonProcessingException{
-        prop1 = buildPropertyObject(1);
-        prop2 = buildPropertyObject(2);
-        prop3 = buildPropertyObject(3);
-        prop4 = buildPropertyObject(4);
+        prop1 = buildPropertyObject("1");
+        prop2 = buildPropertyObject("2");
+        prop3 = buildPropertyObject("3");
+        prop4 = buildPropertyObject("4");
 
-        cam1 = buildCameraObject(1);
-        cam2 = buildCameraObject(2);
-        cam3 = buildCameraObject(3);
-        cam4 = buildCameraObject(4);
+        cam1 = buildCameraObject("1");
+        cam2 = buildCameraObject("2");
+        cam3 = buildCameraObject("3");
+        cam4 = buildCameraObject("4");
 
         cam1.setProperty(prop1);
         cam2.setProperty(prop2);
@@ -57,10 +57,10 @@ class CameraRepositoryTests {
         repository.saveAndFlush(cam2);
         repository.saveAndFlush(cam3);
 
-        camDTO1 = buildCameraDTO(1);
-        camDTO2 = buildCameraDTO(2);
-        camDTO3 = buildCameraDTO(3);
-        camDTO4 = buildCameraDTO(4);
+        camDTO1 = buildCameraDTO("1");
+        camDTO2 = buildCameraDTO("2");
+        camDTO3 = buildCameraDTO("3");
+        camDTO4 = buildCameraDTO("4");
     }
 
     @AfterEach
@@ -69,31 +69,31 @@ class CameraRepositoryTests {
     }
 
     @Test
-	void whenFindCameraByPropAndPrivateIDThenReturnProp() {
+	void whenFindCameraByPropAndIdThenReturnProp() {
 
-        Optional<Camera> result = repository.findByPropertyAndPrivateId(prop1,camDTO1.getPrivateId());
+        Optional<Camera> result = repository.findByPropertyAndId(prop1,camDTO1.getId());
         assertTrue(result.isPresent());
 	}
 
-    Camera buildCameraObject(long id){
+    Camera buildCameraObject(String id){
         Camera al = new Camera();
-        al.setPrivateId( id);
+        al.setId( id);
         return al;
     }
 
-    CameraDTO buildCameraDTO(long id){
+    CameraDTO buildCameraDTO(String id){
         CameraDTO al = new CameraDTO();
-        al.setPrivateId(id);
+        al.setId(id);
         al.setPropertyAddress("Address"+id);
         al.setPropertyName("name"+id);
         return al;
     }
 	
-    Property buildPropertyObject(long id){
+    Property buildPropertyObject(String id){
         Property prop = new Property();
         Owner ow= new Owner("username"+id,"email"+id,"name"+id);
         ow = ownerRepository.saveAndFlush(ow);
-        prop.setId(id);
+        prop.setId(Long.parseLong(id));
         prop.setName("Name" + id);
         prop.setAddress("address"  + id);
         prop.setOwner(ow);
