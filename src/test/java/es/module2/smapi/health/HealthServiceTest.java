@@ -19,8 +19,7 @@ public class HealthServiceTest {
     void testGetHealthService() {
         Assertions.assertThat(healthService.getHealthStatus())
                 .isNotNull()
-                .hasFieldOrPropertyWithValue("isAvailable", true)
-                .hasFieldOrPropertyWithValue("databaseAvailable", true);
+                .hasFieldOrPropertyWithValue("isHealthy", true);
     }
 
 }
